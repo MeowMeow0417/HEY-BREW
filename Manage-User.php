@@ -37,7 +37,11 @@
         exit();
     }
 
-    // sign-UP connection
+
+    // calls all admin accounts
+    $result = $conn -> query('SELECT * FROM admin');
+
+    //Create new user/admin
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         // Retrieve and sanitization of form inputs
         $username = trim($_POST['username']);
@@ -50,7 +54,7 @@
             $email = isset($_POST['email']) ? trim($_POST['email']) : '';
 
             //Checks if the email already exists
-            $admin = $conn -> prepare('SELECT * FROM admin WHERE email = ?');
+            $admin = $conn -> prepare('SELECT * FROM admin WHERE admin_email = ?');
             $admin -> bind_param('s', $email);
             $admin -> execute();
             $result = $admin -> get_result();
@@ -62,7 +66,7 @@
                 $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
                 // Prepare and execute the insert statement
-                $admin = $conn->prepare("INSERT INTO admin (admin_username, email, password) VALUES (?, ?, ?)");
+                $admin = $conn->prepare("INSERT INTO admin (admin_username, admin_email, password) VALUES (?, ?, ?)");
 
                 if ($admin === false) {
                     $message = "Error preparing statement: " . $conn->error; // Error preparing statement
@@ -81,6 +85,23 @@
         }
 
     }
+
+    //For handling deletion
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
+        $delete_id = $_POST['delete_id'];
+
+        $stmt = $conn->prepare("DELETE FROM admin WHERE id = ?");
+        $stmt->bind_param('i', $delete_id);
+
+        if ($stmt->execute()) {
+          //  echo '<div class="success">User deleted successfully!</div>';
+        } else {
+          //  echo '<div class="error">Error: Unable to delete user.</div>';
+        }
+
+        $stmt->close();
+    }
+
 ?>
 
 <!DOCTYPE html>
@@ -122,9 +143,70 @@
                     </div>
                 </div>
 
-                <!-- User Management -->
-                <div class="user-container" id="user-container">
+                <!-- container -->
+                <div class="profile-container" id="profile-container">
+
+                    <button class="add-user" id="add-user">Add User</button>
+
+                    <!-- for viewing admins -->
+                    <div class="container-table">
+                        <h2>User List</h2>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Username</th>
+                                    <th>Email</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while($row = $result->fetch_assoc()): ?>
+                                    <tr>
+                                        <td><?php echo $row['id']; ?></td>
+                                        <td><?php echo $row['admin_username']; ?></td>
+                                        <td><?php echo $row['admin_email']; ?></td>
+                                        <td>
+                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id="<?php echo $row['id']; ?>">Delete</button>
+                                        </td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Delete Modal -->
+                <div class="delete-user modal" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modal-title">Confirm Delete</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to delete this user?
+                            </div>
+                            <div class="modal-footer">
+                                <form method="POST" id="deleteForm">
+                                    <input type="hidden" name="delete_id" id="delete_id">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        </div>
+                </div>
+
+                <!-- User Modal -->
+                <div class="add-user modal" id="user-modal">
                     <div class="add-container">
+                    <div class="modal-header">
+                                <h5 class="modal-title" id="modal-title">Confirm Delete</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
                         <label for="email">Email </label>
                         <input type="email" id="email" placeholder="Email" name="email">
 
@@ -137,8 +219,8 @@
                         <button type="submit" name="signUp">Add User</button>
                     </div>
                 </div>
-
         </div>
+        <script href="script/client/admin/delete.js"></script>
     </form>
 </body>
 </html>
