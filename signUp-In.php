@@ -55,7 +55,7 @@
         $password = mysqli_real_escape_string($conn, $_POST['password']);
 
         //Prepare the SQL statement
-        $client = $conn ->prepare('SELECT id, username, password FROM clients WHERE username = ?');
+        $client = $conn ->prepare('SELECT client_id, username, password FROM clients WHERE username = ?');
 
         if ($client){
             $client -> bind_param('s', $username);
@@ -71,7 +71,7 @@
                     session_regenerate_id(true);
                     $_SESSION['valid'] = true;
                     $_SESSION['username'] = $row['username'];
-                    $_SESSION['id'] = $row['id'];
+                    $_SESSION['client_id'] = $row['client_id'];
                     header("Location: Client-HomePage.php");
                     exit();
                 } else {

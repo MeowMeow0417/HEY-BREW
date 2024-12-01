@@ -223,8 +223,7 @@
                     </div>
                 </div>
 
-
-        <script href="script/client/admin/delete.js"></script>
     </form>
+    <script href="script/client/admin/delete.js"></script>
 </body>
 </html>

@@ -100,14 +100,16 @@
 
                     <div class="product-section">
                         <img src="style/images/bg/drinksBg.png" alt="Coffee cup" class="product-image">
-                        <div class="product-details">
+                            <div class="product-details">
                             <p>Name: </p>
                             <p>Size: </p>
                             <p>Type: </p>
+                            </div>
+                            <div class="details">
                             <p>AddOns: </p>
                             <p>Qty: </p>
-                            <p>₱ Price</p>
-                        </div>
+                            <p>₱ </p>
+                            </div>
                     </div>
 
                 <div class="total-section">

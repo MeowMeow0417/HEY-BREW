@@ -143,6 +143,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("options-modal"); // Modal
     let totalPrice = 0; // Initialize total price
 
+    // Get the client ID (assuming it's set as a global variable or injected in the script)
+    const clientId = document.getElementById("product-order").dataset.clientId;
+
     // Load saved products from localStorage
     loadSavedProducts();
 
@@ -364,8 +367,89 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+//Pushing to the database
+document.getElementById("btn-order").addEventListener("click", () => {
+    const productOrder = document.querySelectorAll("#product-order .product-row");
+    const clientId = document.getElementById("product-order").dataset.clientId;
+    const orderData = [];
+
+    if (!clientId) {
+        alert("Client ID is missing. Please refresh the page and try again.");
+        return;
+    }
+
+    if (productOrder.length === 0) {
+        alert("Your cart is empty. Please add items to your cart before checking out.");
+        return;
+    }
+
+    let hasErrors = false;
+
+    productOrder.forEach(row => {
+        const id = row.getAttribute("data-id");
+        const name = row.querySelector("h4").textContent;
+        const size = row.querySelector(".price-con p").textContent;
+        const type = row.querySelector(".product-info p:nth-child(2)").textContent;
+        const addOns = row.querySelector(".product-info p:nth-child(3)").textContent;
+        const quantity = parseInt(row.querySelector(".stepper-value").textContent);
+        const totalPrice = parseFloat(row.querySelector("#total-price").textContent);
+        const productId = id.split("-")[0]; // Assuming product_id is part of the data-id
+
+        orderData.push({
+            product_id: productId,
+            name: name,
+            size: size,
+            type: type,
+            add_ons: addOns,
+            quantity: quantity,
+            total_price: totalPrice
+        });
+    });
+
+    function clearCart() {
+        const productOrder = document.querySelector("#product-order"); // The cart container
+        const totalPriceElement = document.getElementById("total-price"); // Total price display element
+
+        // Remove all product rows
+        productOrder.innerHTML = "";
+
+        // Reset total price
+        totalPrice = 0;
+        totalPriceElement.textContent = "₱0.00";
+
+        // Clear localStorage
+        localStorage.removeItem("products");
+    }
+
+
+    // Send data to PHP using fetch
+    fetch("php/submit_order.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            client_id: clientId,
+            order_items: orderData
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("Order successfully placed!");
+            clearCart();
+        } else {
+            alert("Failed to place order: " + data.message);
+        }
+    })
+    .catch(error => console.error("Error:", error));
+});
+
+
+
 
 //Receipt Modal //DO THIS TOM
+/*
 document.addEventListener("DOMContentLoaded", () => {
     const productOrder = document.querySelector("#product-order"); // Target the Place Order section
     const btnOrder = document.getElementById("btn-place-order"); // Updated ID
@@ -429,4 +513,4 @@ document.addEventListener("DOMContentLoaded", () => {
         event.preventDefault();
         receiptModal.style.display = "none";
     });
-});
+});*/
