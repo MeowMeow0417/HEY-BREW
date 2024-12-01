@@ -44,9 +44,9 @@
     //Create new user/admin
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
         // Retrieve and sanitization of form inputs
-        $username = trim($_POST['username']);
+        $username = isset($_POST['username']) ? trim($_POST['username']) : '';
         $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-        $password = trim($_POST['password']);
+        $password = isset($_POST['password']) ? trim($_POST['password']) : '';
 
         if(isset($_POST['signUp'])){
 
@@ -110,6 +110,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style/management/manageUser.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <title>Manage - User</title>
 </head>
 <body>
@@ -146,7 +147,7 @@
                 <!-- container -->
                 <div class="profile-container" id="profile-container">
 
-                    <button class="add-user" id="add-user">Add User</button>
+                    <button class="open-add-user" id="add-user">Add User</button>
 
                     <!-- for viewing admins -->
                     <div class="container-table">
@@ -175,13 +176,17 @@
                         </table>
                     </div>
                 </div>
+        </div>
 
-                <!-- Delete Modal -->
-                <div class="delete-user modal" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+
+            <!-- WRITE after getting home-->
+
+            <!-- Delete Modal -->
+            <div class="delete-user modal" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="modal-title">Confirm Delete</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <a href="#" class="close"><i class="fa-solid fa-xmark"></i></a>
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -199,13 +204,11 @@
                 </div>
 
                 <!-- User Modal -->
-                <div class="add-user modal" id="user-modal">
+                <div class="user-modal" id="user-modal">
                     <div class="add-container">
                     <div class="modal-header">
-                                <h5 class="modal-title" id="modal-title">Confirm Delete</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                <h5 class="modal-title" id="modal-title">Add new User</h5>
+                                <a href="#" class="close"><i class="fa-solid fa-xmark"></i></a>
                             </div>
                         <label for="email">Email </label>
                         <input type="email" id="email" placeholder="Email" name="email">
@@ -216,10 +219,11 @@
                         <label for="password">Password</label>
                         <input type="password" id="password" name="password" autofill="off" placeholder="Enter Password">
 
-                        <button type="submit" name="signUp">Add User</button>
+                        <button type="submit" class="signUp"name="signUp">Add User</button>
                     </div>
                 </div>
-        </div>
+
+
         <script href="script/client/admin/delete.js"></script>
     </form>
 </body>

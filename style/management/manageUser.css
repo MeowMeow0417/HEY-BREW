@@ -149,7 +149,7 @@
   height: 100vh;
   width: auto;
 
-  .add-user{
+  .open-add-user{
     display: flex;
     flex-direction: column;
     align-items: right;
@@ -197,8 +197,29 @@
 }
 
 /* Modal */
-.modal {
+  .modal-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 
+  }
+
+  .close {
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    font-size: 1.5rem;
+    height: 10px;
+    width: 10px;
+    cursor: pointer;
+    color: var(--var-text-color);
+  }
+
+
+/* Delete Modal */
+.delete-user {
+  display: none;
   position: fixed;
   top: 50%;
   left: 50%;
@@ -208,11 +229,7 @@
   border-radius: 10px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
   z-index: 1000;
-}
 
-/* Delete Modal */
-.delete-user {
-  display: none;
   .modal-content {
     width: 300px;
 
@@ -233,40 +250,48 @@
 }
 
 /* user-container-modal */
-.add-user{
+.user-modal{
   display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
 
+  .add-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    background-color: white;
+    width: 400px;
+    height: auto;
+    margin: auto 0;
+    border-radius: 20px;
+    gap: 10px;
+    align-items: center;
+}
 
-    .add-container {
-        display: flex;
-        justify-content: space-between;
-        flex-direction: column;
-        background-color: white;
-        width: 400px;
-        height: auto;
-        margin: auto 0;
-        border-radius: 20px;
-        gap: 10px;
-        align-items: center;
-    }
+label{
+    margin-bottom: 0;
+}
 
-    label{
-        margin-bottom: 0;
-    }
+input{
+    width: 200px;
+}
 
-    input{
-        width: 200px;
-    }
-
-    button{
-        width: 150px;
-        height: 50px;
-        padding: 10px 20px;
-        background-color: var(--var-button);
-        color: white;
-        border: none;
-        border-radius: 10px;
-        font-size: 12px;
-    }
+.signUp{
+    width: 150px;
+    height: 50px;
+    padding: 10px 20px;
+    background-color: var(--var-button);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 12px;
+}
 
 }
