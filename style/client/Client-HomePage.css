@@ -26,11 +26,14 @@ nav {
     padding:auto;
     transition: background 0.3s ease;
 }
+.auth-buttons{
+    padding: 1rem;
+}
 
 .nav-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -80,6 +83,8 @@ nav {
 }
 
 .nav-sign-in {
+    background-color: transparent;
+    border: none;  /* Add this line to remove the outline */
     margin-left: 5rem;
 }
 
@@ -94,6 +99,7 @@ nav {
     background: #4D2C20;
     color: white;
     border-radius: 20px;
+    border: none;
 }
 .nav-sign-up:hover{
     background: #773E29;
@@ -192,7 +198,7 @@ nav {
     font-family: 'Oleo Script', cursive;
     font-size: 4rem;
     margin-bottom: -1rem;
-    margin-top: -19rem;
+    margin-top: -10rem;
     text-align: center;
 }
 
@@ -200,7 +206,8 @@ nav {
     font-size: 1.2rem;
     /* margin: 1rem 1rem;  */
     text-align: center;
-    margin-top: 1rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 /* Order now button styles */
@@ -216,10 +223,13 @@ nav {
     margin-top: 0.5rem;
 
 }
+
 .order-now-container{
     display: grid;
     place-items: center;
 }
+
+
 .order-now:hover {
     background: #773E29;
 }
@@ -235,15 +245,22 @@ nav {
     position: relative;
     max-width: 1200px;
     margin: 0 auto;
-    padding:1rem 2rem;
+    padding: 1rem 2rem;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 1rem;
-    z-index: 2;
+    z-index: 2; /* Lower z-index so it stays behind blog section */
     margin-top: -420px;
     padding-top: 1rem;
     margin-bottom: 1rem;
-
+    transform: translateY(275px); /* Increase translation to hide more of the container */
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth easing */
+    will-change: transform; /* Optimize animation performance */
 }
+
+.products-container:hover {
+    transform: translateY(0); /* Fully reveal on hover */
+}
+
 
 .products-header {
     display: flex;
@@ -368,6 +385,8 @@ nav {
     align-items: center;
     padding: 2rem;
     overflow: hidden; /* Hide any overflow from the pseudo-element */
+    position: relative;
+    z-index: 3;
 }
 
 .blog::before {
@@ -838,7 +857,7 @@ h3 {
         left: 0;
         right: 0;
         background: rgba(77, 44, 32, 0.95);
-        padding: 1rem 1.5rem;
+        padding: 1rem;
         border-radius: 0.5rem;
         z-index: 1000;
         width: 100%;
@@ -870,14 +889,21 @@ h3 {
     }
 
     .hero h1 {
-        font-size: 2.5rem;
+        font-size: 2rem;
         text-align: center;
     }
 
-    .products {
-        padding-top: 25rem;
+    .hero p{
+        font-size: 1.5rem;
     }
 
+    .products {
+        padding-top: auto;
+    }
+    .products-container{
+        min-height: auto;
+        padding-bottom: 3.5rem;
+    }
     .products h2 {
         margin-left: -1rem;
     }

@@ -99,7 +99,7 @@ if (isset($_POST['orderNow'])) {
 
             <div class="auth-buttons">
 
-                <?php if (isset($_SESSION['username'])): ?>
+                <!-- <?php if (isset($_SESSION['username'])): ?>
                         <a href="Client-Profile.php">
                             <div class="profile-card" id="profile-card" name="profile-card">
                                 <img src="style/images/products/auth.jpg" alt="Admin Profile">
@@ -107,15 +107,15 @@ if (isset($_POST['orderNow'])) {
                                     <h4><?php echo htmlspecialchars($username); ?></h4>
                                 </div>
                             </div>
-                        </a>
+                        </a> -->
 
 
                         <!-- <button name="profile-card">profile</button> -->
 
-                <!-- <?php else: ?>
-                    <button type="submit" name="signIn" class="nav-sign-in">Sign In</button>
-                    <button type="submit" name="signUp" class="nav-sign-up">Sign Up</button>
-                <?php endif; ?> -->
+                <?php else: ?>
+                <a href="signUp-In.html" class="nav-sign-in" data-mobile-href="signUp-In.html">Sign In</a>
+                <a href="signUp-In.html" class="nav-sign-up" data-mobile-href="signUp-In.html">Sign Up</a>
+                <?php endif; ?>
             </div>
         </div>
         <button class="mobile-menu-btn">
@@ -132,9 +132,8 @@ if (isset($_POST['orderNow'])) {
         <h1>Coffee & friends make the perfect blend</h1>
         <p>A perfect place to hangout and catch up!</p>
         <div class="order-now-container">
-
-        <button class="order-now" name="orderNow">Order Now</button>
-    </div>
+            <button class="order-now" name="orderNow">Order Now</button>
+        </div>
 </header>
 
 <!-- Products Section -->
