@@ -27,7 +27,7 @@
 
         // Query to fetch product details (excluding prices)
         $query = "SELECT
-                    p.id,
+                    p.product_id,
                     p.image_path,
                     p.product_name,
                     p.prodDescription,
@@ -36,15 +36,15 @@
                     p.add_ons
                 FROM
                     products p
-                ORDER BY p.id";
+                ORDER BY p.product_id";
 
         $result = mysqli_query($conn, $query);
 
         if ($result) {
             while ($row = mysqli_fetch_assoc($result)) {
-                $id = $row['id'];
+                $id = $row['product_id'];
                 $products[$id] = [
-                    'id' => $row['id'],
+                    'id' => $row['product_id'],
                     'image_path' => $row['image_path'],
                     'product_name' => $row['product_name'],
                     'prodDescription' => $row['prodDescription'],

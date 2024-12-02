@@ -67,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to populate and show the modal with product details
     function showModal(card) {
+        const productId = card.getAttribute('data-id');
         const productName = card.getAttribute('data-name');
         const productImage = card.getAttribute('data-image');
         const productDescription = card.getAttribute('data-description');
@@ -75,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const productPrices = JSON.parse(card.getAttribute('data-prices'));
 
         // Populate modal content
+        modal.dataset.id = productId;
         modalImage.src = productImage || '';
         modalImage.alt = productName || 'Product Image';
         modalName.textContent = productName || 'Unknown Product';
@@ -135,6 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+
 // ADD TO CART
 document.addEventListener("DOMContentLoaded", () => {
     const productOrder = document.querySelector("#product-order"); // Target the Place Order section
@@ -143,52 +146,39 @@ document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("options-modal"); // Modal
     let totalPrice = 0; // Initialize total price
 
-    // Get the client ID (assuming it's set as a global variable or injected in the script)
-    const clientId = document.getElementById("product-order").dataset.clientId;
 
     // Load saved products from localStorage
     loadSavedProducts();
 
     console.log('Add to cart script. up and running');
 
-
     // Add to Cart Button Click Handler
     addToCartButton.addEventListener("click", () => {
    // Retrieve product details from modal
+   const productId = modal.dataset.id;
    const modalImage = modal.querySelector(".product-grid img").src;
    const modalName = modal.querySelector(".product-grid h4").textContent.trim();
-
-
    // Query the size, type, and add-ons fields from the modal
    const sizeElement = modal.querySelector("select[name='size_price']");
-
    const modalPrice = sizeElement.selectedOptions.length > 0
        ? parseFloat(sizeElement.selectedOptions[0].getAttribute("data-price")) || 0
        : 0;
-
-   const selectedSize = sizeElement?.value || "Nan";
-
+   const selectedSize = sizeElement?.value || "N/a";
    const typeElement = modal.querySelector("select[name='type']");
-   const selectedType = typeElement?.value || "Nan";
-
+   const selectedType = typeElement?.value || "N/a";
    const addOnsElement = modal.querySelector("select[name='add_on']");
-   const selectedAddOns = addOnsElement?.value || "Nan";
-
-   console.log('Selected Price', modalPrice); // Debugging: Check if price is retrieved correctly
-
-   // Create a unique identifier for the product based on its options
-   const productIdentifier = `${modalName}-${selectedSize}-${selectedType}-${selectedAddOns}`;
+   const selectedAddOns = addOnsElement?.value || "N/a";
 
    // Create product object
    const product = {
-       id: productIdentifier,
+       id: productId,
        name: modalName,
        image: modalImage,
-       price: modalPrice, // Make sure this is the correct price
        size: selectedSize,
        type: selectedType,
        addOns: selectedAddOns,
-       quantity: 1
+       quantity: 1,
+       price: modalPrice
     };
 
         // Check if the product already exists in the cart
@@ -222,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
                 <div class="price-con">
                      <p>${product.size}</p>
-                    <span class="size & price">₱<span id="total-price">${(product.price * product.quantity).toFixed(2)}</span></span>
+                    <span class="size & price">₱<span class="total-price" id="total-price">${(product.price * product.quantity).toFixed(2)}</span></span>
                 </div>
                 <div class="product-function">
                     <a href="#" class="remove-prod"><i class="fa-solid fa-trash"></i></a>
@@ -347,7 +337,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
                 <div class="price-con">
                     <p>${product.size}</p>
-                    <span class="size & price">₱<span id="total-price">${(product.price * product.quantity).toFixed(2)}</span></span>
+                    <span class="size & price">₱<span class="total=price" id="total-price">${(product.price * product.quantity).toFixed(2)}</span></span>
                 </div>
                 <div class="product-function">
                     <a href="#" class="remove-prod"><i class="fa-solid fa-trash"></i></a>
@@ -367,24 +357,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+
 //Pushing to the database
 document.getElementById("btn-order").addEventListener("click", () => {
     const productOrder = document.querySelectorAll("#product-order .product-row");
     const clientId = document.getElementById("product-order").dataset.clientId;
     const orderData = [];
 
+    // Check for Client ID
     if (!clientId) {
         alert("Client ID is missing. Please refresh the page and try again.");
         return;
     }
 
+    // Check for Empty Cart
     if (productOrder.length === 0) {
         alert("Your cart is empty. Please add items to your cart before checking out.");
         return;
     }
 
-    let hasErrors = false;
-
+    // Build Order Data
     productOrder.forEach(row => {
         const id = row.getAttribute("data-id");
         const name = row.querySelector("h4").textContent;
@@ -393,7 +385,7 @@ document.getElementById("btn-order").addEventListener("click", () => {
         const addOns = row.querySelector(".product-info p:nth-child(3)").textContent;
         const quantity = parseInt(row.querySelector(".stepper-value").textContent);
         const totalPrice = parseFloat(row.querySelector("#total-price").textContent);
-        const productId = id.split("-")[0]; // Assuming product_id is part of the data-id
+        const productId = id.split("-")[0];
 
         orderData.push({
             product_id: productId,
@@ -406,44 +398,30 @@ document.getElementById("btn-order").addEventListener("click", () => {
         });
     });
 
+    // Clear Cart Function
     function clearCart() {
-        const productOrder = document.querySelector("#product-order"); // The cart container
-        const totalPriceElement = document.getElementById("total-price"); // Total price display element
-
-        // Remove all product rows
-        productOrder.innerHTML = "";
-
-        // Reset total price
-        totalPrice = 0;
-        totalPriceElement.textContent = "₱0.00";
-
-        // Clear localStorage
+        document.querySelector("#product-order").innerHTML = "";
+        document.getElementById("total-price").textContent = "₱0.00";
         localStorage.removeItem("products");
     }
 
+    // Submit Order Using Axios
+    axios.post("http://localhost/HEY-BREW/php/submit_order.php", {
+        client_id: clientId,
+        order_items: orderData
+    })
+    .then(response => {
+        clearCart();
+        console.log(response.data)
+    })
+    .catch(error => {
+        console.error(error)
+        alert("An error occurred while placing your order. Please try again later.");
+    });
 
-    // Send data to PHP using fetch
-    fetch("php/submit_order.php", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            client_id: clientId,
-            order_items: orderData
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert("Order successfully placed!");
-            clearCart();
-        } else {
-            alert("Failed to place order: " + data.message);
-        }
-    })
-    .catch(error => console.error("Error:", error));
 });
+
+
 
 
 

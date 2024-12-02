@@ -120,8 +120,6 @@
                     <a href="?category=All" >All Items</a>
                 </div>
 
-
-
                 <div class="category-box categories" data-category="espresso">
                     <img class="img-cat" src="" alt="product">
                     <a href="?category=espresso" >Espresso</a>
@@ -198,13 +196,13 @@
 
 
                     </div>
-                    <div class="product-order" id="product-order" data-client-id="<?php echo htmlspecialchars($client_id); ?>">
+                    <div class="product-order" id="product-order"  data-id="" data-client-id="<?php echo htmlspecialchars($client_id); ?>">
                     <!-- Poppulated Dynamically using JS-->
 
                     </div>
 
                     <div class="fixed-footer">
-                    <p class="total-Price">Total: <span id="total-price"></span></p>
+                    <p class="total-Price">Total: <span class="total-price" id="total-price"></span></p>
                     <button class="btn-order" id="btn-order" name="btn-order">Place Order</button>
                     </div>
                 </div>
@@ -213,7 +211,7 @@
     </form>
 
 <!-- Options Modal -->
-<div class="options-modal" id="options-modal" data-client-id="<?php echo htmlspecialchars($client_id); ?>">
+<div class="options-modal" id="options-modal" data-client-id="<?php echo htmlspecialchars($client_id); ?>" data-id="<?php echo htmlspecialchars($product['details']['product_id'])?>">
     <div class="container-grid" id="container-grid">
         <div class="product-grid" id="product-grid">
             <img src="<?php echo htmlspecialchars($product['details']['image_path']); ?>" alt="Product Image">
@@ -310,5 +308,6 @@
     </div>
 
     <script src="script/client/Client-Ordering.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 </html>

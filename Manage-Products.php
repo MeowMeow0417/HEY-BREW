@@ -33,7 +33,7 @@
 
    // Query to fetch products with their prices
    $query = "SELECT
-               p.id,
+               p.product_id,
                p.image_path,
                p.product_name,
                p.category,
@@ -44,15 +44,15 @@
            FROM
                products p
            JOIN
-               product_prices pp ON p.id = pp.product_id
-           ORDER BY p.id, FIELD(pp.size, 'small', 'medium', 'large')";
+               product_prices pp ON p.product_id = pp.product_id
+           ORDER BY p.product_id, FIELD(pp.size, 'small', 'medium', 'large')";
 
    $result = mysqli_query($conn, $query);
 
    if ($result) {
        while ($row = mysqli_fetch_assoc($result)) {
-           $products[$row['id']]['details'] = $row; // Store product details
-           $products[$row['id']]['prices'][] = $row; // Store prices by size
+           $products[$row['product_id']]['details'] = $row; // Store product details
+           $products[$row['product_id']]['prices'][] = $row; // Store prices by size
        }
    } else {
        echo "Error: " . mysqli_error($conn);
@@ -171,8 +171,8 @@
 
                                             <!-- Type Dropdown -->
                                             <div class="detail">
-                                                <label for="type_<?php echo $product['details']['id']; ?>">Type</label>
-                                                <select id="type_<?php echo $product['details']['id']; ?>" name="type">
+                                                <label for="type_<?php echo $product['details']['product_id']; ?>">Type</label>
+                                                <select id="type_<?php echo $product['details']['product_id']; ?>" name="type">
                                                     <?php $types = explode(',', $product['details']['type']);
                                                     foreach ($types as $type) {
                                                         echo "<option value='" . htmlspecialchars(trim($type)) . "'>" . htmlspecialchars(trim($type)) . "</option>";
@@ -182,8 +182,8 @@
 
                                             <!-- Add-Ons Dropdown -->
                                             <div class="detail">
-                                                <label for="addOn_<?php echo $product['details']['id']; ?>">Add Ons</label>
-                                                <select id="addOn_<?php echo $product['details']['id']; ?>" name="add_on">
+                                                <label for="addOn_<?php echo $product['details']['product_id']; ?>">Add Ons</label>
+                                                <select id="addOn_<?php echo $product['details']['product_id']; ?>" name="add_on">
                                                     <option value="">None</option>
                                                     <?php $addOns = explode(',', $product['details']['add_ons']);
                                                     foreach ($addOns as $addOn) {
@@ -194,8 +194,8 @@
 
                                             <!-- Size & Price Dropdown -->
                                             <div class="detail">
-                                                <label for="size_<?php echo $product['details']['id']; ?>">Size & Price</label>
-                                                <select id="size_<?php echo $product['details']['id']; ?>" name="size_price">
+                                                <label for="size_<?php echo $product['details']['product_id']; ?>">Size & Price</label>
+                                                <select id="size_<?php echo $product['details']['product_id']; ?>" name="size_price">
                                                     <?php foreach ($product['prices'] as $priceInfo) {
                                                         echo "<option value='" . htmlspecialchars($priceInfo['size']) . "'>" .
                                                             htmlspecialchars(ucfirst($priceInfo['size'])) .
