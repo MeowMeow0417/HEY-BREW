@@ -73,7 +73,7 @@ button {
     margin: 1.5rem 0;
     padding: 1rem; 
     width: 10rem;
-    background-color: var(--var-button); 
+    background-color: #8B4513; 
     color: var(--var-text-color);
     border: none;
     border-radius: 0.4rem;
@@ -85,6 +85,6 @@ button {
 
 /* Hover Effect for Buttons */
 button:hover {
-    background-color: #da8230; 
+    background-color: #633311; 
     transform: scale(1.05); 
 }
