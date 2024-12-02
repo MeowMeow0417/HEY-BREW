@@ -13,6 +13,7 @@
     --var-main-fon: 'Oleo Script-regular' , sans-serif; 
 }
 
+
 /* Alert prompt */
 .alert {
     width: 20rem;
@@ -30,6 +31,8 @@
     left: 50%;
     z-index: 1000;
 }
+
+
 
 .overlay{
     position: fixed;

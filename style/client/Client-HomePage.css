@@ -23,7 +23,7 @@ nav {
     position: fixed;
     width: 100%;
     z-index: 1000;
-    padding: 1rem 0;
+    padding:auto;
     transition: background 0.3s ease;
 }
 
@@ -35,6 +35,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     margin-left: 20rem;
+    
 }
 
 /* Logo styles */
@@ -60,7 +61,7 @@ nav {
     color: white;
     text-decoration: none;
     transition: opacity 0.3s;
-    padding: 0.5rem 1rem;
+    padding: 0.5rem 1.5rem;
 }
 
 .nav-links a:hover {
@@ -101,35 +102,38 @@ nav {
 
 /* Profile Card Styles */
 .profile-card {
-    background-color: var(--var-button);
+    background-color:#773E29 ;
     display: flex;
     align-items: center;
-    border-radius: 12px;
-    border: 1px solid var(--var-tag-border);
+    border-radius: 20px;
     color: white;
-    width: 150px;
+    width: auto;
     text-align: center;
-    margin: 5px;
+    margin: 1px;
     height: auto;
     font-size: 10px;
     transition: transform 0.2s ease;
+    padding: 5px;
+    margin-left: 5rem;
+}
 
     img {
       width: 40px;
       height: 40px;
-      border-radius: 10px;
+      border-radius: 20px;
       object-fit: cover;
       margin: 0;
+      margin-right: 1rem;
     }
 
     h4{
       font-weight: 600;
       margin-left: 16px;
     }
-}
+
 
 .profile-card:hover {
-    transform: scale(1.05);
+    transform: scale(1.25);
 
 }
 
@@ -260,18 +264,15 @@ nav {
 
 /* Search bar styles */
 .search-bar {
-    width: 300px;
-}
-
-.search-bar {
-    width: 100%;
+    width: auto;
     padding: 10px 20px;
     border: none;
-    border-radius: 4px;
-    background: rgba(77, 44, 32, 0.6);
+    border-radius: 20px;
+    background: rgba(77, 44, 32, 0.4);
     color: white;
     font-family: 'Poppins', sans-serif;
     transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
 }
 
 .search-bar::placeholder {
@@ -280,7 +281,8 @@ nav {
 
 .search-bar:focus {
     outline: none;
-    background: rgba(77, 44, 32, 0.8);
+    background: rgba(77, 44, 32, 0.6);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Navigation buttons styles */

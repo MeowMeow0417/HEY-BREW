@@ -12,6 +12,8 @@
     --var-tag-border: #542d12;
     --var-sub-font: 'Poppins', sans-serif;
     --var-main-font: "Oleo Script", serif;
+    --var-main-font: 'Arial', sans-serif;
+   --var-sub-font: 'Helvetica', sans-serif;
 }
 
 html, body{
@@ -21,7 +23,60 @@ html, body{
   background-color: var(--var-back-color);
   height: 100vh;
   overflow: hidden;
+  font-family: var(--var-main-font);
 
+}
+
+.top-bar {
+  max-width: 100%; /* Makes it span the full width */
+  background-color: #8B4513; /* Background color */
+  padding: 10px 20px; /* Add some padding for spacing */
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Space between items */
+  align-items: center; /* Center items vertically */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Optional shadow effect */
+  gap: 20rem;
+}
+
+.left-bar, .middle-bar, .right-bar {
+  display: flex;
+  align-items: center; /* Centers items vertically within each bar */
+}
+
+/* Optional: Adjust the width of each bar if needed */
+.left-bar, .middle-bar, .right-bar {
+  flex: 1; /* Make each bar take equal space */
+}
+
+
+.middle-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.middle-bar .search-bar {
+  width: 320px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 12px;
+  background: rgba(77, 44, 32, 0.4);
+  color: white;
+  font-family: var(--var-sub-font);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+  margin-bottom: 1rem;
+}
+
+.middle-bar .search-bar::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.middle-bar .search-bar:focus {
+  outline: none;
+  background: rgba(77, 44, 32, 0.6);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 /* Grid Positioning */
@@ -43,6 +98,7 @@ html, body{
   .category-row{
     grid-column: 1;
     align-self: start;
+    gap: 10px;
   }
 
   .container {
@@ -102,7 +158,7 @@ html, body{
     height: 35px;
     align-items: center;
     margin-right: 50px;
-
+    padding: auto;
   }
 }
 
@@ -128,6 +184,8 @@ html, body{
     margin: 5px;
     height: auto;
     font-size: 10px;
+    padding: 10px;
+}
 
     img {
       width: 40px;
@@ -144,7 +202,7 @@ html, body{
     }
 
 
-  }
+  
 
   /* Product Category*/
 
@@ -166,7 +224,7 @@ html, body{
         height: 3rem;
         border-radius: 0 0 20px 0;
         font-size: 0.7rem;
-        padding: 5px;
+        padding: 10px;
         gap: 10px;
         background-color: white;
 
@@ -241,6 +299,10 @@ html, body{
     }
 
   }
+  
+  
+
+
 
   .product-card:hover {
     border: 2px solid var(--var-tag-border);
@@ -318,6 +380,7 @@ html, body{
     right: 0;
     transform: translateX(380px);
     transition: transform 0.4s ease, righ 0.5s ease;
+    
 
 
     .order-section{
@@ -327,11 +390,12 @@ html, body{
       align-items: center;
       flex-direction: column;
       width: 380px;
-      height: 47rem;
+      height: 38.5rem;
       overflow: hidden;
       margin: 15px 10px;
       background-color:var(--var-trans-rec);
       backdrop-filter: blur(10px);
+      margin-top: 6rem;
     }
 
     .header-order {

@@ -40,7 +40,7 @@ body {
     margin-bottom: 20px;
     background-color: #8b4513;
     border-radius: 20px;
-    padding: 1rem;
+    padding: 10px;
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
     
 }
@@ -48,9 +48,9 @@ body {
 
 
 .seller-avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    width: 50px;
+    height: 60px;
+    border-radius: 10px;
     margin-right: 10px;
 }
 

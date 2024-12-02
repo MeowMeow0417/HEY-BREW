@@ -29,6 +29,7 @@
     display: grid;
     grid-template-columns: 0.5fr 2fr;
     height: 100vh;
+    
   }
 
   /* Navigation Styles */
@@ -131,7 +132,7 @@
     }
     .logOut:hover {
       color: white;
-      background-color: rgb(105, 8, 8);
+      background-color: rgba(136, 4, 4, 0.811);
       transform: scale(1.05);
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
       transition: background-color 0.2s ease;
@@ -158,16 +159,17 @@
 
     ul {
       display: flex;
-      padding: 5px 0;
+      padding: 15px 0;
       margin: 0;
       list-style-type: none;
       position: relative; /* Necessary for positioning the indicator */
-      background-color: var(--var-back-color);
+      background-color:#542d12;
     border-radius: 40px;
+
     }
 
     a{
-      color: var(--var-text-color);
+      color: white;
       text-decoration: none;
       padding: 8px 30px;
       position: relative;
@@ -180,7 +182,7 @@
     bottom: 0;
     left: 0;
     height: 100%;
-    background-color: var(--var-select-col);
+    background-color: #A0522D;
     border-radius: 20px;
     z-index: 1; /* Place it behind the links */
     transition: all 0.3s ease; /* Smooth animation */
@@ -192,7 +194,7 @@
     color: white;
     border: none;
     border-radius: 20px;
-    padding: 5px 20px;
+    padding: 1rem;
     font-size: 12px;
     cursor: pointer;
     transition: opacity 0.2s ease;

@@ -20,7 +20,7 @@
 
         // Query to fetch products with their prices
         $query = "SELECT
-                    p.product_id,
+                    p.id,
                     p.image_path,
                     p.product_name,
                     p.prodDescription,
@@ -32,15 +32,15 @@
                 FROM
                     products p
                 JOIN
-                    product_prices pp ON p.product_id = pp.product_id
-                ORDER BY p.product_id, FIELD(pp.size, 'small', 'medium', 'large')";
+                    product_prices pp ON p.id = pp.product_id
+                ORDER BY p.id, FIELD(pp.size, 'small', 'medium', 'large')";
 
         $result = mysqli_query($conn, $query);
 
         if ($result) {
             while ($row = mysqli_fetch_assoc($result)) {
-                $products[$row['product_id']]['details'] = $row; // Store product details
-                $products[$row['product_id']]['prices'][] = $row; // Store prices by size
+                $products[$row['id']]['details'] = $row; // Store product details
+                $products[$row['id']]['prices'][] = $row; // Store prices by size
             }
     } else {
     echo "Error: " . mysqli_error($conn);
@@ -66,8 +66,8 @@
     });
 
 
-?>
 
+?>
 
 
 <!DOCTYPE html>
@@ -83,12 +83,13 @@
 <body>
     <form action="Client-Ordering.php" method="POST">
 
+
         <div class="main-grid">
         <!-- Grid setup for top-bar  -->
         <div class="top-bar" id="top-bar">
 
 
-             <div class="left-bar">
+           <div class="left-bar">
                 <button class="back" name="back" id="back"><i class="fa-solid fa-caret-left"></i></button>
                 <p><strong>HEY BREW</strong> Order</p>
              </div>
@@ -113,6 +114,8 @@
 
             </div>
         </div>
+
+    
         <!-- Category -->
             <div class="category-row" id="category-row">
                 <div class="category-box categories active" data-category="All">
@@ -155,7 +158,7 @@
                     <?php if ($filteredProducts): ?>
                         <?php foreach ($filteredProducts as $product): ?>
                             <div class="product-card"
-                            data-id="<?php echo htmlspecialchars($product['details']['product_id']); ?>"
+                            data-id="<?php echo htmlspecialchars($product['details']['id']); ?>"
                             data-name="<?php echo htmlspecialchars($product['details']['product_name']); ?>"
                             data-description="<?php echo htmlspecialchars($product['details']['prodDescription']); ?>"
                             data-image="<?php echo htmlspecialchars($product['details']['image_path']); ?>"
@@ -170,8 +173,8 @@
                                     <div class="detail-grid">
                                         <div class="product-details">
                                         <div class="detail">
-                                                <label for="size_<?php echo $product['details']['product_id']; ?>">Size & Price</label>
-                                                <select class="prod-modal" id="size_<?php echo $product['details']['product_id']; ?>" name="size_price">
+                                                <label for="size_<?php echo $product['details']['id']; ?>">Size & Price</label>
+                                                <select class="prod-modal" id="size_<?php echo $product['details']['id']; ?>" name="size_price">
                                                     <?php foreach ($product['prices'] as $priceInfo) {
                                                         echo "<option value='" . htmlspecialchars($priceInfo['size']) . "'>" .
                                                             htmlspecialchars(ucfirst($priceInfo['size'])) .
@@ -198,14 +201,14 @@
 
 
                     </div>
-                    <div class="product-order" id="product-order" data-client-id="<?php echo htmlspecialchars($client_id); ?>">
+                    <div class="product-order" id="product-order">
                     <!-- Poppulated Dynamically using JS-->
 
                     </div>
 
                     <div class="fixed-footer">
                     <p class="total-Price">Total: <span id="total-price"></span></p>
-                    <button class="btn-order" id="btn-order" name="btn-order">Place Order</button>
+                    <button class="btn-order" id="btn-place-order" name="btn-order">Place Order</button>
                     </div>
                 </div>
             </div>
@@ -213,7 +216,7 @@
     </form>
 
 <!-- Options Modal -->
-<div class="options-modal" id="options-modal" data-client-id="<?php echo htmlspecialchars($client_id); ?>">
+<div class="options-modal" id="options-modal">
     <div class="container-grid" id="container-grid">
         <div class="product-grid" id="product-grid">
             <img src="<?php echo htmlspecialchars($product['details']['image_path']); ?>" alt="Product Image">
@@ -226,8 +229,8 @@
         <div class="detail-grid">
             <!-- Type Dropdown -->
             <div class="detail-row">
-                <label for="type_<?php echo $product['details']['product_id']; ?>">Type</label>
-                <select class="select-modal" id="type_<?php echo $product['details']['product_id']; ?>" name="type">
+                <label for="type_<?php echo $product['details']['id']; ?>">Type</label>
+                <select class="select-modal" id="type_<?php echo $product['details']['id']; ?>" name="type">
                     <?php
                     $types = explode(',', $product['details']['type']);
                     foreach ($types as $type): ?>
@@ -240,8 +243,8 @@
 
             <!-- Add-Ons Dropdown -->
             <div class="detail-row">
-                <label for="addOn_<?php echo $product['details']['product_id']; ?>">Add-Ons</label>
-                <select class="select-modal" id="addOn_<?php echo $product['details']['product_id']; ?>" name="add_on">
+                <label for="addOn_<?php echo $product['details']['id']; ?>">Add-Ons</label>
+                <select class="select-modal" id="addOn_<?php echo $product['details']['id']; ?>" name="add_on">
                     <option value="">None</option>
                     <?php
                     $addOns = explode(',', $product['details']['add_ons']);
@@ -255,8 +258,8 @@
 
             <!-- Size & Price Dropdown -->
             <div class="detail-row">
-                <label for="size_<?php echo $product['details']['product_id']; ?>">Size & Price</label>
-                <select class="select-modal" id="size_<?php echo $product['details']['product_id']; ?>" name="size_price">
+                <label for="size_<?php echo $product['details']['id']; ?>">Size & Price</label>
+                <select class="select-modal" id="size_<?php echo $product['details']['id']; ?>" name="size_price">
                     <?php foreach ($product['prices'] as $priceInfo): ?>
                         <option value="<?php echo htmlspecialchars($priceInfo['size']); ?>"
                                 data-price="<?php echo htmlspecialchars($priceInfo['price']); ?>">
