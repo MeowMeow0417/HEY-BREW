@@ -1,7 +1,6 @@
 <?php
 include("php/config.php");
 include("php/connection.php");
-include("php/athenticate_admin.php");
 
 // Check if any admin already exists
 $adminExists = $conn->prepare('SELECT * FROM admin LIMIT 1');
@@ -23,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (isset($_POST['signUp'])) {
         // Check if the email already exists
-        $admin = $conn->prepare('SELECT * FROM admin WHERE email = ?');
+        $admin = $conn->prepare('SELECT * FROM admin WHERE admin_email = ?');
         $admin->bind_param('s', $email);
         $admin->execute();
         $result = $admin->get_result();
@@ -35,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
             // Insert new admin into the database
-            $admin = $conn->prepare("INSERT INTO admin (admin_username, email, password) VALUES (?, ?, ?)");
+            $admin = $conn->prepare("INSERT INTO admin (admin_username, admin_email, password) VALUES (?, ?, ?)");
 
             if ($admin === false) {
                 echo "Error preparing statement: " . $conn->error;
@@ -44,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 if ($admin->execute()) {
                     echo '<div class="success">Registration successful!</div>';
-                    header('Location: manageLogIn.php'); // Redirect to login page
+                    header('Location: Manage-LogIn.php'); // Redirect to login page
                     exit();
                 } else {
                     echo '<div class="error">Error: Could not complete registration. ' . $admin->error . '</div>';

@@ -1,45 +1,48 @@
-<div?php
+<?php
     include("php/config.php");
     include("php/connection.php");
-
-    //puts the user back to the login.page
-    if(!isset($_SESSION['admin_email'])){
-        header('Location: Manage-LogIn.php');
-        exit();
-     }
-
-    //for the admin side
-    $manage = $_SESSION['admin_username'];
-
-    if(isset($_POST['addProd'])){
-        header('Location: addProd.php');
-        exit();
-    }
+    include("php/athenticate_admin.php");
 
     if(isset($_POST['products'])){
+        error_log('Products button clicked.');
+
         header('Location: Manage-Products.php');
         exit();
     }
 
     if(isset($_POST['orders'])){
+        error_log('Products button clicked.');
+
         header('Location: Manage-Orders.php');
         exit();
     }
 
-    if(isset($_POST['manage'])){
-        header('Location: Manage-User.php');
-        exit();
-    }
-
     if(isset($_POST['logOut'])){
+        error_log('Products button clicked.');
+
         header('Location: Manage-LogIn.php');
         session_destroy();
         exit();
     }
 
 
-    // calls all admin accounts
-    $result = $conn -> query('SELECT * FROM admin');
+// Calls all admin accounts
+    $query = 'SELECT id, admin_username, admin_email FROM admin';
+
+    $result = mysqli_query($conn, $query);
+
+    $client_data = []; // Initialize an empty array to store admin data
+
+    if ($result) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            $client_data[] = $row;
+        }
+    } else {
+        echo'Error'. mysqli_error( $conn );
+    }
+
+
+
 
     //Create new user/admin
     if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -74,9 +77,9 @@
                     $admin->bind_param("sss", $username, $email, $hashedPassword);
 
                     if ($admin->execute()) {
-                       echo '<div class="success">Registration successful!</div>';
+                       echo '<div class="success">Registration successful! Do Refresh page</div>';
                     } else {
-                        echo '<div class="error">Error: Could not complete registration. ' . $admin->error . '</div>';
+                        echo '<div class="error">Error: Could not complete registration. Do Refresh page' . $admin->error . '</div>';
                     }
 
                     $admin->close();
@@ -94,9 +97,9 @@
         $stmt->bind_param('i', $delete_id);
 
         if ($stmt->execute()) {
-          //  echo '<div class="success">User deleted successfully!</div>';
+         // echo '<div class="success">User deleted successfully! Do Refresh page</div>';
         } else {
-          //  echo '<div class="error">Error: Unable to delete user.</div>';
+          echo '<div class="error">Error: Unable to delete user. Do Refresh page</div>';
         }
 
         $stmt->close();
@@ -114,7 +117,7 @@
     <title>Manage - User</title>
 </head>
 <body>
-    <form action="Manage-User.php" method="POST">
+
         <div class="main-container">
                 <!-- Side nav -->
                 <div class="side-nav" id="side_nav">
@@ -122,11 +125,12 @@
                     <div class="profile-card" id="profile-card">
                         <img src="images/src/auth.jpg" alt="Admin Profile">
                         <div class="profile-info">
-                            <h4><?php echo htmlspecialchars($manage); ?></h4>
+                            <h4><?php echo htmlspecialchars($manage_user); ?></h4>
                             <p>Seller</p>
                         </div>
                     </div>
                     <!-- navigation buttons -->
+                    <form action="Manage-User.php" method="POST">
                     <div class="button-col">
                         <button class="nav-button active" name="products" type="submit" >
                             <img src="style/images/icons/package.png" alt="Package Icon" width="24" height="24">
@@ -142,12 +146,13 @@
                         </button>
                         <button class="logOut" name="logOut" type="submit">Log Out</button>
                     </div>
+                    </form>
                 </div>
 
                 <!-- container -->
                 <div class="profile-container" id="profile-container">
 
-                    <button class="open-add-user" id="add-user">Add User</button>
+                    <button class="open-add-user" id="openUserModal">Add New Admin</button>
 
                     <!-- for viewing admins -->
                     <div class="container-table">
@@ -161,85 +166,67 @@
                                 <div class="table_email">Email</div>
                                 <div class="table_action">Action</div>
                             </div>
-                            <?php while($row = $result -> fetch_assoc());?>
-                                <div class="table-data" id="table-data">
-                                    <div class="data-id"><?php echo $row['id']; ?></div>
-                                    <div class="data-name"><?php echo $row['admin_username']?></div>
-                                    <div class="data-email"><?php echo $row['admin_email']?></div>
-                                    <div class="data-action">
-                                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id="<?php echo $row['id']; ?>">Delete</button>
-                                    </div>
+                    </div>
+
+
+                        <?php foreach ($client_data as $admin): ?>
+                            <div class="table-data" id="table-data">
+                            <div class="data-id"><?php echo $admin['id']; ?></div>
+                            <div class="data-name"><?php echo $admin['admin_username']; ?></div>
+                            <div class="data-email"><?php echo $admin['admin_email']; ?></div>
+                                <div class="data-action">
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id="<?php echo $admin['id']; ?>">Delete</button>
                                 </div>
-                            <!-- <?php endwhile; ?> -->
-
-
-
                         </div>
-
-                        <!-- <table class="table">
-                            <tbody>
-                                <?php while($row = $result->fetch_assoc()): ?>
-                                    <tr>
-                                        <td><?php echo $row['id']; ?></td>
-                                        <td><?php echo $row['admin_username']; ?></td>
-                                        <td><?php echo $row['admin_email']; ?></td>
-                                        <td>
-                                        </td>
-                                    </tr>
-                                <?php endwhile; ?>
-                            </tbody>
-                        </table>
-                                -->
+                        <?php endforeach; ?>
                     </div>
                 </div>
         </div>
 
 
-            <!-- WRITE after getting home-->
-
             <!-- Delete Modal -->
-            <!-- <div class="delete-user modal" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="delete-user modal" id="deleteModal" >
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="modal-title">Confirm Delete</h5>
-                                <a href="#" class="close"><i class="fa-solid fa-xmark"></i></a>
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                                <a href="#" class="close" id="closeDeleteModal"><i class="fa-solid fa-xmark"></i></a>
+
                             </div>
                             <div class="modal-body">
                                 Are you sure you want to delete this user?
                             </div>
+                            <form method="POST" id="deleteForm">
                             <div class="modal-footer">
-                                <form method="POST" id="deleteForm">
+
                                     <input type="hidden" name="delete_id" id="delete_id">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                     <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
                             </div>
+                            </form>
                         </div>
-                </div> -->
-
-                <!-- User Modal -->
+            </div>
+            <form action="Manage-User.php" method="POST">
+                <!-- Add NEW User Modal -->
                 <div class="user-modal" id="user-modal">
                     <div class="add-container">
                     <div class="modal-header">
-                                <h5 class="modal-title" id="modal-title">Add new User</h5>
-                                <a href="#" class="close"><i class="fa-solid fa-xmark"></i></a>
+                                <h5 class="modal-title" id="modal-title">Add new Admin</h5>
+                                <a href="#" class="close" id="closeUserModal"><i class="fa-solid fa-xmark"></i></a>
                             </div>
                         <label for="email">Email </label>
-                        <input type="email" id="email" placeholder="Email" name="email">
+                        <input type="email" id="email" placeholder="Email" autofill="off" name="email" required>
 
                         <label for="username">Username</label>
-                        <input type="text" id="username" name="username" autofill="off" placeholder="Enter Username">
+                        <input type="text" id="username" name="username" autofill="off" placeholder="Enter Username" required>
 
                         <label for="password">Password</label>
-                        <input type="password" id="password" name="password" autofill="off" placeholder="Enter Password">
+                        <input type="password" id="password" name="password" autofill="off" placeholder="Enter Password" required>
 
-                        <button type="submit" class="signUp"name="signUp">Add User</button>
+                        <button type="submit" class="signUp" name="signUp">Add User</button>
                     </div>
                 </div>
+            </form>
 
-    </form>
-    <script href="script/client/admin/delete.js"></script>
+    <script src="script/client/admin/Manage-User.js"></script>
 </body>
 </html>
