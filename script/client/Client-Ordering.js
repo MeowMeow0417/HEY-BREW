@@ -138,6 +138,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// GET PRODUCT NAME
+
 // ADD TO CART
 document.addEventListener("DOMContentLoaded", () => {
     const productOrder = document.querySelector("#product-order"); // Target the Place Order section

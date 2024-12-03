@@ -14,6 +14,29 @@
         exit();
     }
 
+    $receipts = [];
+    $query = "SELECT order_id, client_id, total_price, order_status, created_at FROM orders ";
+    $result = mysqli_query($conn, $query);
+
+    if ($result) {
+        $data = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $receipts[] = $row; // Append each row to the receipts array
+        }
+    } else {
+        echo "Error" . mysqli_error($conn);
+    }
+
+    // Filter receipts to show only those belonging to the logged-in user
+    $userReceipts = array_filter($receipts, function ($receipt) use ($client_id) {
+
+    // Use loose comparison (==) to account for type differences
+    return $receipt['client_id'] == $client_id;
+});
+
+
+
+
 ?>
 
 
@@ -60,68 +83,64 @@
             </div>
         </div>
 
-
+            <!-- Order History -->
             <div class="order-history">
-                <div class="order-header">
-                    <h2>Order History</h2>
-                    <button id="logOutBtn" name="logOutBtn" class="logOutBtn">Log Out</button>
+                <div class="order-column" id="order-column">
+                    <div class="order-header">
+                        <h2>Order History</h2>
+                        <button id="logOutBtn" name="logOutBtn" class="logOutBtn">Log Out</button>
+                    </div>
+                    <div class="headings">
+                        <div class="heading-1">Order Id</div>
+                        <div class="heading-2">Date and Time</div>
+                        <div class="heading-3">Total Price</div>
+                        <div class="heading-4">Status</div>
+                    </div>
                 </div>
-                <table class="Order-Table">
-                    <thead>
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Date</th>
-                            <th>Time</th>
-                            <th>No. of orders</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="orderTableBody">
-                        <!-- Order rows will be inserted here by JavaScript -->
-                    </tbody>
-                </table>
+
+                <div class="order-scroll">
+                        <!-- Dynamically added order-receipts-->
+                    <?php if (!empty($userReceipts)): ?>
+                        <?php foreach($userReceipts as $product):?>
+                            <div class="order-receipt" id="order-receipt">
+                                    <div class="Order-Id"><?php echo htmlspecialchars($product['order_id']) ?></div>
+                                    <div class="Date-time"><?php echo htmlspecialchars($product['created_at']) ?></div>
+                                    <div class="total-price">₱ <?php echo htmlspecialchars($product['total_price']) ?></div>
+                                    <div class="order_status"><?php echo htmlspecialchars($product['order_status']) ?></div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>No Receipts found for your Account</p>
+                    <?php endif; ?>
+                </div>
             </div>
 
             <!-- RECEIPT -->
-            <div class="receipt">
-                <h1>Receipt</h1>
+            <div class="receipt-modal" id="receipt-modal">
+            <h1>Receipt</h1>
                 <div class="order-info">
                     <div class="order-id">
                         <span>Order ID</span>
-                        <span class="id-number">696969</span>
+                        <span class="id-number"></span>
                     </div>
                     <div class="order-time">
                         <span>Order Time</span>
-                        <span>November 11, 2024 at 3:30 PM</span>
+                        <span></span>
                     </div>
                 </div>
-
                 <div class="product-column">
-
-                    <div class="product-section">
-                        <img src="style/images/bg/drinksBg.png" alt="Coffee cup" class="product-image">
-                            <div class="product-details">
-                            <p>Name: </p>
-                            <p>Size: </p>
-                            <p>Type: </p>
-                            </div>
-                            <div class="details">
-                            <p>AddOns: </p>
-                            <p>Qty: </p>
-                            <p>₱ </p>
-                            </div>
-                    </div>
-
+                     <!-- Dynamically populated by JS -->
+                </div>
                 <div class="total-section">
                     <span>Total:</span>
-                    <span class="total-amount">₱69.0</span>
+                    <span class="total-amount"></span>
                 </div>
             </div>
-
-
+        </div>
     </div>
     </form>
 
     <script src="script/client/Client-Profile.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 </html>
