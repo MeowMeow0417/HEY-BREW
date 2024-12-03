@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const orderReceipts = document.querySelectorAll(".order-receipt"); // Select all receipts
     const modal = document.getElementById('receipt-modal');
     const orderInfo = modal.querySelector('.product-column');
@@ -27,44 +27,46 @@ document.addEventListener("DOMContentLoaded", function() {
     const TotalAmount = modal.querySelector(".total-amount");
 
     // Add event listener for when an order receipt is clicked
-    orderReceipts.forEach(function(orderReceipt) {
-        orderReceipt.addEventListener('click', function() {
-            // Get the order ID from the clicked receipt (you can use a custom attribute or ID)
-            const orderId = this.querySelector('.Order-Id').textContent;
+    orderReceipts.forEach(function (orderReceipt) {
+        orderReceipt.addEventListener('click', function () {
+            // Get the order ID from the clicked receipt
+            const orderId = this.querySelector('.Order-Id').textContent.trim();
             const orderTime = this.querySelector(".Date-time").textContent.trim();
-            const totalPrice = this.querySelector('.total-price').textContent;
+            const totalPrice = this.querySelector('.total-price').textContent.trim();
 
             // Use Axios to fetch the order details
             axios.get('php/getOrderDetails.php?order_id=' + orderId)
-                .then(function(response) {
-                    // Handle the response (populate the receipt modal)
-                    const orderDetails = response.data;
+            .then(function(response) {
+                console.log('Response data:', response.data); // Debug log
+                const orderDetails = response.data;
 
+                    if (orderDetails.error) {
+                        console.error('Error:', orderDetails.error);
+                        return;
+                    }
+
+                    // Set modal information
                     OrderId.textContent = orderId || "N/A";
                     OrderTime.textContent = orderTime || "N/A";
                     TotalAmount.textContent = totalPrice;
-
-
-                    // Example: Populate the modal with order data
-
 
                     // Clear previous data
                     orderInfo.innerHTML = '';
 
                     // Add the new order details
-                    orderDetails.forEach(function(detail) {
+                    orderDetails.forEach(function (detail) {
                         const productDiv = document.createElement('div');
                         productDiv.classList.add('product-section');
 
-                        // Assuming the details array has fields like 'name', 'size', 'type', etc.
-                        productDiv.innerHTML =`
+                        // Populate product details
+                        productDiv.innerHTML = `
                             <div class="product-details">
                                 <p>${detail.product_name}</p>
                                 <p>Size: ${detail.size}</p>
                                 <p>Type: ${detail.type}</p>
                             </div>
                             <div class="details">
-                                <p>AddOns: ${detail.add_ons}</p>
+                                <p>AddOns: ${detail.add_ons || 'None'}</p>
                                 <p>Qty: ${detail.quantity}</p>
                                 <p>₱ ${detail.item_price}</p>
                             </div>

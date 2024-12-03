@@ -1,7 +1,7 @@
 function showOrderDetails(customerId) {
     const customerRow = document.querySelector(`tr[data-customer-id="${customerId}"]`);
     const detailsDiv = document.getElementById('orderDetails');
-    
+
     if (customerRow) {
         const customerName = customerRow.querySelector('.customer-info').textContent.trim();
         const customerAvatar = customerRow.querySelector('.customer-avatar').src;
@@ -27,11 +27,11 @@ function handleStatusChange(event) {
     if (event.target.classList.contains('status-select')) {
         const customerId = event.target.getAttribute('data-customer-id');
         const newStatus = event.target.value;
-        
+
         // Update the select element's appearance
         event.target.setAttribute('data-status', newStatus);
-        
-        // Update the order details
+
+        // Update the order detail
         showOrderDetails(customerId);
     }
 }
@@ -45,7 +45,7 @@ function initializeStatusSelects() {
 
 document.addEventListener('DOMContentLoaded', () => {
     const orderTable = document.getElementById('orderTable');
-    
+
     orderTable.addEventListener('click', (event) => {
         const customerRow = event.target.closest('.customer-row');
         if (customerRow) {

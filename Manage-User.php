@@ -1,4 +1,4 @@
-<?php
+<div?php
     include("php/config.php");
     include("php/connection.php");
 
@@ -152,15 +152,31 @@
                     <!-- for viewing admins -->
                     <div class="container-table">
                         <h2>User List</h2>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Username</th>
-                                    <th>Email</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
+
+
+                        <div class="table" id="table">
+                            <div class="table-header" id="table-header">
+                                <div class="table_id">ID</div>
+                                <div class="table_name">Username</div>
+                                <div class="table_email">Email</div>
+                                <div class="table_action">Action</div>
+                            </div>
+                            <?php while($row = $result -> fetch_assoc());?>
+                                <div class="table-data" id="table-data">
+                                    <div class="data-id"><?php echo $row['id']; ?></div>
+                                    <div class="data-name"><?php echo $row['admin_username']?></div>
+                                    <div class="data-email"><?php echo $row['admin_email']?></div>
+                                    <div class="data-action">
+                                        <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id="<?php echo $row['id']; ?>">Delete</button>
+                                    </div>
+                                </div>
+                            <!-- <?php endwhile; ?> -->
+
+
+
+                        </div>
+
+                        <!-- <table class="table">
                             <tbody>
                                 <?php while($row = $result->fetch_assoc()): ?>
                                     <tr>
@@ -168,12 +184,12 @@
                                         <td><?php echo $row['admin_username']; ?></td>
                                         <td><?php echo $row['admin_email']; ?></td>
                                         <td>
-                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" data-id="<?php echo $row['id']; ?>">Delete</button>
                                         </td>
                                     </tr>
                                 <?php endwhile; ?>
                             </tbody>
                         </table>
+                                -->
                     </div>
                 </div>
         </div>
@@ -182,7 +198,7 @@
             <!-- WRITE after getting home-->
 
             <!-- Delete Modal -->
-            <div class="delete-user modal" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <!-- <div class="delete-user modal" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="modal-title">Confirm Delete</h5>
@@ -201,7 +217,7 @@
                                 </form>
                             </div>
                         </div>
-                </div>
+                </div> -->
 
                 <!-- User Modal -->
                 <div class="user-modal" id="user-modal">

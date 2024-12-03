@@ -12,4 +12,5 @@ if (isset($_SESSION['client_id'])) {
     $username = $_SESSION['username'];
     $client_id = $_SESSION['client_id']; // Retrieve client_id from the session
 
+
 ?>

@@ -54,13 +54,15 @@ label {
     align-items: center;
 }
 
+/* right container */
+
 .right-container{
     width: 290px;
 }
 
 input, select {
     width: 290px;
-    height: 40px; 
+    height: 40px;
     border-radius: 5px;
     margin-bottom: 10px;
     border: 1px solid var(--var-stroke);

@@ -14,12 +14,11 @@
         exit();
     }
 
-    $receipts = [];
+
     $query = "SELECT order_id, client_id, total_price, order_status, created_at FROM orders ";
     $result = mysqli_query($conn, $query);
 
     if ($result) {
-        $data = [];
         while ($row = mysqli_fetch_assoc($result)) {
             $receipts[] = $row; // Append each row to the receipts array
         }

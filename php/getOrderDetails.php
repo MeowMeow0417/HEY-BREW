@@ -7,12 +7,21 @@ include("connection.php");
 if (isset($_GET['order_id'])) {
     $order_id = $_GET['order_id'];
 
-    // Query to fetch order details based on order_id
-    $sql = "SELECT * FROM order_items WHERE order_id = $order_id";
-    $result = $conn->query($sql);
+    // Query to fetch order details with product names
+    $sql = "SELECT
+            order_items.*,
+            products.product_name
+        FROM
+            order_items
+        INNER JOIN
+            products
+        ON
+            order_items.product_id = products.product_id
+        WHERE
+            order_items.order_id = $order_id
+    ";
 
-    // Create an array to store the order details
-    $orderDetails = [];
+    $result = $conn->query($sql);
 
     // If records are found, loop through them
     if ($result->num_rows > 0) {

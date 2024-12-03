@@ -9,6 +9,35 @@
         exit();
     }
 
+    $sql =' SELECT
+    c.username AS Customer,
+    p.product_name AS "Order",
+    o.created_at AS "Date",
+    o.order_status AS "Status"
+    FROM
+    orders o
+    JOIN
+    clients c ON o.client_id = c.client_id  -- Make sure "id" exists in clients table
+    JOIN
+    products p ON o.product_id = p.product_id  -- Make sure "product_id" exists in products table
+    ORDER BY
+    o.created_at DESC;
+    ';
+
+
+    $result = mysqli_query($conn, $sql);
+
+    if ($result){
+        $data = [];
+        while($row = mysqli_fetch_array($result)){
+            $client_orders[] = $row;
+        }
+    }else {
+        echo 'Error'. mysqli_error($conn);
+    }
+
+
+
 ?>
 
 
@@ -51,16 +80,18 @@
                             <tr>
                                 <th>Customer</th>
                                 <th>Order</th>
-                                <th>Payment</th>
+                                <th>Date</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
+
+
                             <tr class="customer-row" data-customer-id="1">
                                 <td>
                                     <div class="customer-info">
                                         <img src="style/images/products/auth.jpg" alt="Boss Seth" class="customer-avatar">
-                                        Boss Seth
+                                        <?php echo htmlspecialchars('Customer')?>
                                     </div>
                                 </td>
                                 <td>
@@ -76,51 +107,12 @@
                                     </select>
                                 </td>
                             </tr>
-                            <tr class="customer-row" data-customer-id="2">
-                                <td>
-                                    <div class="customer-info">
-                                        <img src="style/images/products/auth.jpg" alt="Boss Seth" class="customer-avatar">
-                                        Boss Seth
-                                    </div>
-                                </td>
-                                <td>
-                                    Adobong Medyas
-                                    <br>
-                                    <small>Rice Meal</small>
-                                </td>
-                                <td>Walk - In</td>
-                                <td>
-                                    <select class="status-select" data-customer-id="2">
-                                        <option value="Preparing">Preparing</option>
-                                        <option value="Completed" selected>Completed</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr class="customer-row" data-customer-id="3">
-                                <td>
-                                    <div class="customer-info">
-                                        <img src="style/images/products/auth.jpg" alt="Boss Seth" class="customer-avatar">
-                                        Boss Seth
-                                    </div>
-                                </td>
-                                <td>
-                                    Sinangag na Chocolate
-                                    <br>
-                                    <small>Rice Meal</small>
-                                </td>
-                                <td>Walk - In</td>
-                                <td>
-                                    <select class="status-select" data-customer-id="3">
-                                        <option value="Preparing" selected>Preparing</option>
-                                        <option value="Completed">Completed</option>
-                                    </select>
-                                </td>
-                            </tr>
+
                         </tbody>
                     </table>
                 </div>
                 <div class="detail-order">
-                    <h2>Detail Order</h2>
+                    <h2>Order Detail</h2>
                     <div id="orderDetails" class="detail-card">
                         <p>Select a customer to view order details</p>
                     </div>
