@@ -211,6 +211,7 @@ nav {
 }
 
 /* Order now button styles */
+/* Order now button styles */
 .order-now {
     background: #4D2C20;
     color: white;
@@ -233,6 +234,7 @@ nav {
 .order-now:hover {
     background: #773E29;
 }
+
 
 /* Products section styles */
 .products {
