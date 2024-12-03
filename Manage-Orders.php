@@ -9,33 +9,29 @@
         exit();
     }
 
-    $sql =' SELECT
-    c.username AS Customer,
-    p.product_name AS "Order",
-    o.created_at AS "Date",
-    o.order_status AS "Status"
+    $sql = "SELECT
+        c.client_id AS client_id,
+        c.username AS client_username,
+        o.order_id AS order_id,
+        o.order_status AS status,
+        o.created_at AS order_date_time
     FROM
-    orders o
+        orders o
     JOIN
-    clients c ON o.client_id = c.client_id  -- Make sure "id" exists in clients table
-    JOIN
-    products p ON o.product_id = p.product_id  -- Make sure "product_id" exists in products table
+        clients c ON o.client_id = c.client_id
     ORDER BY
-    o.created_at DESC;
-    ';
+        o.created_at DESC;";
 
+$result = mysqli_query($conn, $sql);
 
-    $result = mysqli_query($conn, $sql);
-
-    if ($result){
-        $data = [];
-        while($row = mysqli_fetch_array($result)){
-            $client_orders[] = $row;
-        }
-    }else {
-        echo 'Error'. mysqli_error($conn);
+if ($result) {
+    $client_orders = [];
+    while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+        $client_orders[] = $row; // No grouping needed since we're displaying distinct orders
     }
-
+} else {
+    echo 'Error: ' . mysqli_error($conn);
+}
 
 
 ?>
@@ -75,45 +71,53 @@
 
                 <div class="main-content">
                     <h1>Food Order</h1>
-                    <table id="orderTable">
+                    <table class="customer-table">
                         <thead>
                             <tr>
+                                <th>Order ID</th>
                                 <th>Customer</th>
-                                <th>Order</th>
-                                <th>Date</th>
+                                <th>Date & Time </th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-
-
-                            <tr class="customer-row" data-customer-id="1">
-                                <td>
-                                    <div class="customer-info">
-                                        <img src="style/images/products/auth.jpg" alt="Boss Seth" class="customer-avatar">
-                                        <?php echo htmlspecialchars('Customer')?>
-                                    </div>
-                                </td>
-                                <td>
-                                    Sinigang na Toothpaste
-                                    <br>
-                                    <small>Rice Meal</small>
-                                </td>
-                                <td>Walk - In</td>
-                                <td>
-                                    <select class="status-select" data-customer-id="1">
-                                        <option value="Preparing" selected>Preparing</option>
-                                        <option value="Completed">Completed</option>
-                                    </select>
-                                </td>
+                        <?php if (!empty($client_orders)): ?>
+                            <?php foreach ($client_orders as $order): ?>
+                                <tr class="order-row"
+                                    data-order-id="<?php echo htmlspecialchars($order['order_id']); ?>"
+                                    onclick="showOrderDetails('<?php echo htmlspecialchars($order['order_id']); ?>')">
+                                    <td><?php echo htmlspecialchars($order['order_id']); ?></td>
+                                    <td>
+                                        <div class="customer-info">
+                                            <img src="style/images/products/auth.jpg" alt="Avatar" class="customer-avatar">
+                                            <?php echo htmlspecialchars($order['client_username']); ?>
+                                        </div>
+                                    </td>
+                                    <td><?php echo htmlspecialchars($order['order_date_time']); ?></td>
+                                    <td>
+                                        <select class="status-select" data-order-id="<?php echo htmlspecialchars($order['order_id']); ?>">
+                                            <option value="pending" <?php echo $order['status'] === 'pending' ? 'selected' : ''; ?>>Pending</option>
+                                            <option value="completed" <?php echo $order['status'] === 'completed' ? 'selected' : ''; ?>>Completed</option>
+                                            <option value="cancelled" <?php echo $order['status'] === 'cancelled' ? 'selected' : ''; ?>>Cancelled</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="4">No orders found</td>
                             </tr>
-
+                        <?php endif; ?>
                         </tbody>
                     </table>
+
                 </div>
+
+
                 <div class="detail-order">
                     <h2>Order Detail</h2>
                     <div id="orderDetails" class="detail-card">
+                        <!-- Dynamically filled up by JS -->
                         <p>Select a customer to view order details</p>
                     </div>
                 </div>
@@ -123,5 +127,6 @@
 
 
     <script src="script/client/Admin-Order-Section.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 </html>

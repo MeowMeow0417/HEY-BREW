@@ -14,6 +14,7 @@
         exit();
     }
 
+    $client_id = $_SESSION['client_id'];
 
     $query = "SELECT order_id, client_id, total_price, order_status, created_at FROM orders ";
     $result = mysqli_query($conn, $query);
