@@ -54,13 +54,13 @@
         <div class="container">
 
                 <div class="sidebar">
-                    <div class="seller-info">
-                        <img src="style/images/products/auth.jpg" alt="Seller Avatar" class="seller-avatar">
-                        <div class="seller-name">
-                            <span>Boss D
-                            <br><a> Seller</a></span>
-                        </div>
+                <div class="profile-card" id="profile-card">
+                    <img src="images/src/auth.jpg" alt="Admin Profile">
+                    <div class="profile-info">
+                        <h4><?php echo htmlspecialchars($manage_user); ?></h4>
+                        <p>Seller</p>
                     </div>
+                </div>
                     <nav>
                         <button class="nav-button" name="products" type="submit">
                             <img src="style/images/icons/package.png" alt="Package Icon" width="24" height="24">
@@ -70,6 +70,11 @@
                             <img src="style/images/icons/clipboard.png" alt="Package Icon" width="24" height="24">
                             Orders
                         </button>
+                        <button class="nav-button" name="manage" type="submit">
+                        <img src="style/images/icons/exit.png" alt="Package Icon" width="24" height="24">
+                        Manage
+                    </button>
+                    <button class="logOut" name="logOut" type="submit">Log Out</button>
                     </nav>
                 </div>
 

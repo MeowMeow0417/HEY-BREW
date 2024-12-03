@@ -39,6 +39,9 @@ body {
     box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1); 
     text-align: center;
     align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 /* Heading Styles */
@@ -80,6 +83,7 @@ button {
     cursor: pointer;
     font-size: 1rem; 
     transition: background-color 0.3s ease, transform 0.2s ease; 
+    align-self: center;
 }
 
 /* Hover Effect for Buttons */
