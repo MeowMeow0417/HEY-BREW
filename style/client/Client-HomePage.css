@@ -830,13 +830,16 @@ h3 {
     }
 
     .profile-card{
-        margin-right: 7rem;
+        align-items: center;
+        text-align: center;
+        margin-right: 4rem;
     }
 
     .nav-container {
         margin-left: 0;
-        padding: 0 1rem;
+        padding: 1rem 1rem;
         padding-top: 1rem;
+        align-items: center;
 
     }
 
@@ -844,13 +847,13 @@ h3 {
         display: none;
         position: fixed;
         top: 4rem;
-        left: 0;
+        left: 20rem;
         right: 0;
         background: rgba(77, 44, 32, 0.95);
-        padding: 1rem 1.5rem;
-        border-radius: 0.5rem;
+        padding: 1rem 0.5rem;
+        border-radius: 20px;
         z-index: 1000;
-        width: 100%;
+        width: 50%;
         text-align: center;
         flex-direction: column;
         order: 3;
@@ -884,11 +887,11 @@ h3 {
     }
 
     .products {
-        padding-top: 25rem;
+        padding-top: 24rem;
     }
 
     .products h2 {
-        margin-left: -1rem;
+        margin-left: 1rem;
     }
 
     .product-card {
@@ -908,7 +911,7 @@ h3 {
         flex-direction: column;
         overflow-y: auto;
         overflow-x: hidden;
-        max-height: 70vh;
+        max-height: 43vh;
         padding-right: 1rem;
     }
 
