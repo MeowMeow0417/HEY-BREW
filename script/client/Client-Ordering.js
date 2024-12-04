@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+document.querySelector('.header-order').addEventListener('click', () => {
+    document.querySelector('.place-order').classList.toggle('active');
+  });
 
 // Category filter click event handler
 document.addEventListener('DOMContentLoaded', () => {
@@ -399,7 +402,6 @@ document.getElementById("btn-order").addEventListener("click", () => {
             total_price: totalPrice
         });
     });
-
     // Clear Cart Function
     function clearCart() {
         document.querySelector("#product-order").innerHTML = "";
@@ -494,3 +496,4 @@ document.addEventListener("DOMContentLoaded", () => {
         receiptModal.style.display = "none";
     });
 });*/
+

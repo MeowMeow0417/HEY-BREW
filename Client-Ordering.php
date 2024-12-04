@@ -88,19 +88,19 @@
         <div class="top-bar" id="top-bar">
 
 
-             <div class="left-bar">
+            <div class="left-bar">
                 <button class="back" name="back" id="back"><i class="fa-solid fa-caret-left"></i></button>
                 <p><strong>HEY BREW</strong> Order</p>
-             </div>
+            </div>
 
-             <div class="middle-bar">
+            <div class="middle-bar">
                 <!-- Search bar -->
                 <input name="search-bar" class="search-bar" id="searchInput" type="text" placeholder="Search">
             </div>
 
 
             <div class="right-bar">
-                 <!-- Profile -->
+                <!-- Profile -->
                  <a href="Client-Profile.php">
                     <div class="profile-card" id="profile-card" name="profile-card">
                         <img src="style/images/products/auth.jpg" alt="Admin Profile">
@@ -192,9 +192,7 @@
             <div class="place-order" id="place-order">
                 <div class="order-section" id="order-section">
                     <div class="header-order" id="header-order">
-                        <p class="cart" >Cart</p>
-
-
+                        <i class="fa-solid fa-chevron-up" id="cartArrow"></i>
                     </div>
                     <div class="product-order" id="product-order"  data-id="" data-client-id="<?php echo htmlspecialchars($client_id); ?>">
                     <!-- Poppulated Dynamically using JS-->

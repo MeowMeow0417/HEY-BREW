@@ -147,10 +147,10 @@
                 <div class="header-controls">
 
 
-                    <div class="search-bar">
+                    
                     <!-- Search bar -->
                         <input name="search-bar"  class="search-bar" id="searchInput" type="text" placeholder="Search..." >
-                    </div>
+                    
 
                     <div class="navigation-buttons">
                         <button class="prev-btn">&lt;</button>
@@ -203,7 +203,7 @@
     </section>
 
 
-    <section class="services" id="services">
+    <section class="services" id="service">
         <div class="logo-wrapper">
             <img src="style/images/service/heybrewlogo.jpg" alt="Hey Brew Hideout Cafe Logo" class="logo">
         </div>
@@ -290,14 +290,14 @@
     </form>
 
     <!-- Prompt Modal -->
-    <div class="prompt-modal" id="prompt-modal">
+    <!-- <div class="prompt-modal" id="prompt-modal">
         <div class="prompt-info">
             <h1>Welcome</h1>
             <p>Log-in or Sign up</p>
             <button type="submit" name="signIn" class="signIn">Sign In</button>
             <button type="submit" name="signUp" class="signUp">Sign Up</button>
         </div>
-    </div>
+    </div> -->
 
     <script src="script/client/Client-HomePage.js"></script>
 </body>
