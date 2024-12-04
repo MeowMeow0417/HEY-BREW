@@ -103,7 +103,7 @@
                 <!-- Profile -->
                  <a href="Client-Profile.php">
                     <div class="profile-card" id="profile-card" name="profile-card">
-                        <img src="style/images/products/auth.jpg" alt="Admin Profile">
+                        <img src="style/images/category-row/profile.jpg" alt="Admin Profile">
                         <div class="profile-info">
                             <h4><?php echo htmlspecialchars($username); ?></h4>
                         </div>
@@ -121,28 +121,28 @@
                 </div>
 
                 <div class="category-box categories" data-category="espresso">
-                    <img class="img-cat" src="" alt="product">
+                    <img class="img-cat" src="style/images/category-row/Espresso.jpg" alt="product">
                     <a href="?category=espresso" >Espresso</a>
                 </div>
 
                 <div class="category-box categories" data-category="blendedBev">
-                    <img class="img-cat" src="" alt="product">
+                    <img class="img-cat" src="style/images/category-row/Blended-Beverages.jpg" alt="product">
                     <a href="?category=blendedBev" >Blended Beverages</a>
                 </div>
                 <div class="category-box categories" data-category="tea">
-                    <img class="img-cat" src="" alt="product">
+                    <img class="img-cat" src="style/images/category-row/Tea.jpg" alt="product">
                     <a href="?category=tea" >Tea</a>
                 </div>
                 <div class="category-box categories"data-category="riceM">
-                    <img class="img-cat" src="" alt="product">
+                    <img class="img-cat" src="style/images/category-row/Rice-Meal.jpg" alt="product">
                     <a href="?category=riceM" >Rice Meals</a>
                 </div>
                 <div class="category-box categories" data-category="pasta">
-                    <img class="img-cat" src="" alt="product">
+                    <img class="img-cat" src="style/images/category-row/Pasta.jpg" alt="product">
                     <a href="?category=pasta" >Pasta</a>
                 </div>
                 <div class="category-box categories" data-category="snacks">
-                    <img class="img-cat" src="" alt="product">
+                    <img class="img-cat" src="style/images/category-row/Snacks.jpg" alt="product">
                     <a href="?category=snacks" >Snacks</a>
                 </div>
             </div>

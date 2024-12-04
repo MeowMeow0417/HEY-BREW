@@ -299,9 +299,9 @@ html, body{
     -webkit-appearance: none;
     -moz-appearance: none;
     border: 1px solid var(--var-tag-border);
-    padding: 4px 12px;
+    padding: 1px 2px;
     border-radius: 20px;
-    width: auto;
+    width: 110px;
     text-align: center;
     font-weight: 400;
   }
@@ -339,7 +339,7 @@ html, body{
     }
 
     .header-order {
-      width: 370px;
+      width: 420px;
       cursor: pointer;
       background-color: var(--var-button);
       color: white;
@@ -511,28 +511,34 @@ html, body{
       gap: 5px;
     }
 
+    .right-bar {
+      display: none;
+    }
+
     .middle-bar {
       flex: 1;
-      max-width: 150px;
-      margin-right: 4rem;
+      max-width: 200px;
+      margin-right: 10px;
 
       .search-bar {
         width: 100%;
         padding: 8px 10px;
         font-size: 14px;
+        margin-left:30px;
       }
     }
 
-    .right-bar {
+    .left-bar {
       display: flex;
-      margin-left: 5px;
-      padding-right: 5px;
+      align-items: center;
+      gap: 10px;
     }
 
     .profile-card {
       width: auto;
       padding: 10px 5px;
       gap: 5px;
+      display: none;
 
       img {
         width: 25px;
@@ -553,29 +559,76 @@ html, body{
     }
 
     .category-row {
-      display: flex;
-      flex-direction: row;
-      overflow-x: auto;
-      width: 100%;
-      margin-bottom: 20px;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden; /* Prevent vertical scrolling */
+        width: 95%;
+        margin-bottom: 10px;
+        padding: 20px;
+        background-color: var(--var-back-color); /* Match the background */
+        border-right: none;
+        gap: 10px;
+        height: auto; /* Allow content to determine height */
+        max-height: 80px; /* Limit maximum height */
+        
+        /* Smooth scrolling */
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .category-box {
+        min-width: 150px;
+        flex-shrink: 0;
+        margin-right: 10px;
+        height: 48px; /* Fixed height */
+    }
+
+    /* Ensure the content below has proper spacing */
+    .container {
+        padding-top: 10px;
     }
 
     .productLine {
-      display: grid;
-      gap: 2.5px;
-      overflow-y: auto;
-      margin-right: 3rem;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        padding: 10px 20px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin: 0 auto;
+        height: calc(100vh - 250px);
+        max-width: 100%;
+        box-sizing: border-box;
+        -webkit-overflow-scrolling: touch;
     }
 
     .product-card {
-      width: 90%;
-      box-sizing: border-box;
+        width: 100%;
+        margin: 0;
+        box-sizing: border-box;
+        height: 200px;
+        display: flex;
+        flex-direction: column;
+        padding: 8px;
+    }
+
+    /* Remove any potential right margin from the last column */
+    .product-card:nth-child(2n) {
+        margin-right: 0;
     }
 
     .container {
-      overflow-y: auto;
-      max-height: 100vh;
-      width: 100%;
+        padding: 10px;
+        width: 100%;
+        overflow-x: hidden;
+        box-sizing: border-box;
     }
 
     .place-order {
@@ -586,4 +639,22 @@ html, body{
         width: 100%;
       }
     }
+
+    .header-order {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #8B4513;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 10px 10px 0 0;
+  }
+  
+  .place-order {
+      transition: transform 0.3s ease;
+  }
+  
+  .place-order.collapsed {
+      transform: translateY(calc(100% - 40px));
+  }
   }
