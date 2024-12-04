@@ -22,6 +22,7 @@
     height: 100vh;
     color: var(--var-text-color);
     overflow: hidden;
+    position: relative;
   }
 
   /* Main Container */
@@ -354,4 +355,26 @@ input{
     cursor: pointer;
 }
 
+}
+
+/* floating echos */
+.success, .error {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(255, 255, 255, 0.95);
+  width: 200px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  text-align: center;
+  opacity: 1; /* Ensure it's fully visible initially */
+  transition: opacity 2s ease-in-out; /* Smooth fade-out transition */
+}
+
+/* Hidden state for fade-out */
+.hidden {
+  opacity: 0; /* Fully transparent */
 }

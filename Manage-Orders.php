@@ -95,7 +95,7 @@ if ($result) {
                                     </td>
                                     <td><?php echo htmlspecialchars($order['order_date_time']); ?></td>
                                     <td>
-                                        <select class="status-select" data-order-id="<?php echo htmlspecialchars($order['order_id']); ?>">
+                                        <select class="status-select" data-order-id="<?php echo htmlspecialchars($order['order_id']); ?>" data-status="<?php echo ucfirst($order['status']); ?>" onchange="updateOrderStatus(this)">
                                             <option value="pending" <?php echo $order['status'] === 'pending' ? 'selected' : ''; ?>>Pending</option>
                                             <option value="completed" <?php echo $order['status'] === 'completed' ? 'selected' : ''; ?>>Completed</option>
                                             <option value="cancelled" <?php echo $order['status'] === 'cancelled' ? 'selected' : ''; ?>>Cancelled</option>
@@ -128,5 +128,6 @@ if ($result) {
 
     <script src="script/client/Admin-Order-Section.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 </body>
 </html>

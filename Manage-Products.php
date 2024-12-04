@@ -225,8 +225,7 @@
             </div>
 
 
-            <!-- Delete Prompt -->
-
+           <!-- Delete Prompt -->
             <div class="overlay" onclick="hideDeletePrompt()">
                 <div class="delete-prompt">
                     <h6>Are you sure you want to delete this product?</h6>
@@ -238,6 +237,7 @@
                     </div>
                 </div>
             </div>
+
             <!-- Update Prompt -->
         <!--<div class="overlay" onclick="hideUpdatePrompt()"></div>
                 <div class="update-prompt">

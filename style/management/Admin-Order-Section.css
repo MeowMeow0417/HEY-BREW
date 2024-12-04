@@ -122,13 +122,14 @@ table {
 
 th, td {
     padding: 12px;
-    text-align: left;
+    text-align: center;
     border-bottom: 1px solid #e0e0e0;
 }
 
 th {
     background-color: #f9f9f9;
     font-weight: bold;
+    text-align: center;
 }
 
 tr:hover {
@@ -156,12 +157,16 @@ tr:hover {
 }
 
 .status-select {
+    -webkit-appearance: none;  /* For Safari and Chrome */
+    -moz-appearance: none;     /* For Firefox */
+    appearance: none;          /* Standard */
     width: 100%;
     padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #000000;
+    border-radius: 20px;
     background-color: #ffffff;
+    border: none;
     color: rgb(0, 0, 0);
+    text-align: center;
 }
 
 .status-select[data-status="Pending"] {
@@ -174,6 +179,11 @@ tr:hover {
     color: white;
 }
 
+.status-select[data-status="Cancelled"]{
+    background-color:red ;
+    color: white;
+}
+
 .detail-card {
     background-color: #ffffff;
     border-radius: 5px;
@@ -181,7 +191,19 @@ tr:hover {
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
+.order-item-card{
+    p{
+        margin: 2.5px;
+        font-size:12px;
+    }
+}
+
 .customer-details {
     display: flex;
     flex-direction: column;
+
+    p{
+        margin: 2.5px;
+    }
+
 }

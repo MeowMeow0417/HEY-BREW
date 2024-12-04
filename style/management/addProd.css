@@ -5,7 +5,7 @@
     --var-button: #8B4513;
     --var-stroke: #A0522D;
     --var-select-col: rgb(166, 173, 181);
-    --var-back-color: #d9d9d9;
+    --var-back-color: #f4f4f4;
     --var-text-color: #000000;
     --var-main-color: #4A4A4A;
     --var-tag-border: #542d12;
@@ -37,28 +37,42 @@ label {
 
 .main-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    width: 100%;
-    max-width: 800px;
-    background-color: var(--var-back-color);
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 0.8fr 0.2fr ;
+    width: 1200px;
+    height: 500px;
+    background-color: white;
     border-radius: 20px;
     padding: 2rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 }
 
-.left-container, .right-container {
+.left-container, .middle-container,  .right-container {
     display: flex;
     flex-direction: column;
-    padding: 1rem;
+    padding: 2rem;
     align-items: center;
+}
+
+.left-button {
+    grid-row: 2;
+    grid-column: 1;
+    display: flex;
+    align-items: center;
+}
+
+.right-button {
+    grid-row: 2;
+    grid-column: 3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
 }
 
 /* right container */
 
-.right-container{
-    width: 290px;
-}
+
 
 input, select {
     width: 290px;
@@ -69,7 +83,20 @@ input, select {
     color: var(--var-main-color);
     background-color: white;
     transition: all 0.3s ease;
+    padding: 5px 10px;
 }
+
+select {
+    width: 310px;
+    height: 50px;
+}
+
+.input-box{
+    display: flex;
+    flex-direction: column;
+}
+
+
 
 input:focus, select:focus {
     outline: none;
@@ -109,8 +136,7 @@ input:focus, select:focus {
 
 button {
     padding: 0.7rem 1.5rem;
-    width: 100%;
-    max-width: 200px;
+    width: 150px;
     background-color: var(--var-button);
     color: white;
     border: none;

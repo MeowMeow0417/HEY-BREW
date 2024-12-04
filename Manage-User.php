@@ -43,51 +43,47 @@
 
 
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Retrieve and sanitize form inputs
+    $username = isset($_POST['username']) ? trim($_POST['username']) : '';
+    $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+    $password = isset($_POST['password']) ? trim($_POST['password']) : '';
 
-    //Create new user/admin
-    if($_SERVER['REQUEST_METHOD'] == 'POST'){
-        // Retrieve and sanitization of form inputs
-        $username = isset($_POST['username']) ? trim($_POST['username']) : '';
-        $email = isset($_POST['email']) ? trim($_POST['email']) : '';
-        $password = isset($_POST['password']) ? trim($_POST['password']) : '';
+    if (isset($_POST['signUp'])) {
+        // Check if the email already exists
+        $admin = $conn->prepare('SELECT * FROM admin WHERE admin_email = ?');
+        $admin->bind_param('s', $email);
+        $admin->execute();
+        $result = $admin->get_result();
 
-        if(isset($_POST['signUp'])){
+        if ($result->num_rows > 0) {
+            // Email already exists
+            $_SESSION['message'] = '<div class="error">This email is already in use. Please choose another one.</div>';
+        } else {
+            // Hash the password for security
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            //error prevenetion when signingIn
-            $email = isset($_POST['email']) ? trim($_POST['email']) : '';
+            // Prepare and execute the insert statement
+            $admin = $conn->prepare("INSERT INTO admin (admin_username, admin_email, password) VALUES (?, ?, ?)");
 
-            //Checks if the email already exists
-            $admin = $conn -> prepare('SELECT * FROM admin WHERE admin_email = ?');
-            $admin -> bind_param('s', $email);
-            $admin -> execute();
-            $result = $admin -> get_result();
-
-            if ($result->num_rows > 0) {
-              //  echo '<div class="error">This email is already in use. Please choose another one.</div>';
+            if ($admin === false) {
+                $_SESSION['message'] = '<div class="error">Error preparing statement: ' . $conn->error . '</div>';
             } else {
-                // Hash the password for security
-                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $admin->bind_param("sss", $username, $email, $hashedPassword);
 
-                // Prepare and execute the insert statement
-                $admin = $conn->prepare("INSERT INTO admin (admin_username, admin_email, password) VALUES (?, ?, ?)");
-
-                if ($admin === false) {
-                    $message = "Error preparing statement: " . $conn->error; // Error preparing statement
+                if ($admin->execute()) {
+                    $_SESSION['message'] = '<div class="success">Registration successful!.</div>';
                 } else {
-                    $admin->bind_param("sss", $username, $email, $hashedPassword);
-
-                    if ($admin->execute()) {
-                       echo '<div class="success">Registration successful! Do Refresh page</div>';
-                    } else {
-                        echo '<div class="error">Error: Could not complete registration. Do Refresh page' . $admin->error . '</div>';
-                    }
-
-                    $admin->close();
+                    $_SESSION['message'] = '<div class="error">Error: Could not complete registration. ' . $admin->error . '</div>';
                 }
+
+                $admin->close();
             }
         }
-
     }
+}
+
+
 
     //For handling deletion
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
@@ -97,9 +93,9 @@
         $stmt->bind_param('i', $delete_id);
 
         if ($stmt->execute()) {
-         // echo '<div class="success">User deleted successfully! Do Refresh page</div>';
+         echo '<div class="success">User deleted successfully!</div>';
         } else {
-          echo '<div class="error">Error: Unable to delete user. Do Refresh page</div>';
+          echo '<div class="error">Error: Unable to delete user.</div>';
         }
 
         $stmt->close();
