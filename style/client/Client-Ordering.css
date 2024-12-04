@@ -215,12 +215,12 @@ html, body{
 /*Product Grid*/
 .productLine {
   display: grid;
-  grid-template-columns: repeat(9, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-template-rows: auto;
   gap: 1px;
   margin: 10px;
   overflow-y: auto; /* Allow vertical scrolling */
-  width: 98%; 
+  width: 98%;
 
 }
   /* PRODUCT CARD */
@@ -324,18 +324,22 @@ html, body{
     right: 0;
     transform: translateY(calc(100% - 50px));
     transition: transform 0.3s ease-in-out;
-    
+
     &.active {
       transform: translateY(0);
     }
 
     .order-section {
+      background-color: white;
       position: relative;
       margin: 0;
       border-radius: 15px 15px 0 0;
+      width: 370px;
+
     }
 
     .header-order {
+      width: 370px;
       cursor: pointer;
       background-color: var(--var-button);
       color: white;
@@ -354,9 +358,11 @@ html, body{
     .product-order {
       flex: 1;
       overflow-y: auto;
+      max-height: 30rem;
     }
 
     .product-row {
+      margin: 0 auto;
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
       align-items: center;
@@ -443,6 +449,7 @@ html, body{
     }
 
     .fixed-footer {
+      position: fixed;
       width: inherit;
       display: flex;
       justify-content: space-between;
@@ -508,7 +515,7 @@ html, body{
       flex: 1;
       max-width: 150px;
       margin-right: 4rem;
-      
+
       .search-bar {
         width: 100%;
         padding: 8px 10px;
@@ -526,7 +533,7 @@ html, body{
       width: auto;
       padding: 10px 5px;
       gap: 5px;
-      
+
       img {
         width: 25px;
         height: 25px;
@@ -555,9 +562,7 @@ html, body{
 
     .productLine {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0.5px;
-      width: 100%;
+      gap: 2.5px;
       overflow-y: auto;
       margin-right: 3rem;
     }
@@ -576,7 +581,7 @@ html, body{
     .place-order {
       width: 100%;
       margin-top: 0;
-      
+
       .order-section {
         width: 100%;
       }

@@ -423,76 +423,32 @@ document.getElementById("btn-order").addEventListener("click", () => {
         alert("An error occurred while placing your order. Please try again later.");
     });
 
+
+    //SHOWS A simple thank you note
+    const modal = document.getElementById('modal');
+
+    // Show the modal
+    modal.style.display = 'block';
+
+    // Hide the modal after 2 seconds
+    setTimeout(() => {
+        modal.style.display = 'none';
+    }, 2000);
+
+
+
 });
 
+// Check if modal visibility state exists in localStorage and show it
+window.onload = () => {
+    if (localStorage.getItem('modalVisible') === 'true') {
+        const modal = document.getElementById('modal');
+        modal.style.display = 'block';
 
-
-
-
-
-//Receipt Modal //DO THIS TOM
-/*
-document.addEventListener("DOMContentLoaded", () => {
-    const productOrder = document.querySelector("#product-order"); // Target the Place Order section
-    const btnOrder = document.getElementById("btn-place-order"); // Updated ID
-    const receiptModal = document.querySelector(".receipt-modal"); // Receipt Modal
-    const closeModal = receiptModal.querySelector(".close"); // Close button in Receipt Modal
-    const receiptProductColumn = document.getElementById("receipt-product-column"); // Product Column in Receipt Modal
-    const receiptTotalAmount = document.getElementById("receipt-total-amount"); // Total Amount in Receipt Modal
-    const totalPriceElement = document.getElementById("total-price"); // Total price display element
-
-    console.log('Script loaded and ready');
-
-    let totalPrice = 0; // Initialize total price
-
-    // Place Order Button Click Handler
-    btnOrder.addEventListener("click", () => {
-        if (productOrder.children.length === 0) {
-            alert("No items in the order!"); // Optional: Alert if no products to order
-            return;
-        }
-
-        // Clear previous receipt data
-        receiptProductColumn.innerHTML = "";
-
-        // Transfer products from the Place Order section to the Receipt Modal
-        const productRows = productOrder.querySelectorAll(".product-row");
-        productRows.forEach(row => {
-            const productClone = row.cloneNode(true);
-            receiptProductColumn.appendChild(productClone);
-        });
-
-        // Set total price in the receipt
-        receiptTotalAmount.textContent = `₱${totalPrice.toFixed(2)}`;
-
-        // Update the current time in the receipt
-        updateOrderTime();
-
-        // Show the receipt modal
-        receiptModal.style.display = "block";
-
-        // Clear the Place Order section
-        productOrder.innerHTML = "";
-        totalPrice = 0; // Reset the total price
-        updateTotalPriceDisplay(); // Reset the displayed total
-        localStorage.removeItem("products"); // Clear saved products
-    });
-
-    // Function to update the current time for the receipt
-    function updateOrderTime() {
-        const now = new Date();
-        const options = { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric' };
-        document.getElementById("order-time").textContent = now.toLocaleDateString(undefined, options);
+        // Hide the modal after 2 seconds, just in case the page is refreshed during the 2-second duration
+        setTimeout(() => {
+            modal.style.display = 'none';
+            localStorage.removeItem('modalVisible');
+        }, 2000);
     }
-
-    // Function to update total price display in the Place Order section
-    function updateTotalPriceDisplay() {
-        totalPriceElement.textContent = totalPrice.toFixed(2);
-    }
-
-    // Close Receipt Modal
-    closeModal.addEventListener("click", (event) => {
-        event.preventDefault();
-        receiptModal.style.display = "none";
-    });
-});*/
+};

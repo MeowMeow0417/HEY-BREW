@@ -4,12 +4,12 @@
     include("php/authenticate_client.php");
 
     if(isset($_POST['back'])){
-        header('Location: Client-HomePage.php');
+        header('Location: index.php');
         exit();
     }
 
     if(isset($_POST['logOutBtn'])){
-        header('Location: Client-HomePage.php');
+        header('Location: index.php');
         session_destroy();
         exit();
     }
@@ -56,7 +56,7 @@
 
 
         <div class="top-bar" id="top-bar">
-        
+
 
 
             <div class="profile-header">
