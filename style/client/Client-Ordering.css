@@ -32,6 +32,7 @@ html, body{
   grid-template-rows: auto;
   gap: 5px;
   height: 100vh;
+  background-color: #8B4513;
 
   box-sizing: border-box;
 
@@ -43,6 +44,7 @@ html, body{
   .category-row{
     grid-column: 1;
     align-self: start;
+    gap: 10px;
   }
 
   .container {
@@ -54,12 +56,19 @@ html, body{
 }
 
 
+
 /*TOP BAR*/
 .top-bar {
     display: flex;
     justify-content: space-between;
     padding: 10px 20px;
     align-items: center;
+    background-color: #8B4513;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
 
     .left-bar{
       display: flex;
@@ -327,7 +336,7 @@ html, body{
       align-items: center;
       flex-direction: column;
       width: 380px;
-      height: 47rem;
+      height: 38rem;
       overflow: hidden;
       margin: 15px 10px;
       background-color:var(--var-trans-rec);

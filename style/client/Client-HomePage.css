@@ -23,7 +23,7 @@ nav {
     position: fixed;
     width: 100%;
     z-index: 1000;
-    padding: 1rem 0;
+    padding: 0;
     transition: background 0.3s ease;
 }
 
@@ -113,6 +113,8 @@ nav {
     height: auto;
     font-size: 10px;
     transition: transform 0.2s ease;
+    padding: 5px;
+    margin-left: 10rem;
 
     img {
       width: 40px;
@@ -272,6 +274,7 @@ nav {
     color: white;
     font-family: 'Poppins', sans-serif;
     transition: all 0.3s ease;
+    padding-right: 5rem;
 }
 
 .search-bar::placeholder {
@@ -306,21 +309,24 @@ nav {
     border-radius: 20px;
 }
 
+.navigation-buttons{
+    display: none;
+}
+
 /* Product cards styles */
 .product-cards {
     display: flex;
     overflow-x: auto;
     gap: 2rem;
     padding-bottom: 1rem;
-    transition: all 0.3s ease;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    scrollbar-width: none;  /* For Firefox */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
 }
 
-.product-cards::-webkit-scrollbar {
+.product-cards::-webkit-scrollbar { 
     width: 0;
     height: 0;
-    display: none;
+    display: none;  /* For Chrome, Safari, and Opera */
 }
 
 .product-card {
@@ -823,6 +829,9 @@ h3 {
         padding: 0;
     }
 
+    .profile-card{
+        margin-right: 10rem;
+    }
     .nav-container {
         margin-left: 0;
         padding: 0 1rem;
@@ -894,7 +903,7 @@ h3 {
     }
 
     .product-cards {
-        flex-direction: row;
+        flex-direction: column;
         overflow-y: auto;
         overflow-x: hidden;
         max-height: 70vh;

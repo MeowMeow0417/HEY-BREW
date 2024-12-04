@@ -88,20 +88,20 @@
         <div class="top-bar" id="top-bar">
 
 
-             <div class="left-bar">
+            <div class="left-bar">
                 <button class="back" name="back" id="back"><i class="fa-solid fa-caret-left"></i></button>
                 <p><strong>HEY BREW</strong> Order</p>
-             </div>
+            </div>
 
-             <div class="middle-bar">
+            <div class="middle-bar">
                 <!-- Search bar -->
                 <input name="search-bar" class="search-bar" id="searchInput" type="text" placeholder="Search">
             </div>
 
 
             <div class="right-bar">
-                 <!-- Profile -->
-                 <a href="Client-Profile.php">
+                <!-- Profile -->
+                <a href="Client-Profile.php">
                     <div class="profile-card" id="profile-card" name="profile-card">
                         <img src="style/images/products/auth.jpg" alt="Admin Profile">
                         <div class="profile-info">
