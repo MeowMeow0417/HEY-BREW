@@ -104,6 +104,7 @@ body{
     font-size: 1.5rem;
     cursor: pointer;
     color: var(--var-text-color);
+    margin-right: 1rem;
 }
 
 .btn-cart {
@@ -115,7 +116,7 @@ body{
     color: white;
     cursor: pointer;
     transition: transform 0.2s ease;
-
+    
     align-items: end;
     justify-self: end;
 }
@@ -226,4 +227,170 @@ body{
 .total-amount {
     color: #8B4513;
     font-size: 1.2em;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .options-modal {
+        width: 95%;
+        height: 50vh;
+        padding: 15px;
+        overflow-y: auto;
+        top: 55%;
+    }
+
+    .container-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        height: auto;
+    }
+
+    .product-grid {
+        grid-column: 1;
+        grid-row: 1;
+        
+        img {
+            width: 100%;
+            height: 180px;
+            margin-bottom: 10px;
+        }
+    }
+
+    .detail-Grid {
+        grid-column: 1;
+        grid-row: 2;
+        padding: 5px 0;
+    }
+
+    .detail-row {
+        margin-bottom: 5px;
+    }
+
+    .corner {
+        grid-column: 1;
+        grid-row: 3;
+        justify-items: center;
+        height: auto;
+        margin-top: 10px;
+    }
+
+    .btn-cart {
+        width: 100%;
+        margin-top: 10px;
+    }
+    .select-modal option {
+        width: 300px;  /* Match select width */
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+    .select-modal:focus {
+        width: 150px;
+    }
+    .select-modal optgroup,
+    .select-modal option {
+        width: 150px;
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+}
+
+@media screen and (max-width: 480px) {
+    .options-modal {
+        width: 90%;
+        padding: 15px;
+        height: auto;
+        max-height: 90vh;
+    }
+
+    .container-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        height: auto;
+    }
+
+    select.select-modal {
+        width: 290px;
+        font-size: 14px;
+        padding: 4px 8px;
+    }
+
+    select.select-modal::-webkit-listbox {
+        width: 150px !important;
+    }
+
+    select.select-modal {
+        width: 290px;
+    }
+    
+    select.select-modal option {
+        width: 150px !important;
+        min-width: 150px !important;
+        max-width: 150px !important;
+    }
+
+    select.select-modal::-ms-expand {
+        width: 150px !important;
+    }
+
+    .product-grid {
+        width: 100%;
+        
+        img {
+            width: 100px;
+            height: 100px;
+        }
+
+        h4 {
+            font-size: 16px;
+        }
+
+        p {
+            font-size: 14px;
+        }
+    }
+
+    .corner {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .receipt-modal {
+        width: 90%;
+        height: 80vh;
+        padding: 15px;
+        padding-bottom: 5rem;
+    }
+
+    .product-column {
+        max-height: 60vh;
+
+        .product-section {
+            width: 100%;
+            height: auto;
+            padding: 10px 0;
+        }
+    }
+
+    .product-image {
+        width: 60px;
+        height: 60px;
+    }
+
+    .select-modal {
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    .btn-cart {
+        width: 100%;
+        padding: 8px 15px;
+        margin-top: 5px;
+    }
 }

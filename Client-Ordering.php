@@ -101,7 +101,7 @@
 
             <div class="right-bar">
                 <!-- Profile -->
-                <a href="Client-Profile.php">
+                 <a href="Client-Profile.php">
                     <div class="profile-card" id="profile-card" name="profile-card">
                         <img src="style/images/products/auth.jpg" alt="Admin Profile">
                         <div class="profile-info">
@@ -192,9 +192,7 @@
             <div class="place-order" id="place-order">
                 <div class="order-section" id="order-section">
                     <div class="header-order" id="header-order">
-                        <p class="cart" >Cart</p>
-
-
+                        <i class="fa-solid fa-chevron-up" id="cartArrow"></i>
                     </div>
                     <div class="product-order" id="product-order"  data-id="" data-client-id="<?php echo htmlspecialchars($client_id); ?>">
                     <!-- Poppulated Dynamically using JS-->
