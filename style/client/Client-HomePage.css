@@ -847,7 +847,7 @@ h3 {
         display: none;
         position: fixed;
         top: 4rem;
-        left: 20rem;
+        left: auto;
         right: 0;
         background: rgba(77, 44, 32, 0.95);
         padding: 1rem 0.5rem;

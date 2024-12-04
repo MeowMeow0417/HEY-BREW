@@ -116,7 +116,8 @@
 
             <!-- RECEIPT -->
             <div class="receipt-modal" id="receipt-modal">
-            <h1>Receipt</h1>
+                <button class="close-btn">&times;</button>
+                <h1>Receipt</h1>
                 <div class="order-info">
                     <div class="order-id">
                         <span>Order ID</span>
