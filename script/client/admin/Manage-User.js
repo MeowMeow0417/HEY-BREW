@@ -30,14 +30,18 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
+    const closeDeleteModalBtn = document.getElementById("closeDeleteModal");
+    const deleteIdInput = document.getElementById("delete_id");
+    const deleteModal = document.getElementById("deleteModal");
+    const cancelDeleteBtn = document.querySelector(".btn.btn-secondary[data-dismiss='modal']");
 
     // Handle dynamic delete buttons with event delegation
     document.addEventListener("click", function (e) {
         if (e.target.matches(".btn-danger[data-toggle='modal']")) {
             e.preventDefault();
-            const userId = e.target.getAttribute("data-id");  // Get the user ID
-            deleteIdInput.value = userId;                    // Set the hidden input value
-            deleteModal.style.display = "block";             // Show the modal
+            const userId = e.target.getAttribute("data-id"); // Get the user ID
+            deleteIdInput.value = userId;                   // Set the hidden input value
+            deleteModal.style.display = "block";            // Show the modal
         }
     });
 
@@ -61,6 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+
 document.addEventListener('DOMContentLoaded', function () {
     // Select success or error messages
     const messageBox = document.querySelector('.success, .error');
@@ -73,6 +78,6 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(() => {
           messageBox.remove();
         }, 2000); // Match the CSS transition duration (2s)
-      }, 3000); // Wait 3 seconds before fading out
+      }, 2500); // Wait 3 seconds before fading out
     }
   });

@@ -209,7 +209,6 @@
                                                 <form method="POST" action="manage.php">
                                                     <input type="hidden" name="product_name" value="<?php echo htmlspecialchars($product['details']['product_name']); ?>">
                                                     <button class="delete" name="delete" type="button" onclick="showDeletePrompt('<?php echo htmlspecialchars($product['details']['product_name']); ?>')">Delete</button>
-                                                    <button class="update" name="update" type="submit">Update</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -237,21 +236,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Update Prompt -->
-        <!--<div class="overlay" onclick="hideUpdatePrompt()"></div>
-                <div class="update-prompt">
-                    <h6>Update Product Information</h6>
-                    <p><?php echo htmlspecialchars($productName)?></p>
-                    <input type="text" name="" id="" placeholder="">
-
-                    <input type="text" name="" id="">
-
-                    <div class="button-row">
-                        <button class="cancel" type="button">Cancel</button>
-                        <button class="delete1" name="delete" type="submit">Delete</button>
-                    </div>
-                </div> -->
 
         </div>
     </form>

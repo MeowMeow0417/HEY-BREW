@@ -496,4 +496,3 @@ document.addEventListener("DOMContentLoaded", () => {
         receiptModal.style.display = "none";
     });
 });*/
-

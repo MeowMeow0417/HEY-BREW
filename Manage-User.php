@@ -4,16 +4,19 @@
     include("php/athenticate_admin.php");
 
     if(isset($_POST['products'])){
-        error_log('Products button clicked.');
 
         header('Location: Manage-Products.php');
         exit();
     }
 
     if(isset($_POST['orders'])){
-        error_log('Products button clicked.');
 
         header('Location: Manage-Orders.php');
+        exit();
+    }
+
+    if(isset($_POST['manage'])){
+        header('Location: Manage-User.php');
         exit();
     }
 
@@ -127,21 +130,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                     <!-- navigation buttons -->
                     <form action="Manage-User.php" method="POST">
-                    <div class="button-col">
-                        <button class="nav-button active" name="products" type="submit" >
-                            <img src="style/images/icons/package.png" alt="Package Icon" width="24" height="24">
-                            Products
-                        </button>
-                        <button class="nav-button" name="orders" type="submit">
-                            <img src="style/images/icons/clipboard.png" alt="Package Icon" width="24" height="24">
-                            Orders
-                        </button>
-                        <button class="nav-button" name="manage" type="submit">
-                            <img src="style/images/icons/exit.png" alt="Package Icon" width="24" height="24">
-                            Manage
-                        </button>
-                        <button class="logOut" name="logOut" type="submit">Log Out</button>
-                    </div>
+                        <div class="button-col">
+                            <button class="nav-button" name="products" type="submit" >
+                                <img src="style/images/icons/package.png" alt="Package Icon" width="24" height="24">
+                                Products
+                            </button>
+                            <button class="nav-button" name="orders" type="submit">
+                                <img src="style/images/icons/clipboard.png" alt="Package Icon" width="24" height="24">
+                                Orders
+                            </button>
+                            <button class="nav-button active" name="manage" type="submit">
+                                <img src="style/images/icons/exit.png" alt="Package Icon" width="24" height="24">
+                                Manage
+                            </button>
+                            <button class="logOut" name="logOut" type="submit">Log Out</button>
+                        </div>
                     </form>
                 </div>
 
@@ -201,6 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </form>
                         </div>
             </div>
+
             <form action="Manage-User.php" method="POST">
                 <!-- Add NEW User Modal -->
                 <div class="user-modal" id="user-modal">

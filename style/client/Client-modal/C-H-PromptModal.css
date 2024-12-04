@@ -23,32 +23,44 @@ body{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 300px;
-    height: 250px;
-    background-color: rgba(0, 0, 0, 0.85);
-    padding: 20px;
+    width: 400px;
+    background-color: #4d2c20ee;
     border-radius: 10px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     z-index: 1000;
 
     .prompt-info{
+        padding: 10px;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 10px;
+        text-align: center;
+        gap: 5px;
 
         h1 {
             margin: 0;
         }
 
     }
-
     button{
-        width: 100px;
+        width: 150px;
         background-color: white;
         padding: 10px 25px;
         border: none;
         border-radius: 20px;
     }
 
+}
+
+.prompt-modal.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.prompt-info {
+    text-align: center;
+}
+
+.prompt-info button:hover {
+    background: #0056b3;
 }

@@ -9,6 +9,11 @@
         exit();
     }
 
+    if(isset($_POST['manage'])){
+        header('Location: Manage-User.php');
+        exit();
+    }
+
     $sql = "SELECT
         c.client_id AS client_id,
         c.username AS client_username,
@@ -42,7 +47,7 @@ if ($result) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style/management/Admin-Order-Section.css">
+    <link rel="stylesheet" href="style/management/Manage-Orders.css">
     <title>Food Order System</title>
 </head>
 <body>
@@ -131,7 +136,7 @@ if ($result) {
     </form>
 
 
-    <script src="script/client/Admin-Order-Section.js"></script>
+    <script src="script/client/Manage-Orders.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 </body>

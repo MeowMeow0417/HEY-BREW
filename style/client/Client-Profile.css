@@ -76,7 +76,7 @@ body {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    width: 80rem;
+    width: 40rem;
     height: 5rem;
 
     .profile-info {
