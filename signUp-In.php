@@ -72,7 +72,7 @@
                     $_SESSION['valid'] = true;
                     $_SESSION['username'] = $row['username'];
                     $_SESSION['client_id'] = $row['client_id'];
-                    header("Location: Client-HomePage.php");
+                    header("Location: index.php");
                     exit();
                 } else {
                     echo "<div class='error'>Invalid email or password.</div>";

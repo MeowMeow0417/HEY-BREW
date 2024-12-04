@@ -4,7 +4,7 @@
 
     //Log-In connection
     if(isset(($_POST['logIn']))){
-        $manage_user = mysqli_real_escape_string($conn, $_POST['username']);
+        //$manage_user = mysqli_real_escape_string($conn, $_POST['username']);
         $manage = mysqli_real_escape_string($conn, $_POST['email']);
         $password = mysqli_real_escape_string($conn, $_POST['password']);
 

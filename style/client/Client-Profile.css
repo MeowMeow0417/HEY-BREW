@@ -14,6 +14,8 @@
     --var-main-font: "Oleo Script", serif;
 }
 
+
+
 body {
     font-family: var(--var-sub-font);
     background-color: #f0f0f0;
@@ -76,7 +78,7 @@ body {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    width: 80rem;
+    width: 40rem;
     height: 5rem;
 
     .profile-info {
