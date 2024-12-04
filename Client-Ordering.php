@@ -5,7 +5,7 @@
 
 
     if(isset($_POST['back'])){
-        header('Location: Client-HomePage.php');
+        header('Location: index.php');
         exit();
     }
 
@@ -272,38 +272,16 @@
 </div>
 
 
-    <!-- RECEIPT -->
-    <div class="receipt-modal">
-        <h1>Receipt</h1>
-        <a href="" class="close"><i class="fa-solid fa-xmark"></i></a>
-            <div class="order-info">
-                <div class="order-id">
-                    <span>Order ID</span>
-                    <span class="id-number">696969</span>
-                </div>
-                <div class="order-time">
-                    <span>Order Time</span>
-                    <span>November 11, 2024 at 3:30 PM</span>
-                </div>
+    <!-- THANK YOU NOTE -->
+    <div class="note-modal" id="modal">
+        <p>Thank you for your purchase!</p>
+        <p>Your order is now being processed.</p>
+            <div class="modal-buttons">
+                <button class="check-profile-btn">Check Profile</button>
             </div>
-            <div class="product-column">
-                <div class="product-section">
-                    <img src="<?php echo htmlspecialchars($product['image_path'])?>" alt="<?php echo htmlspecialchars($product['product_name'])?>" class="product-image">
-                    <div class="product-details">
-                        <p><?php echo htmlspecialchars($product['product_name'])?></p>
-                        <p>Size: </p>
-                        <p>Type: </p>
-                        <p>AddOns: </p>
-                    <p>Qty: </p>
-                    <p>₱ Price</p>
-                </div>
-            </div>
-            <div class="total-section">
-                <span>Total:</span>
-                <span class="total-amount">₱69.0</span>
-            </div>
-        </div>
     </div>
+
+
 
     <script src="script/client/Client-Ordering.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

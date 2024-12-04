@@ -131,64 +131,95 @@ $conn->close();
 
             </div>
 
-            <div class="right-container">
+            <div class="middle-container">
             <form id="addProductForm">
                 <div class="add-grid">
                     <!-- Product Name -->
-                    <label for="prodName">Product Name</label>
-                    <input type="text" class="prodName" id="prodName" name="prodName" placeholder="Product Name" >
+                     <div class="input-box">
+                        <label for="prodName">Product Name</label>
+                        <input type="text" class="prodName" id="prodName" name="prodName" placeholder="Product Name" >
+                     </div>
+
 
                     <!-- Description -->
-                    <label for="prodDesc">Description</label>
-                    <input type="text" class="prodDesc" id="prodDesc" name="prodDesc" placeholder="Description">
+                     <div class="input-box">
+                        <label for="prodDesc">Description</label>
+                        <input type="text" class="prodDesc" id="prodDesc" name="prodDesc" placeholder="Description">
+                     </div>
+
 
                     <!-- Category -->
-                    <label for="category">Category</label>
-                    <select name="category" id="category" >
-                        <option value="">Select Category</option>
-                        <option value="espresso">Espresso</option>
-                        <option value="blendedBev">Blended Beverages</option>
-                        <option value="tea">Tea</option>
-                        <option value="riceM">Rice Meals</option>
-                        <option value="pasta">Pasta</option>
-                        <option value="snacks">Snacks</option>
-                    </select>
+                     <div class="input-box">
+                        <label for="category">Category</label>
+                        <select name="category" id="category" >
+                            <option value="">Select Category</option>
+                            <option value="espresso">Espresso</option>
+                            <option value="blendedBev">Blended Beverages</option>
+                            <option value="tea">Tea</option>
+                            <option value="riceM">Rice Meals</option>
+                            <option value="pasta">Pasta</option>
+                            <option value="snacks">Snacks</option>
+                        </select>
+                     </div>
+
 
                     <!-- Type -->
-                    <label for="type">Type</label>
-                    <input type="text" class="type" name="type" id="type" placeholder="e.g., HOT, COLD" >
+                    <div class="input-box">
+                        <label for="type">Type</label>
+                        <input type="text" class="type" name="type" id="type" placeholder="e.g., HOT, COLD" >
+                    </div>
 
-                    <!-- Add Ons -->
-                    <label for="addOns">Add Ons</label>
-                    <input type="text" id="addOns" name="addOns" placeholder="Add Ons (e.g., Extra shot, Whipped Cream)">
 
-                    <!-- Prices for Different Sizes -->
-                    <label for="smallPrice">Price for Small</label>
-                    <input type="number" id="smallPrice" name="smallPrice" step="0.01" placeholder="Small Size Price" >
-
-                    <label for="mediumPrice">Price for Medium</label>
-                    <input type="number" id="mediumPrice" name="mediumPrice" step="0.01" placeholder="Medium Size Price" >
-
-                    <label for="largePrice">Price for Large</label>
-                    <input type="number" id="largePrice" name="largePrice" step="0.01" placeholder="Large Size Price" >
-
-                    <!-- Submit Button -->
                 </div>
+            </div>
+
+
+                    <div class="right-container">
+                        <form id="addProductForm">
+                            <div class="add-grid">
+
+                                <div class="input-box">
+                                     <!-- Add Ons -->
+                                    <label for="addOns">Add Ons</label>
+                                    <input type="text" id="addOns" name="addOns" placeholder="Add Ons (e.g., Extra shot, Whipped Cream)">
+                                </div>
+
+                                <!-- Prices for Different Sizes -->
+                                <div class="input-box">
+
+                                    <label for="smallPrice">Price for Small</label>
+                                    <input type="number" id="smallPrice" name="smallPrice" step="0.01" placeholder="Small Size Price" >
+                                </div>
+
+                                <div class="input-box">
+                                    <label for="mediumPrice">Price for Medium</label>
+                                    <input type="number" id="mediumPrice" name="mediumPrice" step="0.01" placeholder="Medium Size Price" >
+                                </div>
+
+                                <div class="input-box">
+                                    <label for="largePrice">Price for Large</label>
+                                    <input type="number" id="largePrice" name="largePrice" step="0.01" placeholder="Large Size Price" >
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
             </form>
-        </div>
-
-
-
-                <div class="left">
+                     <!-- Submit Button -->
+                <div class="left-button">
                     <button type="submit" class="back" name="back">BACK</button>
                 </div>
 
-                <div class="right">
+                <div class="right-button">
                     <button type="submit" class="cancel" name="cancel" onclick="confirmCancel()" >Cancel</button>
                     <button type="submit" class="addP" name="addProd" onclick="AddConfirm()">Add Product</button>
                 </div>
 
-        </div>
+
+
+
+
+
     </form>
     <script src="script/client/admin/addProd.js"></script>
 </body>

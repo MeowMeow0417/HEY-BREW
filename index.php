@@ -2,7 +2,18 @@
 
     include("php/config.php");
     include("php/connection.php");
-    include("php/authenticate_client.php");
+
+
+    // Check if the user is logged in
+    $isGuest = !isset($_SESSION['client_id']);
+
+
+    if(!$isGuest){
+        // Now you can use $client_id in your script
+    $username = $_SESSION['username'];
+    }
+
+
 
     if (isset($_POST['orderNow'])) {
         header('Location: Client-Ordering.php');
@@ -15,11 +26,11 @@
             exit();
         }
         if (isset($_POST['signIn'])) {
-            header('Location: SignIn.php');
+            header('Location: SignUp-In.php');
             exit();
         }
         if (isset($_POST['signUp'])) {
-            header('Location: SignUp.php');
+            header('Location: SignUp-In.php');
             exit();
         }
 
@@ -86,7 +97,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <form action="Client-HomePage.php" method="POST">
+    <form action="index.php" method="POST">
     <!-- Navigation Bar -->
     <nav id="nav">
         <div class="nav-container">
@@ -147,10 +158,10 @@
                 <div class="header-controls">
 
 
-                    
+
                     <!-- Search bar -->
                         <input name="search-bar"  class="search-bar" id="searchInput" type="text" placeholder="Search..." >
-                    
+
 
                     <div class="navigation-buttons">
                         <button class="prev-btn">&lt;</button>
@@ -290,14 +301,21 @@
     </form>
 
     <!-- Prompt Modal -->
-    <!-- <div class="prompt-modal" id="prompt-modal">
-        <div class="prompt-info">
-            <h1>Welcome</h1>
-            <p>Log-in or Sign up</p>
-            <button type="submit" name="signIn" class="signIn">Sign In</button>
-            <button type="submit" name="signUp" class="signUp">Sign Up</button>
-        </div>
-    </div> -->
+     <?php if ($isGuest): ?>
+        <form action="index.php" method="POST">
+            <div class="prompt-modal" id="prompt-modal" style="display: none">
+                <div class="prompt-info">
+                    <h1>Welcome</h1>
+                    <p>to</p>
+                    <h1>HEY BREW</h1>
+                    <p>Log-in or Sign-up <br> to continue</p>
+                    <br>
+                    <button type="submit" name="signIn" class="signIn">Sign In</button>
+                    <button type="submit" name="signUp" class="signUp">Sign Up</button>
+                </div>
+            </div>
+        </form>
+    <?php endif; ?>
 
     <script src="script/client/Client-HomePage.js"></script>
 </body>

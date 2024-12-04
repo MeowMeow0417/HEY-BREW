@@ -13,11 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
     mobileMenuBtn.addEventListener('click', (e) => {
         e.preventDefault(); // Prevent any default button behavior
         e.stopPropagation(); // Stop event from bubbling up
-        
+
         // Toggle both nav-links and login-container
         navLinks.classList.toggle('active');
         loginContainer.classList.toggle('active');
-        
+
         // Handle hamburger animation
         const spans = mobileMenuBtn.querySelectorAll('span');
         spans.forEach((span, index) => {
@@ -34,12 +34,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Close menu when clicking outside
     document.addEventListener('click', (e) => {
-        if (!mobileMenuBtn.contains(e.target) && 
-            !navLinks.contains(e.target) && 
+        if (!mobileMenuBtn.contains(e.target) &&
+            !navLinks.contains(e.target) &&
             !loginContainer.contains(e.target)) {
             navLinks.classList.remove('active');
             loginContainer.classList.remove('active');
-            
+
             // Reset hamburger icon
             const spans = mobileMenuBtn.querySelectorAll('span');
             spans.forEach(span => {
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Search functionality
     if (searchInput) {
         const productCards = document.querySelectorAll('.product-card');
-        
+
         console.log('Search initialized with:', {
             searchInput,
             productCardsCount: productCards.length
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const productName = product.querySelector('.product-info h3')?.textContent?.toLowerCase() || '';
                 const productDescription = product.querySelector('.product-info p')?.textContent?.toLowerCase() || '';
 
-                const shouldShow = productName.includes(searchTerm) || 
+                const shouldShow = productName.includes(searchTerm) ||
                 productDescription.includes(searchTerm);
                 product.style.display = shouldShow ? 'flex' : 'none';
             });
@@ -146,4 +146,29 @@ document.addEventListener('DOMContentLoaded', () => {
         console.warn('Search input not found');
     }
 });
-    
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("prompt-modal");
+    let hideTimeout;
+
+    if (modal) { // Only run if the modal exists
+        // Show modal on click
+        document.body.addEventListener("click", function () {
+            modal.style.display = "block";
+            modal.classList.remove("hidden");
+        });
+
+        // Keep modal visible when hovered
+        modal.addEventListener("mouseenter", function () {
+            clearTimeout(hideTimeout);
+        });
+
+        // Hide modal 2.5 seconds after hover ends
+        modal.addEventListener("mouseleave", function () {
+            hideTimeout = setTimeout(() => {
+                modal.classList.add("hidden");
+            }, 2500);
+        });
+    }
+});

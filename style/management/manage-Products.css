@@ -309,9 +309,9 @@
     display: flex;
     gap: 8px;
     margin-top: 12px;
-    width: 200px;
 
-    .update, .delete {
+
+     .delete {
       flex: 1;
       color: white;
       padding: 8px 16px;
@@ -321,6 +321,7 @@
       font-size: 10px;
       cursor: pointer;
       transition: opacity 0.2s ease;
+      width: 200px;
     }
   }
 

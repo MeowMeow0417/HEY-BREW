@@ -36,12 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // Displaying the Delete prompt
   window.showDeletePrompt = function(productName) {
       const deletePrompt = document.querySelector('.delete-prompt');
-      const overlay =document.querySelector('.overlay');
+      const overlay = document.querySelector('.overlay');
 
-      deletePrompt.querySelector('p').innerText = productName; // Set the product name
-      deletePrompt.classList.add('show'); // Add the show class to display it
-      overlay.classList.add('show'); // Add the show class to the overlay
-      console.log('Delete prompt shown for:', productName); // Debug log
+      deletePrompt.querySelector('p').innerText = productName;
+      deletePrompt.classList.add('show');
+      overlay.classList.add('show');
   };
 
   // Hiding the Delete prompt
@@ -49,22 +48,38 @@ document.addEventListener('DOMContentLoaded', () => {
       const deletePrompt = document.querySelector('.delete-prompt');
       const overlay = document.querySelector('.overlay');
 
-      deletePrompt.classList.remove('show'); // Remove the show class to hide it
+      deletePrompt.classList.remove('show');
       overlay.classList.remove('show');
-      console.log('Delete prompt hidden'); // Debug log
   };
+
+  // Stop propagation on the delete prompt
+  const deletePrompt = document.querySelector('.delete-prompt');
+  if (deletePrompt) {
+      deletePrompt.addEventListener('click', (event) => {
+          event.stopPropagation(); // This prevents the click from reaching the overlay
+      });
+  }
 
   // Attach event listener to the cancel button
   const cancelButton = document.querySelector('.cancel');
   if (cancelButton) {
-    cancelButton.addEventListener('click', (event) => {
-      event.preventDefault(); // Prevent default button behavior
-      hideDeletePrompt(); // Call the function to hide the prompt
-    });
+      cancelButton.addEventListener('click', (event) => {
+          event.preventDefault();
+          hideDeletePrompt();
+      });
   } else {
-    console.log('Cancel button not found');
+      console.log('Cancel button not found');
+  }
+
+  // Optional: Add click handler to overlay to close when clicking outside
+  const overlay = document.querySelector('.overlay');
+  if (overlay) {
+      overlay.addEventListener('click', () => {
+          hideDeletePrompt();
+      });
   }
 });
+
 
 
 //Alert Prompt
@@ -78,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.classList.remove('show'); // Hide overlay
     console.log('Alert hidden');
   }
-  
+
   // Example usage to show the alert (if needed dynamically via JS)
   window.showAlert = function () {
     const alertBox = document.querySelector('.alert');
@@ -88,4 +103,4 @@ document.addEventListener('DOMContentLoaded', () => {
     overlay.classList.add('show'); // Show overlay
     console.log('Alert shown');
   };
-}); 
+});
