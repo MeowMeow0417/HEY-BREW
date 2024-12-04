@@ -1,38 +1,41 @@
 <?php
-    include("php/config.php");
-    include("php/connection.php");
-    include("php/authenticate_client.php");
+include("php/config.php");
+include("php/connection.php");
+include("php/authenticate_client.php");
 
-    if(isset($_POST['back'])){
-        header('Location: index.php');
-        exit();
+if (isset($_POST['back'])) {
+    header('Location: index.php');
+    exit();
+}
+
+if (isset($_POST['logOutBtn'])) {
+    header('Location: index.php');
+    session_destroy();
+    exit();
+}
+
+$client_id = $_SESSION['client_id'];
+
+$query = "SELECT order_id, client_id, total_price, order_status, created_at FROM orders";
+$result = mysqli_query($conn, $query);
+
+// Initialize receipts array to prevent undefined variable error
+$receipts = [];
+
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $receipts[] = $row; // Append each row to the receipts array
     }
+} else {
+    echo "Error: " . mysqli_error($conn);
+}
 
-    if(isset($_POST['logOutBtn'])){
-        header('Location: index.php');
-        session_destroy();
-        exit();
-    }
-
-    $client_id = $_SESSION['client_id'];
-
-    $query = "SELECT order_id, client_id, total_price, order_status, created_at FROM orders ";
-    $result = mysqli_query($conn, $query);
-
-    if ($result) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            $receipts[] = $row; // Append each row to the receipts array
-        }
-    } else {
-        echo "Error" . mysqli_error($conn);
-    }
-
-    // Filter receipts to show only those belonging to the logged-in user
-    $userReceipts = array_filter($receipts, function ($receipt) use ($client_id) {
-
+// Filter receipts to show only those belonging to the logged-in user
+$userReceipts = array_filter($receipts, function ($receipt) use ($client_id) {
     // Use loose comparison (==) to account for type differences
     return $receipt['client_id'] == $client_id;
 });
+
 
 
 

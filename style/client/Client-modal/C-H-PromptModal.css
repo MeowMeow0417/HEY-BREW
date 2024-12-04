@@ -61,5 +61,5 @@ body{
 }
 
 .prompt-info button:hover {
-    background: #0056b3;
+    background: var(--var-button);
 }

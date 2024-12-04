@@ -97,7 +97,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-    <form action="Client-HomePage.php" method="POST">
+    <form action="index.php" method="POST">
     <!-- Navigation Bar -->
     <nav id="nav">
         <div class="nav-container">
@@ -302,7 +302,7 @@
 
     <!-- Prompt Modal -->
      <?php if ($isGuest): ?>
-        <form action="Client-HomePage.php" method="POST">
+        <form action="index.php" method="POST">
             <div class="prompt-modal" id="prompt-modal" style="display: none">
                 <div class="prompt-info">
                     <h1>Welcome</h1>
