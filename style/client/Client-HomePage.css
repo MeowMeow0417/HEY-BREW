@@ -839,7 +839,7 @@ h3 {
 
     .nav-container {
         margin-left: 0;
-        padding: 1rem 1rem;
+        padding: 0 1rem;
         padding-top: 1rem;
         align-items: center;
 
@@ -852,7 +852,7 @@ h3 {
         left: auto;
         right: 0;
         background: rgba(77, 44, 32, 0.95);
-        padding: 1rem 0.5rem;
+        padding: 0 0.5rem;
         border-radius: 20px;
         z-index: 1000;
         width: 50%;

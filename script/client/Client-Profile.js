@@ -19,35 +19,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    const orderReceipts = document.querySelectorAll(".order-receipt");
+    const orderReceipts = document.querySelectorAll(".order-receipt"); // Select all receipts
     const modal = document.getElementById('receipt-modal');
-    const closeBtn = document.querySelector('.close-btn');
-    const backButton = document.querySelector('.back');
-
-    // Handle receipt click
-    orderReceipts.forEach(function (orderReceipt) {
-        orderReceipt.addEventListener('click', function () {
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            backButton.style.visibility = 'hidden';
-        });
-    });
-
-    // Handle close button click
-    closeBtn.addEventListener('click', function() {
-        modal.classList.remove('active');
-        document.body.style.overflow = 'auto';
-        backButton.style.visibility = 'visible';
-    });
-
-    // Close modal when clicking outside
-    window.addEventListener('click', function(event) {
-        if (event.target === modal) {
-            modal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-            backButton.style.visibility = 'visible';
-        }
-    });
+    const orderInfo = modal.querySelector('.product-column');
+    const OrderId = modal.querySelector(".id-number");
+    const OrderTime = modal.querySelector(".order-time span:nth-child(2)");
+    const TotalAmount = modal.querySelector(".total-amount");
 
     // Add event listener for when an order receipt is clicked
     orderReceipts.forEach(function (orderReceipt) {

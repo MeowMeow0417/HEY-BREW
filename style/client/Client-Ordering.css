@@ -339,7 +339,7 @@ html, body{
     }
 
     .header-order {
-      width: 420px;
+      width: 470px;
       cursor: pointer;
       background-color: var(--var-button);
       color: white;
@@ -347,6 +347,7 @@ html, body{
       justify-content: center;
       align-items: center;
       padding: 10px 0;
+  
     }
 
     .fa-chevron-up,

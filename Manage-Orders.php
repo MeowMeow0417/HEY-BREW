@@ -56,7 +56,7 @@ if ($result) {
 
                 <div class="sidebar">
                 <div class="profile-card" id="profile-card">
-                    <img src="images/src/auth.jpg" alt="Admin Profile">
+                    <img src="style/images/category-row/profile.jpg" alt="Admin Profile">
                     <div class="profile-info">
                         <h4><?php echo htmlspecialchars($manage_user); ?></h4>
                         <p>Seller</p>
