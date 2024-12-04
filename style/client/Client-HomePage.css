@@ -114,7 +114,7 @@ nav {
     font-size: 10px;
     transition: transform 0.2s ease;
     padding: 5px;
-    margin-left: 10rem;
+    margin-left: 5rem;
 
     img {
       width: 40px;
@@ -830,11 +830,12 @@ h3 {
     }
 
     .profile-card{
-        margin-right: 10rem;
+        margin-right: 7rem;
     }
     .nav-container {
         margin-left: 0;
         padding: 0 1rem;
+        padding-top: 1rem;
 
     }
 
