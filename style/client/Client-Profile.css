@@ -64,7 +64,7 @@ body {
 .back:hover{
     border: 1px solid var(--var-tag-border);
     transform: scale(1.05);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.9);
   }
 
 .profile-header {
@@ -76,7 +76,7 @@ body {
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    width: 40rem;
+    width: 80rem;
     height: 5rem;
 
     .profile-info {
@@ -244,6 +244,7 @@ body {
     box-shadow: rgba(0, 0, 0, 0.2);
     background-color: var(--var-button);
     color: white;
+    border-radius: 20px;
 }
 
 

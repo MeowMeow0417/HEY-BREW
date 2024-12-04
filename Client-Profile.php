@@ -56,11 +56,12 @@
 
 
         <div class="top-bar" id="top-bar">
-        <button class="back" name="back" id="back"><i class="fa-solid fa-caret-left"></i></button>
+        
 
 
             <div class="profile-header">
                 <div class="profile-info">
+                <button class="back" name="back" id="back"><i class="fa-solid fa-caret-left"></i></button>
                     <img src="style/images/products/auth.jpg" alt="Customer profile" class="profile-image">
                     <div class="profile-name">
                         <h1><?php echo htmlspecialchars($username) ?></h1>
@@ -76,7 +77,6 @@
                         <p>Password:</p>
                         <div class="password-field">
                             <span id="password">••••••••••</span>
-                            <button id="togglePassword"><i class="fas fa-eye"></i></button>
                         </div>
                     </div>
                 </div>
