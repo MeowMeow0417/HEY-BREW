@@ -111,3 +111,20 @@ function hideAlert() {
         alertBox.style.display = 'none';
     }
 }
+
+function hideAlert() {
+  const alert = document.querySelector('.alert');
+  if (alert) {
+      alert.style.display = 'none';
+  }
+}
+
+// Automatically hide the alert after 2 seconds
+document.addEventListener('DOMContentLoaded', () => {
+  const alert = document.querySelector('.alert');
+  if (alert) {
+      setTimeout(() => {
+          alert.style.display = 'none';
+      }, 2000); // 2000 milliseconds = 2 seconds
+  }
+});

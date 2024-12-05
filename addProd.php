@@ -119,11 +119,11 @@ $conn->close();
 
 
         <div class="main-container">
-
             <div class="left-container">
             <h2>Add New Product</h2>
+
                 <label for="imageUpload" class="drop-area" id="drop-area">
-                    <p>Drag and drop an image here or click to select one</p>
+                <p>Drag and drop an image here or click to select one</p>
                     <input type="file" id="imageUpload" name="imagePath" accept="image/*" style="display: none;">
                     <p><?php echo $uploadStatus; ?></p>
                 </label>
@@ -212,12 +212,8 @@ $conn->close();
 
                 <div class="right-button">
                     <button type="submit" class="cancel" name="cancel" onclick="confirmCancel()" >Cancel</button>
-                    <button type="submit" class="addP" name="addProd" onclick="AddConfirm()">Add Product</button>
+                    <button type="submit" class="addP" name="addProd" onclick="AddConfirm()">Update Product</button>
                 </div>
-
-
-
-
 
 
     </form>

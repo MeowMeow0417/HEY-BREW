@@ -11,6 +11,11 @@
         exit();
     }
 
+    if(isset($_POST['update'])){
+        header('Location: updateProd.php');
+        exit();
+    }
+
     if(isset($_POST['orders'])){
         header('Location: Manage-Orders.php');
         exit();
@@ -122,7 +127,6 @@
                     <div class='overlay' onclick='hideAlert()'></div>
                     <div class='alert-box'>
                         Error: " . $e->getMessage() . "
-                        <button onclick='hideAlert()'>OK</button>
                     </div>
                 </div>";
             }
@@ -132,7 +136,6 @@
                 <div class='overlay' onclick='hideAlert()'></div>
                 <div class='alert-box'>
                     No product found with the name '$productName'.
-                    <button onclick='hideAlert()'>OK</button>
                 </div>
             </div>";
         }
@@ -243,9 +246,13 @@
                                             </div>
 
                                             <div class="buttons">
-                                                <form method="POST" action="manage.php">
+                                                <form method="POST" action="Manage-Products.php">
                                                     <input type="hidden" name="product_name" value="<?php echo htmlspecialchars($product['details']['product_name']); ?>">
                                                     <button class="delete" name="delete" type="button" onclick="showDeletePrompt('<?php echo htmlspecialchars($product['details']['product_name']); ?>')">Delete</button>
+                                                </form>
+                                                <form method="POST" action="updateProd.php">
+                                                    <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['details']['product_id']); ?>">
+                                                    <button class="update" name="update" type="submit">Update</button>
                                                 </form>
                                             </div>
                                         </div>
