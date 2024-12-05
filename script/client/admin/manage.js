@@ -1,34 +1,45 @@
-const categories = document.querySelectorAll(".categories");
-const animation = document.querySelector(".animation");
+document.addEventListener('DOMContentLoaded', () => {
+    const categories = document.querySelectorAll(".categories");
+    const animation = document.querySelector(".animation");
+    const navContainer = document.querySelector(".top-nav ul");
 
-// Set the selector to the active category on page load
-const setActiveCategory = (category) => {
-  const { offsetLeft, offsetWidth } = category;
-  animation.style.left = `${offsetLeft}px`;
-  animation.style.width = `${offsetWidth}px`;
-};
+    // Get current category from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentCategory = urlParams.get('category') || 'espresso';
 
-// Move the selector when hovering over categories
-categories.forEach((category) => {
-  category.addEventListener("mouseover", () => {
-    const { offsetLeft, offsetWidth } = category;
-    animation.style.left = `${offsetLeft}px`;
-    animation.style.width = `${offsetWidth}px`;
-  });
+    // Set the selector to the active category
+    const setActiveCategory = (category) => {
+        const { offsetLeft, offsetWidth } = category;
+        animation.style.left = `${offsetLeft}px`;
+        animation.style.width = `${offsetWidth}px`;
+    };
 
-  // Make the selector stay on the clicked category
-  category.addEventListener("click", (e) => {
-    categories.forEach((cat) => cat.classList.remove("active"));
-    category.classList.add("active");
-    setActiveCategory(category);
-  });
+    // Find and set initial active category
+    categories.forEach((category) => {
+        const href = category.getAttribute('href');
+        if (href.includes(currentCategory)) {
+            category.classList.add('active');
+            setActiveCategory(category);
+        }
+
+        category.addEventListener("click", (e) => {
+            e.preventDefault();
+            
+            // Remove active class from all categories
+            categories.forEach((cat) => cat.classList.remove('active'));
+            
+            // Add active class to clicked category
+            category.classList.add('active');
+            
+            // Update animation
+            setActiveCategory(category);
+            
+            // Navigate to new category
+            window.location.href = category.getAttribute('href');
+        });
+    });
 });
 
-// Initialize the selector position based on the active category
-const activeCategory = document.querySelector(".categories.active");
-if (activeCategory) {
-  setActiveCategory(activeCategory);
-}
 
 
 // DeletePrompt

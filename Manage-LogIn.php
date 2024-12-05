@@ -2,16 +2,8 @@
     include("php/config.php");
     include("php/connection.php");
 
-    // Add the debugging code here
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
-    }
-
     //Log-In connection
     if(isset(($_POST['logIn']))){
-        //$manage_user = mysqli_real_escape_string($conn, $_POST['username']);
         $manage = mysqli_real_escape_string($conn, $_POST['email']);
         $password = mysqli_real_escape_string($conn, $_POST['password']);
 
@@ -41,8 +33,7 @@
                     echo "<div class='error'>Invalid email or password.</div>";
                 }
             } else {
-                echo "<div class='error'>No user found with that email.<br><br>
-                      <a href='manageSignUp.php' style='color: #8B4513; text-decoration: underline;'>Sign up as admin instead?</a></div>";
+                echo "<div class='error'>No user found with that email.</div>";
             }
             $admin->close();
         } else {
@@ -68,8 +59,8 @@
             </div>
         <?php endif; ?>
 
+        <h2>HEY BREW</h2>
         <form action="Manage-LogIn.php" method="POST">
-            <h2>HEY BREW</h2>
             <input type="email" id="email" name="email" autofill="off" placeholder="Enter Email" required>
             <input type="password" id="password" name="password" autofill="off" placeholder="Enter Password" required>
             <button type="submit" name="logIn">Log In</button>
