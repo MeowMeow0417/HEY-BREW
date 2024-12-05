@@ -151,7 +151,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("options-modal"); // Modal
     let totalPrice = 0; // Initialize total price
 
-
     // Load saved products from localStorage
     loadSavedProducts();
 
@@ -159,32 +158,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add to Cart Button Click Handler
     addToCartButton.addEventListener("click", () => {
-   // Retrieve product details from modal
-   const productId = modal.dataset.id;
-   const modalImage = modal.querySelector(".product-grid img").src;
-   const modalName = modal.querySelector(".product-grid h4").textContent.trim();
-   // Query the size, type, and add-ons fields from the modal
-   const sizeElement = modal.querySelector("select[name='size_price']");
-   const modalPrice = sizeElement.selectedOptions.length > 0
-       ? parseFloat(sizeElement.selectedOptions[0].getAttribute("data-price")) || 0
-       : 0;
-   const selectedSize = sizeElement?.value || "N/a";
-   const typeElement = modal.querySelector("select[name='type']");
-   const selectedType = typeElement?.value || "N/a";
-   const addOnsElement = modal.querySelector("select[name='add_on']");
-   const selectedAddOns = addOnsElement?.value || "N/a";
+        // Retrieve product details from modal
+        const productId = modal.dataset.id;
+        const modalImage = modal.querySelector(".product-grid img").src;
+        const modalName = modal.querySelector(".product-grid h4").textContent.trim();
+        const sizeElement = modal.querySelector("select[name='size_price']");
+        const modalPrice = sizeElement.selectedOptions.length > 0
+            ? parseFloat(sizeElement.selectedOptions[0].getAttribute("data-price")) || 0
+            : 0;
+        const selectedSize = sizeElement?.value || "N/a";
+        const typeElement = modal.querySelector("select[name='type']");
+        const selectedType = typeElement?.value || "N/a";
+        const addOnsElement = modal.querySelector("select[name='add_on']");
+        const selectedAddOns = addOnsElement?.value || "N/a";
 
-   // Create product object
-   const product = {
-       id: productId,
-       name: modalName,
-       image: modalImage,
-       size: selectedSize,
-       type: selectedType,
-       addOns: selectedAddOns,
-       quantity: 1,
-       price: modalPrice
-    };
+        // Create a unique product ID using productId + size
+        const uniqueProductId = `${productId}_${selectedSize}`;
+
+        // Create product object
+        const product = {
+            id: uniqueProductId,
+            name: modalName,
+            image: modalImage,
+            size: selectedSize,
+            type: selectedType,
+            addOns: selectedAddOns,
+            quantity: 1,
+            price: modalPrice
+        };
 
         // Check if the product already exists in the cart
         const existingProduct = productOrder.querySelector(`[data-id="${product.id}"]`);
@@ -213,10 +214,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     <h4>${product.name}</h4>
                     <p>${product.type}</p>
                     <p>${product.addOns}</p>
-
                 </div>
                 <div class="price-con">
-                     <p>${product.size}</p>
+                    <p>${product.size}</p>
                     <span class="size & price">₱<span class="total-price" id="total-price">${(product.price * product.quantity).toFixed(2)}</span></span>
                 </div>
                 <div class="product-function">
@@ -248,7 +248,6 @@ document.addEventListener("DOMContentLoaded", () => {
         modal.style.display = "none";
     });
 
-    // Function to handle quantity adjustments (increase or decrease)
     function handleQuantityAdjustments(productRow, productPrice) {
         const decrementButton = productRow.querySelector(".decrement");
         const incrementButton = productRow.querySelector(".increment");
@@ -267,6 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // Update overall total price
                 totalPrice -= productPrice;
+                if (totalPrice < 0) totalPrice = 0; // Prevent negative total price
                 updateTotalPriceDisplay();
                 saveProducts();
             }
@@ -288,7 +288,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Function to handle product removal
     function handleRemoveProduct(productRow) {
         const removeButton = productRow.querySelector(".remove-prod");
         removeButton.addEventListener("click", (event) => {
@@ -296,28 +295,27 @@ document.addEventListener("DOMContentLoaded", () => {
             const quantity = parseInt(productRow.querySelector(".stepper-value").textContent);
             const productPrice = parseFloat(productRow.querySelector("#total-price").textContent) / quantity;
             totalPrice -= productPrice * quantity;
+            if (totalPrice < 0) totalPrice = 0; // Prevent negative total price
             productRow.remove();
             updateTotalPriceDisplay();
             saveProducts();
         });
     }
 
-    // Function to update total price display
     function updateTotalPriceDisplay() {
         totalPriceElement.textContent = `₱${totalPrice.toFixed(2)}`;
     }
 
-    // Function to save products to localStorage
     function saveProducts() {
         const products = [];
         const productRows = productOrder.querySelectorAll(".product-row");
         productRows.forEach(row => {
             const id = row.getAttribute("data-id");
             const name = row.querySelector("h4").textContent;
-            const size = row.querySelector(".product-info p:nth-child(2)").textContent.replace("Size: ", "");
-            const type = row.querySelector(".product-info p:nth-child(3)").textContent.replace("Type: ", "");
+            const size = row.querySelector(".product-info p:nth-child(2)").textContent;
+            const type = row.querySelector(".product-info p:nth-child(3)").textContent;
             const quantity = parseInt(row.querySelector(".stepper-value").textContent);
-            const addOns = row.querySelector(".product-info").textContent.replace("Add-Ons: ", "");
+            const addOns = row.querySelector(".product-info p:nth-child(4)").textContent;
             const price = parseFloat(row.querySelector("#total-price").textContent) / quantity;
             const image = row.querySelector("img").src;
             products.push({ id, name, size, type, addOns, quantity, price, image });
@@ -325,7 +323,6 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem("products", JSON.stringify(products));
     }
 
-    // Function to load saved products from localStorage
     function loadSavedProducts() {
         const savedProducts = JSON.parse(localStorage.getItem("products")) || [];
         savedProducts.forEach(product => {
@@ -338,11 +335,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     <h4>${product.name}</h4>
                     <p>${product.type}</p>
                     <p>${product.addOns}</p>
-
                 </div>
                 <div class="price-con">
                     <p>${product.size}</p>
-                    <span class="size & price">₱<span class="total=price" id="total-price">${(product.price * product.quantity).toFixed(2)}</span></span>
+                    <span class="size & price">₱<span class="total-price">${(product.price * product.quantity).toFixed(2)}</span></span>
                 </div>
                 <div class="product-function">
                     <a href="#" class="remove-prod"><i class="fa-solid fa-trash"></i></a>
@@ -361,6 +357,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateTotalPriceDisplay();
     }
 });
+
 
 
 //Pushing to the database
@@ -417,6 +414,16 @@ document.getElementById("btn-order").addEventListener("click", () => {
     .then(response => {
         clearCart();
         console.log(response.data)
+
+
+        // Show the modal on successful order submission
+        const modal = document.getElementById('modal');
+        modal.style.display = 'block';
+
+        // Hide the modal after 2 seconds
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 5000);
     })
     .catch(error => {
         console.error(error)
@@ -438,27 +445,3 @@ document.getElementById("btn-order").addEventListener("click", () => {
 
 
 });
-
-// Check if modal visibility state exists in localStorage and show it
-window.onload = () => {
-    if (localStorage.getItem('modalVisible') === 'true') {
-        const modal = document.getElementById('modal');
-        modal.style.display = 'block';
-
-        // Hide the modal after 2 seconds, just in case the page is refreshed during the 2-second duration
-        setTimeout(() => {
-            modal.style.display = 'none';
-            localStorage.removeItem('modalVisible');
-        }, 2000);
-    }
-
-
-
-    const headerOrder = document.querySelector('.header-order');
-    const placeOrder = document.querySelector('.place-order');
-
-    headerOrder.addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent event from bubbling up
-        placeOrder.classList.toggle('collapsed');
-    });
-};

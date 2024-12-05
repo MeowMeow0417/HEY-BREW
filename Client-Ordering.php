@@ -276,9 +276,6 @@
     <div class="note-modal" id="modal">
         <p>Thank you for your purchase!</p>
         <p>Your order is now being processed.</p>
-            <div class="modal-buttons">
-                <button class="check-profile-btn">Check Profile</button>
-            </div>
     </div>
 
 
