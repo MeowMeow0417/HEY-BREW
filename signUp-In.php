@@ -83,8 +83,7 @@
                     echo "<div class='error'>Invalid email or password.</div>";
                 }
             } else {
-                echo "<div class='error'>No user found with that email.<br><br>
-                      <a href='manageSignUp.php' style='color: #8B4513; text-decoration: underline;'>Sign up as admin instead?</a></div>";
+                echo "<div class='error'>No user found with that email.</div>";
             }
             $client->close();
         } else {
@@ -107,10 +106,7 @@
     <link rel="stylesheet" href="style/client/signUp.css">
 </head>
 <body>
-
     <div class="container" id="container">
-
-
         <div class="form-container sign-up">
             <form action="signUp-In.php" method="POST" id="signUpForm">
                 <h2>Sign Up</h2>
@@ -125,31 +121,30 @@
             <form action="signUp-In.php" method="POST">
                 <h2>Sign In</h2>
                 <span>or use your email & password</span>
-                <input type="text" placeholder="Username" name="username"  required>
+                <input type="text" placeholder="Username" name="username" required>
                 <input type="password" placeholder="Password" name="password" required>
                 <a href="#">Forgot Password?</a>
                 <button type="submit" name="signIn">SIGN IN</button>
             </form>
         </div>
-
-
-
-
-    <div class="toggle-container">
-        <div class="toggle">
-            <div class="toggle-panel toggle-left">
-                <h2>Welcome Back!</h2>
-                <p>A perfect place to hangout and catch up!</p>
-                <button class="hidden" id="login">SIGN IN</button>
-            </div>
-            <div class="toggle-panel toggle-right">
-                <h2>Hey Brew HideOut!</h2>
-                <p>A perfect place to hangout and catch up!</p>
-                <button class="hidden" id="register">SIGN UP</button>
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h2>Welcome Back!</h2>
+                    <p>A perfect place to hangout and catch up!</p>
+                    <button class="hidden" id="login">SIGN IN</button>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h2>Hey Brew HideOut!</h2>
+                    <p>A perfect place to hangout and catch up!</p>
+                    <button class="hidden" id="register">SIGN UP</button>
+                </div>
             </div>
         </div>
+        <div class="mobile-toggle">
+            <button id="mobileToggle">Switch to Sign Up</button>
+        </div>
     </div>
-</div>
     <script src="script/client/signUp-In.js"></script>
 </body>
 </html>

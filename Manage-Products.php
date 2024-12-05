@@ -186,13 +186,12 @@
             <div class="product-container">
                 <nav class="top-nav">
                     <ul>
-                        <li><a href="?category=espresso" class="categories active">Espresso</a></li>
-                        <li><a href="?category=blendedBev" class="categories">Blended Beverages</a></li>
-                        <li><a href="?category=tea" class="categories">Tea</a></li>
-                        <li><a href="?category=riceM" class="categories">Rice Meals</a></li>
-                        <li><a href="?category=pasta" class="categories">Pasta</a></li>
-                        <li><a href="?category=snacks" class="categories">Snacks</a></li>
-                        <!-- Animated selection indicator -->
+                        <li><a href="?category=espresso" class="categories <?php echo (!isset($_GET['category']) || $_GET['category'] === 'espresso') ? 'active' : ''; ?>">Espresso</a></li>
+                        <li><a href="?category=blendedBev" class="categories <?php echo (isset($_GET['category']) && $_GET['category'] === 'blendedBev') ? 'active' : ''; ?>">Blended Beverages</a></li>
+                        <li><a href="?category=tea" class="categories <?php echo (isset($_GET['category']) && $_GET['category'] === 'tea') ? 'active' : ''; ?>">Tea</a></li>
+                        <li><a href="?category=riceM" class="categories <?php echo (isset($_GET['category']) && $_GET['category'] === 'riceM') ? 'active' : ''; ?>">Rice Meals</a></li>
+                        <li><a href="?category=pasta" class="categories <?php echo (isset($_GET['category']) && $_GET['category'] === 'pasta') ? 'active' : ''; ?>">Pasta</a></li>
+                        <li><a href="?category=snacks" class="categories <?php echo (isset($_GET['category']) && $_GET['category'] === 'snacks') ? 'active' : ''; ?>">Snacks</a></li>
                         <div class="animation"></div>
                     </ul>
                     <button class="addProd" name="addProd" type="submit">Add Product</button>

@@ -350,9 +350,22 @@ nav {
     object-fit: cover;
 }
 
+.product-info {
+    flex: 1;
+    overflow: hidden;
+}
+
 .product-info h3 {
     font-family: 'Oleo Script', cursive;
     margin-bottom: 0.5rem;
+}
+
+.product-info p {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;  /* Show 3 lines of text */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
@@ -887,7 +900,7 @@ h3 {
     }
 
     .products {
-        padding-top: 26rem;
+        padding-top: 24rem;
     }
 
     .products h2 {
@@ -923,7 +936,7 @@ h3 {
     .logo {
         position: static;
         left: auto;
-        margin-right: auto;
+        margin-left: 2rem;
     }
 
     .container {

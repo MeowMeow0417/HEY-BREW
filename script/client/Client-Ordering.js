@@ -1,58 +1,37 @@
-// Search function click event handler
 document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('searchInput');
-    const productCards = document.querySelectorAll('.product-card'); // Select all product cards
+    const categoryRow = document.querySelector('.category-row');
+    const categoryBoxes = document.querySelectorAll('.category-box');
 
-    searchInput.addEventListener('input', () => {
-        const searchTerm = searchInput.value.toLowerCase(); // Get the value from the search input
+    // Restore scroll position when page loads
+    const savedScrollPosition = localStorage.getItem('categoryScrollPosition');
+    if (savedScrollPosition) {
+        categoryRow.scrollLeft = parseInt(savedScrollPosition);
+    }
 
-        productCards.forEach(product => {
-            const productName = product.querySelector('h4').textContent.toLowerCase(); // Get the product name
-            // Check if the product name includes the search term
-            if (productName.includes(searchTerm)) {
-                product.style.display = 'block'; // Show product
-            } else {
-                product.style.display = 'none'; // Hide product
-            }
-        });
+    // Save scroll position when scrolling
+    categoryRow.addEventListener('scroll', () => {
+        localStorage.setItem('categoryScrollPosition', categoryRow.scrollLeft);
     });
-});
-document.querySelector('.header-order').addEventListener('click', () => {
-    document.querySelector('.place-order').classList.toggle('active');
-  });
 
-// Category filter click event handler
-document.addEventListener('DOMContentLoaded', () => {
-    const categoryBoxes = document.querySelectorAll('.category-box'); // Select all category divs
-
-    // Get the current category from the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const currentCategory = urlParams.get("category");
-
-    // Set the active class based on the current category
+    // Handle category clicks
     categoryBoxes.forEach((box) => {
-        const boxCategory = box.dataset.category;
-        if (boxCategory === currentCategory) {
-            box.classList.add('active');
-        } else {
-            box.classList.remove('active');
-        }
-
-        // Add click event listener
         box.addEventListener('click', (e) => {
-            e.preventDefault(); // Prevent default link behavior
+            e.preventDefault();
 
-            // Remove "active" class from all category boxes
-            categoryBoxes.forEach((cat) => cat.classList.remove('active'));
+            // Save the current scroll position
+            localStorage.setItem('categoryScrollPosition', categoryRow.scrollLeft);
 
-            // Add "active" class to the clicked category box
+            // Remove active class from all boxes
+            categoryBoxes.forEach((b) => b.classList.remove('active'));
+
+            // Add active class to clicked box
             box.classList.add('active');
 
+            // Get category and update URL
+            const category = box.dataset.category;
 
-            const selectedCategory = box.dataset.category;
-            const url = new URL(window.location);
-            url.searchParams.set("category", selectedCategory);
-            window.location.href = url.toString(); // Reload the page with the selected category
+            // Redirect to the category URL
+            window.location.href = `?category=${category}`;
         });
     });
 });
