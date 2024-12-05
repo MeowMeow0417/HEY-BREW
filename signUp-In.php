@@ -11,7 +11,12 @@
         $email = isset($_POST['email']) ? trim($_POST['email']) : '';
         $password = trim($_POST['password']);
 
-        if(isset($_POST['signUp'])){
+        // Validate username length and characters
+        if (isset($_POST['signUp'])) {
+            if (!preg_match('/^[a-zA-Z0-9]{5,15}$/', $username)) {
+                echo '<div class="error">Username must be 5-15 characters long and contain only letters and numbers.</div>';
+                exit();
+            }
 
             //error prevenetion when signingIn
             $email = isset($_POST['email']) ? trim($_POST['email']) : '';
@@ -78,7 +83,8 @@
                     echo "<div class='error'>Invalid email or password.</div>";
                 }
             } else {
-                echo "<div class='error'>No user found with that email.</div>";
+                echo "<div class='error'>No user found with that email.<br><br>
+                      <a href='manageSignUp.php' style='color: #8B4513; text-decoration: underline;'>Sign up as admin instead?</a></div>";
             }
             $client->close();
         } else {
@@ -102,27 +108,32 @@
 </head>
 <body>
 
-<div class="container" id="container">
-    <div class="form-container sign-up">
-        <form action="signUp-In.php" method="POST" onsubmit="return validateSignUp()">
-            <h2>Sign Up</h2>
-            <span>or use your email for registration</span>
-            <input type="email" placeholder="Email" name="email" id="signup-email" required>
-            <input type="text" placeholder="Username" name="username" id="signup-username" required>
-            <input type="password" placeholder="Password" name="password" id="signup-password" required>
-            <button type="submit" name="signUp">SIGN UP</button>
-        </form>
-    </div>
-    <div class="form-container sign-in">
-        <form action="signUp-In.php" method="POST" onsubmit="return validateSignIn()">
-            <h2>Sign In</h2>
-            <span>or use your email & password</span>
-            <input type="text" placeholder="Username" name="username" id="signin-username" required>
-            <input type="password" placeholder="Password" name="password" id="signin-password" required>
-            <a href="#">Forgot Password?</a>
-            <button type="submit" name="signIn">SIGN IN</button>
-        </form>
-    </div>
+    <div class="container" id="container">
+
+
+        <div class="form-container sign-up">
+            <form action="signUp-In.php" method="POST" id="signUpForm">
+                <h2>Sign Up</h2>
+                <span>or use your email for registration</span>
+                <input type="email" placeholder="Email" name="email" required>
+                <input type="text" placeholder="Username" name="username" pattern="^[a-zA-Z0-9]{5,15}$" title="Username must be 5-15 characters long and contain only letters and numbers" required>
+                <input type="password" placeholder="Password" name="password" required>
+                <button type="submit" name="signUp">SIGN UP</button>
+            </form>
+        </div>
+        <div class="form-container sign-in">
+            <form action="signUp-In.php" method="POST">
+                <h2>Sign In</h2>
+                <span>or use your email & password</span>
+                <input type="text" placeholder="Username" name="username"  required>
+                <input type="password" placeholder="Password" name="password" required>
+                <a href="#">Forgot Password?</a>
+                <button type="submit" name="signIn">SIGN IN</button>
+            </form>
+        </div>
+
+
+
 
     <div class="toggle-container">
         <div class="toggle">
