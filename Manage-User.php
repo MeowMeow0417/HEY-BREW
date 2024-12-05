@@ -140,7 +140,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 Orders
                             </button>
                             <button class="nav-button active" name="manage" type="submit">
-                                <img src="style/images/icons/exit.png" alt="Package Icon" width="24" height="24">
+                                <img src="style/images/icons/manage.png" alt="Package Icon" width="24" height="24">
                                 Manage
                             </button>
                             <button class="logOut" name="logOut" type="submit">Log Out</button>

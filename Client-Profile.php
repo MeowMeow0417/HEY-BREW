@@ -71,18 +71,6 @@ $userReceipts = array_filter($receipts, function ($receipt) use ($client_id) {
                         <p>CUSTOMER ID</p>
                     </div>
                 </div>
-                <div class="profile-details">
-                    <div class="info-row">
-                        <p>Email:</p>
-                        <span> <!-- <?php echo htmlspecialchars($email)?> --> </span>
-                    </div>
-                    <div class="info-row">
-                        <p>Password:</p>
-                        <div class="password-field">
-                            <span id="password">••••••••••</span>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
