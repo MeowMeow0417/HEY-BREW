@@ -1,6 +1,3 @@
-
-
-
 //Animation for Sign-In and Sign-Up function
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('container');
