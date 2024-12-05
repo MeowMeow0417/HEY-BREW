@@ -1,7 +1,3 @@
-
-
-
-//Animation for Sign-In and Sign-Up function
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('container');
     const registerBtn = document.getElementById('register');
@@ -66,4 +62,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Call on load and resize
     adjustForMobile();
     window.addEventListener('resize', adjustForMobile);
+
+    const signUpForm = document.getElementById('signUpForm');
+    
+    if (signUpForm) {
+        signUpForm.addEventListener('submit', function(e) {
+            const username = this.querySelector('input[name="username"]').value;
+            const usernameRegex = /^[a-zA-Z0-9]{5,15}$/;
+            
+            if (!usernameRegex.test(username)) {
+                e.preventDefault();
+                alert('Username must be 5-15 characters long and contain only letters and numbers');
+            }
+        });
+    }
 });

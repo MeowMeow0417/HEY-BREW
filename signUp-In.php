@@ -11,7 +11,12 @@
         $email = isset($_POST['email']) ? trim($_POST['email']) : '';
         $password = trim($_POST['password']);
 
-        if(isset($_POST['signUp'])){
+        // Validate username length and characters
+        if (isset($_POST['signUp'])) {
+            if (!preg_match('/^[a-zA-Z0-9]{5,15}$/', $username)) {
+                echo '<div class="error">Username must be 5-15 characters long and contain only letters and numbers.</div>';
+                exit();
+            }
 
             //error prevenetion when signingIn
             $email = isset($_POST['email']) ? trim($_POST['email']) : '';
@@ -78,7 +83,8 @@
                     echo "<div class='error'>Invalid email or password.</div>";
                 }
             } else {
-                echo "<div class='error'>No user found with that email.</div>";
+                echo "<div class='error'>No user found with that email.<br><br>
+                      <a href='manageSignUp.php' style='color: #8B4513; text-decoration: underline;'>Sign up as admin instead?</a></div>";
             }
             $client->close();
         } else {
@@ -106,13 +112,13 @@
 
 
         <div class="form-container sign-up">
-            <form action="signUp-In.php" method="POST">
+            <form action="signUp-In.php" method="POST" id="signUpForm">
                 <h2>Sign Up</h2>
                 <span>or use your email for registration</span>
                 <input type="email" placeholder="Email" name="email" required>
-                <input type="text" placeholder="Username" name="username" required>
-                <input type="password" placeholder="Password" name ="password" required>
-                <button type="submit" name="signUp" >SIGN UP</button>
+                <input type="text" placeholder="Username" name="username" pattern="^[a-zA-Z0-9]{5,15}$" title="Username must be 5-15 characters long and contain only letters and numbers" required>
+                <input type="password" placeholder="Password" name="password" required>
+                <button type="submit" name="signUp">SIGN UP</button>
             </form>
         </div>
         <div class="form-container sign-in">

@@ -21,6 +21,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = trim($_POST['password']);
 
     if (isset($_POST['signUp'])) {
+        // Validate username length and characters
+        if (!preg_match('/^[a-zA-Z0-9]{5,15}$/', $username)) {
+            echo '<div class="error">Username must be 5-15 characters long and contain only letters and numbers.</div>';
+            exit();
+        }
+
         // Check if the email already exists
         $admin = $conn->prepare('SELECT * FROM admin WHERE admin_email = ?');
         $admin->bind_param('s', $email);
@@ -66,17 +72,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
     <div class="container">
-        <form action="manageSignUp.php" method="POST">
+        <form action="manageSignUp.php" method="POST" id="adminSignUpForm">
             <h2>HEY BREW - Admin Sign Up</h2>
 
             <input type="email" id="email" placeholder="Email" name="email" required>
 
-            <input type="text" id="username" name="username" placeholder="Enter Username" required>
+            <input type="text" id="username" name="username" placeholder="Enter Username" 
+                   pattern="^[a-zA-Z0-9]{5,15}$" 
+                   title="Username must be 5-15 characters long and contain only letters and numbers" required>
 
             <input type="password" id="password" name="password" placeholder="Enter Password" required>
 
             <button type="submit" name="signUp">Sign Up</button>
+
+            <div style="text-align: center; margin-top: 10px;">
+                <a href="Manage-LogIn.php" style="color: #8B4513; text-decoration: underline;">Already have an account? Click here to log in</a>
+            </div>
         </form>
     </div>
+    <script src="script/client/admin/manageSignUp.js"></script>
 </body>
 </html>
