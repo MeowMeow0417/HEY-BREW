@@ -239,10 +239,7 @@ nav {
     background: rgba(0, 0, 0, 0.3);
     border-radius: 1rem;
     z-index: 2;
-    margin-top: -420px;
-    padding-top: 1rem;
-    margin-bottom: 1rem;
-
+    margin-top: -430px;
 }
 
 .products-header {
@@ -839,8 +836,7 @@ h3 {
 
     .nav-container {
         margin-left: 0;
-        padding: 0 1rem;
-        padding-top: 1rem;
+        padding:0;
         align-items: center;
 
     }
@@ -848,7 +844,7 @@ h3 {
     .nav-links {
         display: none;
         position: fixed;
-        top: 4rem;
+        top: 6rem;
         left: auto;
         right: 0;
         background: rgba(77, 44, 32, 0.95);
@@ -866,7 +862,7 @@ h3 {
     }
 
     .nav-links a {
-        padding: 0.75rem 0;
+        padding: 0 0;
         width: 100%;
         display: block;
     }
@@ -889,7 +885,7 @@ h3 {
     }
 
     .products {
-        padding-top: 24rem;
+        padding-top: 26rem;
     }
 
     .products h2 {
