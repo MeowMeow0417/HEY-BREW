@@ -339,7 +339,7 @@ html, body{
     }
 
     .header-order {
-      width: 470px;
+      width: 420px;
       cursor: pointer;
       background-color: var(--var-button);
       color: white;
