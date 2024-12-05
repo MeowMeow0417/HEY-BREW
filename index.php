@@ -26,11 +26,11 @@
             exit();
         }
         if (isset($_POST['signIn'])) {
-            header('Location: SignUp-In.php');
+            header('Location: signUp-In.php');
             exit();
         }
         if (isset($_POST['signUp'])) {
-            header('Location: SignUp-In.php');
+            header('Location: signUp-In.php');
             exit();
         }
 

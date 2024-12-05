@@ -116,7 +116,7 @@
         <!-- Category -->
             <div class="category-row" id="category-row">
                 <div class="category-box categories active" data-category="All">
-                    <img class="img-cat" src="" alt="product">
+                    <img class="img-cat" src="style/images/category-row/All.JPG" alt="product">
                     <a href="?category=All" >All Items</a>
                 </div>
 
