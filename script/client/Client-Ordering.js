@@ -423,7 +423,7 @@ document.getElementById("btn-order").addEventListener("click", () => {
         // Hide the modal after 2 seconds
         setTimeout(() => {
             modal.style.display = 'none';
-        }, 5000);
+        }, 10000);
     })
     .catch(error => {
         console.error(error)
