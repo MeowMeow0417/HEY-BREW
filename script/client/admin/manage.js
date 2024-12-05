@@ -104,3 +104,10 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('Alert shown');
   };
 });
+
+function hideAlert() {
+    const alertBox = document.getElementById('alertBox');
+    if (alertBox) {
+        alertBox.style.display = 'none';
+    }
+}
