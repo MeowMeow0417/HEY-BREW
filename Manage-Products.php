@@ -70,35 +70,72 @@
     if(isset($_POST['delete'])){
         $productName = $_POST['inputDelete'];
 
-        //Prepare SQL
-        $delete = $conn -> prepare("DELETE FROM products WHERE product_name = ?");
-        $delete -> bind_param("s", $productName);
+        // First, get the product_id
+        $getProductId = $conn->prepare("SELECT product_id FROM products WHERE product_name = ?");
+        $getProductId->bind_param("s", $productName);
+        $getProductId->execute();
+        $result = $getProductId->get_result();
+        $product = $result->fetch_assoc();
+        $getProductId->close();
 
-        // Execute the statement
-        if ($delete->execute()) {
-            // Check if any rows were affected
-            if ($delete->affected_rows > 0) {
+        if ($product) {
+            // Start transaction
+            $conn->begin_transaction();
+
+            try {
+                // First delete from product_prices
+                $deletePrices = $conn->prepare("DELETE FROM product_prices WHERE product_id = ?");
+                $deletePrices->bind_param("i", $product['product_id']);
+                $deletePrices->execute();
+                $deletePrices->close();
+
+                // Then delete from order_items
+                $deleteOrderItems = $conn->prepare("DELETE FROM order_items WHERE product_id = ?");
+                $deleteOrderItems->bind_param("i", $product['product_id']);
+                $deleteOrderItems->execute();
+                $deleteOrderItems->close();
+
+                // Finally delete the product
+                $deleteProduct = $conn->prepare("DELETE FROM products WHERE product_id = ?");
+                $deleteProduct->bind_param("i", $product['product_id']);
+                $deleteProduct->execute();
+
+                if ($deleteProduct->affected_rows > 0) {
+                    $conn->commit();
+                    echo "
+                    <div class='alert' id='alertBox'>
+                        <div class='overlay' onclick='hideAlert()'></div>
+                        <div class='alert-box'>
+                            Product '<span id=\"alert-product-name\">$productName</span>' deleted successfully.
+                            <button onclick='hideAlert()'>OK</button>
+                        </div>
+                    </div>";
+                } else {
+                    throw new Exception("No product found with the name '$productName'");
+                }
+                $deleteProduct->close();
+
+            } catch (Exception $e) {
+                $conn->rollback();
                 echo "
                 <div class='alert'>
                     <div class='overlay' onclick='hideAlert()'></div>
                     <div class='alert-box'>
-                        Product '<span id=\"alert-product-name\">$productName</span>' deleted successfully.
+                        Error: " . $e->getMessage() . "
                         <button onclick='hideAlert()'>OK</button>
                     </div>
                 </div>";
-            } else {
-                echo
-                "<div class='alert'>
-                <div class='overlay' onclick='hideAler()'></div>
-                No product found with the name '$productName'.
-                </div>";
             }
         } else {
-            echo "Error executing query: " . $conn->error;
+            echo "
+            <div class='alert'>
+                <div class='overlay' onclick='hideAlert()'></div>
+                <div class='alert-box'>
+                    No product found with the name '$productName'.
+                    <button onclick='hideAlert()'>OK</button>
+                </div>
+            </div>";
         }
-
-        // Close the statement
-        $delete->close();
     }
 
 ?>
