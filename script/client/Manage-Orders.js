@@ -14,7 +14,7 @@ function showOrderDetails(orderId) {
 
             if (order && order.items && order.items.length > 0) {
                 const customerName = order.client_username;
-                const customerAvatar = "style/images/products/auth.jpg"; // Placeholder for avatar
+                const customerAvatar = "style/images/category-row/profile.jpg"; // Placeholder for avatar
                 const orderDate = order.order_date_time;
                 const orderStatus = order.status;
 

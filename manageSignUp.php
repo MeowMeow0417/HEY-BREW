@@ -9,7 +9,7 @@ $result = $adminExists->get_result();
 
 // If an admin exists, redirect to login or show a message
 if ($result->num_rows > 0) {
-    echo '<div class="error">Admin account already exists. Please <a href="manageLogIn.php">log in here</a>.</div>';
+    echo '<div class="error">Admin account already exists. Please <a href="Manage-Login.php">log in here</a>.</div>';
     exit(); // Stop script execution to prevent showing the form
 }
 

@@ -114,7 +114,7 @@
                          <!-- Profile -->
                             <a href="Client-Profile.php">
                                 <div class="profile-card" id="profile-card" name="profile-card">
-                                    <img src="style/images/products/auth.jpg" alt="Admin Profile">
+                                    <img src="style/images/category-row/profile.jpg" alt="Admin Profile">
                                     <div class="profile-info">
                                         <h4><?php echo htmlspecialchars($username); ?></h4>
                                     </div>

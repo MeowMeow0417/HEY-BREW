@@ -14,6 +14,14 @@
         exit();
     }
 
+    if(isset($_POST['logOut'])){
+        error_log('Products button clicked.');
+
+        header('Location: Manage-LogIn.php');
+        session_destroy();
+        exit();
+    }
+
     $sql = "SELECT
         c.client_id AS client_id,
         c.username AS client_username,
@@ -99,7 +107,7 @@ if ($result) {
                                     <td><?php echo htmlspecialchars($order['order_id']); ?></td>
                                     <td>
                                         <div class="customer-info">
-                                            <img src="style/images/products/auth.jpg" alt="Avatar" class="customer-avatar">
+                                            <img src="style/images/category-row/profile.jpg" alt="Avatar" class="customer-avatar">
                                             <?php echo htmlspecialchars($order['client_username']); ?>
                                         </div>
                                     </td>

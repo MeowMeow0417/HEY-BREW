@@ -456,7 +456,7 @@ window.onload = () => {
 
     const headerOrder = document.querySelector('.header-order');
     const placeOrder = document.querySelector('.place-order');
-    
+
     headerOrder.addEventListener('click', (e) => {
         e.stopPropagation(); // Prevent event from bubbling up
         placeOrder.classList.toggle('collapsed');
