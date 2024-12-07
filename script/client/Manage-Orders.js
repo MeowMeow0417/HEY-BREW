@@ -5,7 +5,7 @@ function showOrderDetails(orderId) {
     fetch(`php/fetch_orders.php?order_id=${orderId}`)
         .then(response => response.json())
         .then(order => {
-            console.log('Server Response:', order); // Log to check what is returned
+            console.log('Server Response:', order); // Log for debugging
 
             if (order.error) {
                 detailsDiv.innerHTML = `<p>Error fetching orders: ${order.error}</p>`;
@@ -18,11 +18,11 @@ function showOrderDetails(orderId) {
                 const orderDate = order.order_date_time;
                 const orderStatus = order.status;
 
-                // Calculate the total price of all items
+                // Calculate the total price dynamically
                 const totalPrice = order.items.reduce((sum, item) => sum + parseFloat(item.total_price), 0);
 
                 // Generate HTML for each order item
-                let itemsHtml = order.items.map(item => `
+                const itemsHtml = order.items.map(item => `
                     <div class="order-item-card">
                         <p><strong>Product:</strong> ${item.product_name}</p>
                         <p><strong>Category:</strong> ${item.category}</p>
@@ -52,6 +52,12 @@ function showOrderDetails(orderId) {
                     <h4>Items</h4>
                     ${itemsHtml}
                 `;
+
+                // Assign total price to the select element
+                const statusSelect = document.querySelector(`select[data-order-id="${orderId}"]`);
+                if (statusSelect) {
+                    statusSelect.dataset.totalPrice = totalPrice.toFixed(2); // Store for later use
+                }
             } else {
                 detailsDiv.innerHTML = `<p>No items found for this order.</p>`;
             }
@@ -61,25 +67,58 @@ function showOrderDetails(orderId) {
         });
 }
 
-
-// For updating the order status
 function updateOrderStatus(selectElement) {
-    const orderId = selectElement.getAttribute('data-order-id');
-    const newStatus = selectElement.value;
+    const selectedStatus = selectElement.value;
+    const orderId = selectElement.dataset.orderId;
+    const totalPrice = parseFloat(selectElement.dataset.totalPrice);
 
-    // Update the data-status attribute based on the new status
-    selectElement.setAttribute('data-status', capitalizeFirstLetter(newStatus));
+    console.log("Order ID:", orderId, "Total Price:", totalPrice); // Debugging values
+
+    if (isNaN(totalPrice)) {
+        console.error("Error: Total Price is invalid.");
+        alert("Unable to retrieve total price for the order. Please check the details and try again.");
+        return;
+    }
+
+    if (selectedStatus === 'completed') {
+
+
+        // Post data to PHP
+        axios.post('php/salesData.php', `orderId=${orderId}&totalPrice=${totalPrice}`, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        })
+        .then(response => {
+            console.log("Server Response:", response.data);
+
+            if (response.data.success) {
+                // alert("Order marked as completed and sales logged successfully.");
+            } else {
+                console.error("Server Error:", response.data.message);
+                alert("Failed to log the sales. Please try again.");
+                selectElement.value = selectElement.dataset.status; // Revert on error
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("An error occurred while updating the order status.");
+            selectElement.value = selectElement.dataset.status; // Revert on error
+        });
+    }
+
+    selectElement.setAttribute('data-status', capitalizeFirstLetter(selectedStatus));
 
     // Optionally disable while updating and then enable after response
     selectElement.disabled = true;
 
     axios.post('php/update_order_status.php', {
         order_id: orderId,
-        status: newStatus
+        status: selectedStatus
     })
     .then(response => {
         if (response.data.success) {
-            console.log(`Order ${orderId} updated to ${newStatus}.`);
+            console.log(`Order ${orderId} updated to ${selectedStatus}.`);
 
         } else {
             console.error(`Failed to update order ${orderId}.`);
@@ -90,10 +129,11 @@ function updateOrderStatus(selectElement) {
         console.error('Error:', error);
         alert('An error occurred while updating the order status.');
     })
-    .finally(() => {
-        selectElement.disabled = false; // Re-enable select
-    });
+
 }
+
+
+
 
 // Utility function to capitalize the first letter
 function capitalizeFirstLetter(string) {

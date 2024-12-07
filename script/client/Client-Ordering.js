@@ -291,16 +291,17 @@ document.addEventListener("DOMContentLoaded", () => {
         productRows.forEach(row => {
             const id = row.getAttribute("data-id");
             const name = row.querySelector("h4").textContent;
-            const size = row.querySelector(".product-info p:nth-child(2)").textContent;
-            const type = row.querySelector(".product-info p:nth-child(3)").textContent;
-            const quantity = parseInt(row.querySelector(".stepper-value").textContent);
-            const addOns = row.querySelector(".product-info p:nth-child(4)").textContent;
-            const price = parseFloat(row.querySelector("#total-price").textContent) / quantity;
+            const size = row.querySelector(".product-info p:nth-child(2)")?.textContent || "";
+            const type = row.querySelector(".product-info p:nth-child(3)")?.textContent || "";
+            const quantity = parseInt(row.querySelector(".stepper-value").textContent) || 0;
+            const addOns = row.querySelector(".product-info p:nth-child(4)")?.textContent || "";
+            const price = parseFloat(row.querySelector("#total-price").textContent) / (quantity || 1); // Avoid division by zero
             const image = row.querySelector("img").src;
             products.push({ id, name, size, type, addOns, quantity, price, image });
         });
         localStorage.setItem("products", JSON.stringify(products));
     }
+
 
     function loadSavedProducts() {
         const savedProducts = JSON.parse(localStorage.getItem("products")) || [];
@@ -323,7 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <a href="#" class="remove-prod"><i class="fa-solid fa-trash"></i></a>
                     <div class="stepper">
                         <a class="stepper-btn decrement"><i class="fa-solid fa-minus"></i></a>
-                        <span class="stepper-value">${product.quantity}</span>
+                        <span type="text" class="stepper-value">${product.quantity}</span>
                         <a class="stepper-btn increment"><i class="fa-solid fa-plus"></i></a>
                     </div>
                 </div>
@@ -362,7 +363,7 @@ document.getElementById("btn-order").addEventListener("click", () => {
         const id = row.getAttribute("data-id");
         const name = row.querySelector("h4").textContent;
         const size = row.querySelector(".price-con p").textContent;
-        const type = row.querySelector(".product-info p:nth-child(2)").textContent;
+        const type = row.querySelector(".product-info p:nth-child(2)")?.textContent.trim() || "Unknown Type";
         const addOns = row.querySelector(".product-info p:nth-child(3)").textContent;
         const quantity = parseInt(row.querySelector(".stepper-value").textContent);
         const totalPrice = parseFloat(row.querySelector("#total-price").textContent);

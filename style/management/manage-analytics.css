@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css2?family=Oleo+Script:wght@400;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    --var-trans-rec: rgba(166, 173, 181, 0.3);
+    --var-button: #8B4513;
+    --var-stroke: #A0522D;
+    --var-select-col: rgb(166, 173, 181);
+    --var-back-color: #ffffff;
+    --var-text-color: #000000;
+    --var-main-color: #4A4A4A;
+    --var-tag-border: #542d12;
+    --var-sub-font: 'Poppins', sans-serif;
+    --var-main-font: 'Oleo Script', serif;
+}
+
+  /* General Styles */
+  html, body {
+    font-family: var(--var-sub-font);
+    background-color: var(--var-back-color);
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    color: var(--var-text-color);
+    position: relative;
+  }
+
+
+  /* Main Container */
+  .main-container {
+    display: grid;
+    grid-template-columns: 0.5fr 2fr;
+    height: 100vh;
+    gap: 20px;
+    overflow: hidden;
+  }
+
+  /* Navigation Styles */
+  .side-nav {
+    grid-column: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 2px 0 5px var(--var-card-shadow);
+
+    /* Profile Card Styles */
+  .profile-card {
+    background-color: var(--var-button);
+    border: 1px solid var(--var-stroke);
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--var-tag-border);
+    margin-bottom: 20px;
+    color: white;
+    width: 200px;
+    height: 35px;
+
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 12px;
+    }
+
+    h4{
+      font-size: 24px;
+      font-weight: 600;
+      margin: 0 0 4px 0;
+    }
+
+    p{
+      font-size: 10px;
+      opacity: 0.8;
+      margin: 0;
+    }
+
+  }
+
+  }
+
+  /* buttons */
+  .button-col {
+    display: flex;
+    flex-direction: column;
+  }
+    .nav-button {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+      text-align: left;
+      font-size: 16px;
+
+
+      img {
+        margin-right: 10px;
+      }
+  }
+
+    .nav-button:hover {
+      background-color: #f0f0f0;
+      border-radius: 5px;
+    }
+
+    .nav-button.active{
+      background-color: #f0f0f0;
+      border-radius: 5px;
+    }
+
+    .logOut {
+      font-size: 0.8rem;
+      background-color: var(--var-prod-con);
+      border: none;
+      padding: 10px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .products:hover, .orders:hover {
+      background-color: var(--var-trans-rec) ;
+    }
+    .logOut:hover {
+      color: white;
+      background-color: rgb(105, 8, 8);
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.2s ease;
+    }
+
+/* container */
+
+.container {
+    grid-column: 2;
+    height: 85%;
+    width: auto;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    margin: 25px;
+    padding: 25px;
+    overflow-y: auto;
+
+    display: grid;
+    grid-template-columns: 1.5fr 0.5fr;
+    grid-template-rows: auto ;
+
+    h2 {
+        margin: 0;
+    }
+}
+
+
+/* Detailed Analytics Section */
+.detailed-analytics {
+    grid-column: 1;
+    padding: 20px;
+
+    .chart-container {
+        margin-top: 20px;
+        background-color: var(--var-back-color);
+        padding: 25px;
+        border-radius: 20px;
+    }
+
+    h3 {
+        margin: 0;
+        font-size: 1.2rem;
+    }
+
+
+    .overview-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .selection{
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        button{
+            color: black;
+            background-color: var(--var-button);
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            transition: all 0.2s ease-in-out;
+        }
+
+    }
+
+
+
+    button.active {
+        color: white;
+        background-color: var(--var-tag-border);
+    }
+    button:hover{
+        background-color: var(--var-stroke);
+        color: white;
+        transform: scale(1.02);
+    }
+    #salesChart{
+        height: 200px;
+    }
+
+}
+
+
+.chart-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+
+    .chart-2{
+        grid-column: 1;
+    }
+
+    .chart-3{
+        grid-column: 2;
+        margin-top: 20px;
+    }
+
+}
+
+
+
+
+/* Analytics Overview */
+.analytics-overview {
+    grid-column: 2;
+    gap: 20px;
+}
+
+.metric-card {
+    margin-top: 10px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    height: 75px;
+
+    h4{
+        font-size: 8px;
+    }
+}
+
+.metric {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}

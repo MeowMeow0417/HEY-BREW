@@ -14,6 +14,11 @@
         exit();
     }
 
+    if(isset($_POST['analytics'])){
+        header('Location: Manage-Analytics.php');
+        exit();
+    }
+
     if(isset($_POST['logOut'])){
         error_log('Products button clicked.');
 
@@ -45,6 +50,7 @@ if ($result) {
 } else {
     echo 'Error: ' . mysqli_error($conn);
 }
+
 
 
 ?>
@@ -82,7 +88,10 @@ if ($result) {
                         <button class="nav-button" name="manage" type="submit">
                         <img src="style/images/icons/manage.png" alt="Package Icon" width="24" height="24">
                         Manage
-                    </button>
+                        </button>
+                        <button class="nav-button" name="analytics" type="submit">
+                        <img src="style/images/icons/analytics.png" alt="Analytics Icon" width="24" height="24"> Analytics
+                        </button>
                     <button class="logOut" name="logOut" type="submit">Log Out</button>
                     </nav>
                 </div>
@@ -92,46 +101,57 @@ if ($result) {
                     <table class="customer-table">
                         <thead>
                             <tr>
-                                <th>Order ID</th>
                                 <th>Customer</th>
-                                <th>Date & Time </th>
+                                <th>Transaction ID</th>
+                                <th>Date & Time</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-                        <?php if (!empty($client_orders)): ?>
-                            <?php foreach ($client_orders as $order): ?>
-                                <tr class="order-row"
-                                    data-order-id="<?php echo htmlspecialchars($order['order_id']); ?>"
-                                    onclick="showOrderDetails('<?php echo htmlspecialchars($order['order_id']); ?>')">
-                                    <td><?php echo htmlspecialchars($order['order_id']); ?></td>
-                                    <td>
-                                        <div class="customer-info">
-                                            <img src="style/images/category-row/profile.jpg" alt="Avatar" class="customer-avatar">
-                                            <?php echo htmlspecialchars($order['client_username']); ?>
-                                        </div>
-                                    </td>
-                                    <td><?php echo htmlspecialchars($order['order_date_time']); ?></td>
-                                    <td>
-                                        <select class="status-select" data-order-id="<?php echo htmlspecialchars($order['order_id']); ?>" data-status="<?php echo ucfirst($order['status']); ?>" onchange="updateOrderStatus(this)">
-                                            <option value="pending" <?php echo $order['status'] === 'pending' ? 'selected' : ''; ?>>Pending</option>
-                                            <option value="completed" <?php echo $order['status'] === 'completed' ? 'selected' : ''; ?>>Completed</option>
-                                            <option value="cancelled" <?php echo $order['status'] === 'cancelled' ? 'selected' : ''; ?>>Cancelled</option>
-                                        </select>
-                                    </td>
+                            <?php if (!empty($client_orders)): ?>
+                                <?php
+                                    // Group orders by customer
+                                    $grouped_orders = [];
+                                    foreach ($client_orders as $order) {
+                                        $grouped_orders[$order['client_username']][] = $order;
+                                    }
+                                ?>
+                                <?php foreach ($grouped_orders as $customer => $orders): ?>
+                                    <tr class="customer-row">
+                                        <td colspan="4">
+                                            <div class="customer-info">
+                                                <img src="style/images/category-row/profile.jpg" alt="Avatar" class="customer-avatar">
+                                                <strong><?php echo htmlspecialchars($customer); ?></strong>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php foreach ($orders as $order): ?>
+                                        <tr class="order-row" data-order-id="<?php echo htmlspecialchars($order['order_id']); ?>" onclick="showOrderDetails('<?php echo htmlspecialchars($order['order_id']); ?>')">
+                                            <td></td> <!-- Empty cell for alignment under customer name -->
+                                            <td><?php echo htmlspecialchars($order['order_id']); ?></td>
+                                            <td><?php echo htmlspecialchars($order['order_date_time']); ?></td>
+                                            <td>
+                                            <select
+                                                    class="status-select"
+                                                    data-status="<?php echo ucfirst($order['status'])?>"
+                                                    data-order-id="<?php echo htmlspecialchars($order['order_id']); ?>"
+                                                    onchange="updateOrderStatus(this)">
+                                                    <option value="pending" <?php echo $order['status'] === 'pending' ? 'selected' : ''; ?>>Pending</option>
+                                                    <option value="completed" <?php echo $order['status'] === 'completed' ? 'selected' : ''; ?>>Completed</option>
+                                                    <option value="cancelled" <?php echo $order['status'] === 'cancelled' ? 'selected' : ''; ?>>Cancelled</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="4">No orders found</td>
                                 </tr>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="4">No orders found</td>
-                            </tr>
-                        <?php endif; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
-
                 </div>
-
-
                 <div class="detail-order">
                     <h2>Order Detail</h2>
                     <div id="orderDetails" class="detail-card">

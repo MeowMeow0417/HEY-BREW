@@ -20,6 +20,11 @@
         exit();
     }
 
+    if(isset($_POST['analytics'])){
+        header('Location: Manage-Analytics.php');
+        exit();
+    }
+
     if(isset($_POST['logOut'])){
         error_log('Products button clicked.');
 
@@ -142,6 +147,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <button class="nav-button active" name="manage" type="submit">
                                 <img src="style/images/icons/manage.png" alt="Package Icon" width="24" height="24">
                                 Manage
+                            </button>
+                            <button class="nav-button" name="analytics" type="submit">
+                                <img src="style/images/icons/analytics.png" alt="Analytics Icon" width="24" height="24"> Analytics
                             </button>
                             <button class="logOut" name="logOut" type="submit">Log Out</button>
                         </div>
