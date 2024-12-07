@@ -77,7 +77,7 @@ $userReceipts = array_filter($receipts, function ($receipt) use ($client_id) {
             <div class="order-history">
                 <div class="order-column" id="order-column">
                     <div class="order-header">
-                        <h2>Order History</h2>
+                        <h2>Transaction History</h2>
                         <button id="logOutBtn" name="logOutBtn" class="logOutBtn">Log Out</button>
                     </div>
                     <div class="headings">
