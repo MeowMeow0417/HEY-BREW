@@ -71,8 +71,9 @@ function updateOrderStatus(selectElement) {
     const selectedStatus = selectElement.value;
     const orderId = selectElement.dataset.orderId;
     const totalPrice = parseFloat(selectElement.dataset.totalPrice);
+    const orderDate = selectElement.dataset.orderDate;
 
-    console.log("Order ID:", orderId, "Total Price:", totalPrice); // Debugging values
+    console.log("Order ID:", orderId, "Total Price:", totalPrice, "Order Date", orderDate); // Debugging values
 
     if (isNaN(totalPrice)) {
         console.error("Error: Total Price is invalid.");
@@ -84,7 +85,7 @@ function updateOrderStatus(selectElement) {
 
 
         // Post data to PHP
-        axios.post('php/salesData.php', `orderId=${orderId}&totalPrice=${totalPrice}`, {
+        axios.post('php/salesData.php', `orderId=${orderId}&totalPrice=${totalPrice}&orderDate=${orderDate}`, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }

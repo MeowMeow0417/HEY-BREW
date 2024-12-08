@@ -8,24 +8,56 @@ header('Content-Type: application/json');
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Ensure the request method is GET
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     http_response_code(405);
     echo json_encode(["error" => "Invalid request method. Expected GET."]);
     exit;
 }
 
-// Check if 'action' is 'get'
 if (isset($_GET['action']) && $_GET['action'] === 'get') {
-    try {
-        $stmt = $conn->prepare("
-            SELECT DATE_FORMAT(date, '%d') AS day, SUM(total_sales) AS sales
-            FROM salesData
-            WHERE MONTH(date) = MONTH(CURDATE())
-            GROUP BY day
-            ORDER BY day ASC
-        ");
+    $filter = $_GET['filter'] ?? 'month'; // Default to 'month' if no filter is provided
 
+    try {
+        $query = "";
+        $groupBy = "";
+        $params = [];
+
+        // Adjust query based on the filter
+        switch ($filter) {
+            case 'day': // Group by hour
+                $query = "
+                    SELECT DATE_FORMAT(date, '%Y-%m-%d %H:00:00') AS datetime, SUM(total_sales) AS sales
+                    FROM salesData
+                    WHERE DATE(date) = CURDATE()
+                    GROUP BY HOUR(date)
+                    ORDER BY datetime ASC
+                ";
+                break;
+
+            case 'week': // Group by day
+                $query = "
+                    SELECT DATE_FORMAT(date, '%Y-%m-%d') AS datetime, SUM(total_sales) AS sales
+                    FROM salesData
+                    WHERE WEEK(date) = WEEK(CURDATE()) AND YEAR(date) = YEAR(CURDATE())
+                    GROUP BY DATE(date)
+                    ORDER BY datetime ASC
+                ";
+                break;
+
+            case 'month': // Group by day
+            default:
+                $query = "
+                    SELECT DATE_FORMAT(date, '%Y-%m-%d') AS datetime, SUM(total_sales) AS sales
+                    FROM salesData
+                    WHERE MONTH(date) = MONTH(CURDATE()) AND YEAR(date) = YEAR(CURDATE())
+                    GROUP BY DATE(date)
+                    ORDER BY datetime ASC
+                ";
+                break;
+        }
+
+        // Fetch sales data
+        $stmt = $conn->prepare($query);
         if (!$stmt) {
             throw new Exception("Failed to prepare statement: " . $conn->error);
         }
@@ -33,22 +65,40 @@ if (isset($_GET['action']) && $_GET['action'] === 'get') {
         $stmt->execute();
         $result = $stmt->get_result();
 
-        // Initialize sales data array for a month (default to zero for days with no sales)
-        $salesData = array_fill(0, 30, 0);
-
+        $salesData = [];
         while ($row = $result->fetch_assoc()) {
-            $day = (int)$row['day'] - 1; // Zero-based index
-            $salesData[$day] = (float)$row['sales'];
+            $salesData[] = [
+                "datetime" => $row['datetime'],
+                "sales" => (float)$row['sales']
+            ];
         }
 
-        echo json_encode($salesData);
+        // Fetch total sales data
+        $totalStmt = $conn->prepare("
+            SELECT SUM(total_sales) AS total_sales
+            FROM salesData
+            WHERE " . ($filter === 'day' ? "DATE(date) = CURDATE()" :
+                     ($filter === 'week' ? "WEEK(date) = WEEK(CURDATE()) AND YEAR(date) = YEAR(CURDATE())" :
+                      "MONTH(date) = MONTH(CURDATE()) AND YEAR(date) = YEAR(CURDATE())"))
+        );
+        if (!$totalStmt) {
+            throw new Exception("Failed to prepare statement for total sales: " . $conn->error);
+        }
+
+        $totalStmt->execute();
+        $totalResult = $totalStmt->get_result();
+        $totalSales = $totalResult->fetch_assoc()['total_sales'] ?? 0;
+
+        echo json_encode([
+            "salesData" => $salesData,
+            "totalSales" => (float)$totalSales
+        ]);
     } catch (Exception $e) {
         http_response_code(500);
         echo json_encode(["error" => $e->getMessage()]);
     } finally {
-        if (isset($stmt) && $stmt instanceof mysqli_stmt) {
-            $stmt->close();
-        }
+        if (isset($stmt) && $stmt instanceof mysqli_stmt) $stmt->close();
+        if (isset($totalStmt) && $totalStmt instanceof mysqli_stmt) $totalStmt->close();
         $conn->close();
     }
 } else {

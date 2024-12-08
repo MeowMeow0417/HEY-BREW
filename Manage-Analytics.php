@@ -4,6 +4,7 @@
     include("php/athenticate_admin.php");
 
 
+
 ?>
 
 <!DOCTYPE html>
@@ -49,17 +50,15 @@
         <!-- Analytics Container -->
         <div class="container" id="container">
             <h2>Analytics Dashboard</h2>
-
-            <!-- Detailed Analytics Section -->
-            <div class="detailed-analytics">
+            <div class="container-1" id="container-1">
                 <div class="chart-container" id="chart-container">
                     <div class="overview" id="over">
                     <div class="overview-header">
                         <h3>Revenue Overview</h3>
                             <div class="selection" id="selection">
-                                <button class="filter-day active">Day</button>
-                                <button class="filter-month">Week</button>
-                                <button class="filter-year">Month</button>
+                                <button class="filter-button active" data-filter="day">Day</button>
+                                <button class="filter-button" data-filter="week">Week</button>
+                                <button class="filter-button" data-filter="month">Month</button>
                             </div>
                         </div>
                     </div>
@@ -67,46 +66,52 @@
                     <!-- Example: Sales Line Chart -->
                     <canvas id="salesChart"></canvas>
                 </div>
-                <div class="chart-grid" id="chart-grid">
-                    <div class="chart-container chart-2">
-                        <h3>Review Ratings Distribution</h3>
-                        <canvas id="ratingChart"></canvas>
+                <div class="metric-column">
+                    <div class="metric-card">
+                        <h4>Total Sales</h4>
+                        <p class="metric">₱0.00</p>
                     </div>
-                    <div class="chart-3">
-                        <div class="metric-card">
-                            <h4>Total Reviews</h4>
-                            <p class="metric">500</p>
-                        </div>
-                        <div class="metric-card">
-                            <h4>Average Rating</h4>
-                            <p class="metric">4.5/5</p>
-                        </div>
-                        <div class="metric-card">
-                            <h4>Most Reviewed Product</h4>
-                            <p class="metric">Espresso Blend</p>
-                        </div>
+
+                    <div class="metric-card">
+                        <h4>Download Sales</h4>
+                        <a href="" class="link"><p class="metric">></p></a>
                     </div>
+
                 </div>
-                 <div class="chart-container chart-3">
+
+
+            </div>
+            <!-- Detailed Analytics Section -->
+                <div class="container-2">
+                        <div class="chart-container chart-2">
+                            <h3>Product Reviews</h3>
+                            <canvas id="ratingChart"></canvas>
+                        </div>
+                        <div class="metric-column">
+                            <div class="metric-card">
+                                <h4>Total Reviews</h4>
+                                <p class="metric">500</p>
+                            </div>
+                            <div class="metric-card">
+                                <h4>Average Rating</h4>
+                                <p class="metric">4.5/5</p>
+                            </div>
+                            <div class="metric-card">
+                                <h4>Most Reviewed Product</h4>
+                                <p class="metric">Espresso Blend</p>
+                            </div>
+
+                        </div>
+                    </div>
+                <div class="container-3">
+                    <div class="chart-container chart-3">
                         <h3>Sentiment Analysis</h3>
                         <canvas id="sentimentChart"></canvas>
                     </div>
-            </div>
-
-            <!-- Analytics Overview Section -->
-            <div class="analytics-overview">
-                <div class="metric-card">
-                    <h4>Total Sales</h4>
-                    <p class="metric">₹120,000</p>
                 </div>
-
-
-            </div>
-
-
-
         </div>
     </div>
+
 
     <!-- Include JavaScript for charts (e.g., Chart.js) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

@@ -111,9 +111,11 @@
     .nav-button:hover {
       background-color: #f0f0f0;
       border-radius: 5px;
+      color: black;
     }
 
     .nav-button.active{
+        color: black;
       background-color: #f0f0f0;
       border-radius: 5px;
     }
@@ -152,7 +154,6 @@
     overflow-y: auto;
 
     display: grid;
-    grid-template-columns: 1.5fr 0.5fr;
     grid-template-rows: auto ;
 
     h2 {
@@ -160,14 +161,31 @@
     }
 }
 
+.container-1, .container-2, .container-3{
+    display: grid;
+    grid-template-columns: 2fr 0.5fr;
+    gap:15px;
+    margin-top:15px;
+}
+
+.metric-column{
+    padding: 10px;
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.container-2{
+    grid-template-columns: 1fr 1fr;
+}
+
+
+
 
 /* Detailed Analytics Section */
-.detailed-analytics {
-    grid-column: 1;
-    padding: 20px;
 
     .chart-container {
-        margin-top: 20px;
         background-color: var(--var-back-color);
         padding: 25px;
         border-radius: 20px;
@@ -216,45 +234,25 @@
         height: 200px;
     }
 
-}
 
-
-.chart-grid{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-
-    .chart-2{
-        grid-column: 1;
-    }
-
-    .chart-3{
-        grid-column: 2;
-        margin-top: 20px;
-    }
-
-}
 
 
 
 
 /* Analytics Overview */
-.analytics-overview {
-    grid-column: 2;
-    gap: 20px;
-}
 
 .metric-card {
-    margin-top: 10px;
+    margin-top: 5px;
     background-color: #fff;
-    padding: 20px;
+    padding: 25px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    height: 75px;
+    height: 60px;
 
     h4{
         font-size: 8px;
+        margin: 5px;
     }
 }
 

@@ -135,6 +135,7 @@ if ($result) {
                                                     class="status-select"
                                                     data-status="<?php echo ucfirst($order['status'])?>"
                                                     data-order-id="<?php echo htmlspecialchars($order['order_id']); ?>"
+                                                    data-order-date="<?php echo htmlspecialchars($order['order_date_time'])?>"
                                                     onchange="updateOrderStatus(this)">
                                                     <option value="pending" <?php echo $order['status'] === 'pending' ? 'selected' : ''; ?>>Pending</option>
                                                     <option value="completed" <?php echo $order['status'] === 'completed' ? 'selected' : ''; ?>>Completed</option>

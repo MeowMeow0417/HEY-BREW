@@ -24,16 +24,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         category.addEventListener("click", (e) => {
             e.preventDefault();
-            
+
             // Remove active class from all categories
             categories.forEach((cat) => cat.classList.remove('active'));
-            
+
             // Add active class to clicked category
             category.classList.add('active');
-            
+
             // Update animation
             setActiveCategory(category);
-            
+
             // Navigate to new category
             window.location.href = category.getAttribute('href');
         });
