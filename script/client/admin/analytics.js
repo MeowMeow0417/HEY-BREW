@@ -109,11 +109,11 @@ var ctxRatings = document.getElementById('ratingChart').getContext('2d');
 var ratingChart = new Chart(ctxRatings, {
     type: 'pie',
     data: {
-        labels: ['5 Stars', '4 Stars', '3 Stars', '2 Stars', '1 Star'],
+        labels: ['6 stars', '5 Stars', '4 Stars', '3 Stars', '2 Stars', '1 Star'],
         datasets: [{
             label: 'Review Ratings',
-            data: [50, 30, 10, 5, 5],
-            backgroundColor: ['#28a745', '#ffcc00', '#f39c12', '#e74c3c', '#dcdcdc']
+            data: [ 25, 50, 30, 10, 5, 5],
+            backgroundColor: ['#00as00', '#28a745', '#ffcc00', '#f39c12', '#e74c3c', '#dcdcdc']
         }]
     }
 });

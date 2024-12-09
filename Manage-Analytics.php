@@ -100,6 +100,10 @@
                                 <h4>Most Reviewed Product</h4>
                                 <p class="metric">Espresso Blend</p>
                             </div>
+                            <div class="metric-card">
+                                <h4>Download Product Reviews</h4>
+                                <a href=""><p class="metric">></p></a>
+                            </div>
 
                         </div>
                     </div>
