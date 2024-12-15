@@ -14,6 +14,11 @@
         exit();
     }
 
+    if(isset($_POST['btn-review'])){
+        header('Location: add-reviews.php');
+        exit();
+    }
+
         // for the product list
         // Initialize product array
         $products = [];
@@ -39,12 +44,76 @@
 
         if ($result) {
             while ($row = mysqli_fetch_assoc($result)) {
-                $products[$row['product_id']]['details'] = $row; // Store product details
-                $products[$row['product_id']]['prices'][] = $row; // Store prices by size
+                $productId = $row['product_id'];
+
+                // Store product details
+                if (!isset($products[$productId]['details'])) {
+                    $products[$productId]['details'] = [
+                        'product_id' => $row['product_id'],
+                        'image_path' => $row['image_path'],
+                        'product_name' => $row['product_name'],
+                        'prodDescription' => $row['prodDescription'],
+                        'category' => $row['category'],
+                        'type' => $row['type'],
+                        'add_ons' => $row['add_ons']
+                    ];
+                }
+
+                // Store prices by size
+                $products[$productId]['prices'][] = [
+                    'size' => $row['size'],
+                    'price' => $row['price']
+                ];
             }
-    } else {
-    echo "Error: " . mysqli_error($conn);
-    }
+
+            // Fetch reviews for all products
+            $reviewsQuery = "SELECT
+                                r.product_id,
+                                r.rating,
+                                r.comment,
+                                c.client_id AS user
+                             FROM
+                                product_reviews r
+                             JOIN
+                                clients c ON r.client_id = c.client_id";
+
+            $reviewsResult = mysqli_query($conn, $reviewsQuery);
+
+            if ($reviewsResult) {
+                while ($review = mysqli_fetch_assoc($reviewsResult)) {
+                    $productId = $review['product_id'];
+
+                    // Initialize reviews if not already set
+                    if (!isset($products[$productId]['reviews'])) {
+                        $products[$productId]['reviews'] = [
+                            'average_rating' => 0,
+                            'comments' => [],
+                            'total_reviews' => 0
+                        ];
+                    }
+
+                    // Add the individual review comment
+                    $products[$productId]['reviews']['comments'][] = [
+                        'user' => $review['user'],
+                        'rating' => $review['rating'],
+                        'comment' => $review['comment']
+                    ];
+
+                    // Increment the total reviews
+                    $products[$productId]['reviews']['total_reviews']++;
+
+                    // Calculate running average for the rating
+                    $products[$productId]['reviews']['average_rating'] =
+                        (($products[$productId]['reviews']['average_rating'] * ($products[$productId]['reviews']['total_reviews'] - 1)) + $review['rating'])
+                        / $products[$productId]['reviews']['total_reviews'];
+                }
+            } else {
+                echo "Error fetching reviews: " . mysqli_error($conn);
+            }
+        } else {
+            echo "Error: " . mysqli_error($conn);
+        }
+
     // end
 
     // Filter products based on the selected category and search term
@@ -150,43 +219,51 @@
             <div class="container">
             <!-- Products displayed in a grid -->
             <div class="productLine">
-                    <?php if ($filteredProducts): ?>
-                        <?php foreach ($filteredProducts as $product): ?>
-                            <div class="product-card"
+                <?php if ($filteredProducts): ?>
+                    <?php foreach ($filteredProducts as $product): ?>
+                        <div class="product-card"
                             data-id="<?php echo htmlspecialchars($product['details']['product_id']); ?>"
                             data-name="<?php echo htmlspecialchars($product['details']['product_name']); ?>"
                             data-description="<?php echo htmlspecialchars($product['details']['prodDescription']); ?>"
                             data-image="<?php echo htmlspecialchars($product['details']['image_path']); ?>"
                             data-types="<?php echo htmlspecialchars($product['details']['type']); ?>"
                             data-addons="<?php echo htmlspecialchars($product['details']['add_ons']); ?>"
-                            data-prices='<?php echo json_encode($product['prices']); ?>'>
+                            data-prices='<?php echo json_encode($product['prices']); ?>'
+                            data-average-rating="<?php echo isset($product['reviews']['average_rating']) ? htmlspecialchars($product['reviews']['average_rating']) : 0; ?>"
+                            data-total-reviews="<?php echo isset($product['reviews']['comments']) ? count($product['reviews']['comments']) : 0; ?>"
+                            data-comments='<?php echo isset($product['reviews']['comments']) ? json_encode($product['reviews']['comments']) : '[]'; ?>'
+                        >
+                            <!-- Product Image -->
+                            <img src="<?php echo htmlspecialchars($product['details']['image_path']); ?>"
+                                alt="<?php echo htmlspecialchars($product['details']['product_name']); ?>">
 
-
-                            <img src="<?php echo htmlspecialchars($product['details']['image_path']); ?>" alt="<?php echo htmlspecialchars($product['details']['product_name']); ?>">
-                                <div class="product-info">
-                                    <h4><?php echo htmlspecialchars($product['details']['product_name']); ?></h4>
-                                    <div class="detail-grid">
-                                        <div class="product-details">
+                            <!-- Product Info -->
+                            <div class="product-info">
+                                <h4><?php echo htmlspecialchars($product['details']['product_name']); ?></h4>
+                                <div class="detail-grid">
+                                    <div class="product-details">
+                                        <!-- Size & Price Dropdown -->
                                         <div class="detail">
-                                                <label for="size_<?php echo $product['details']['product_id']; ?>">Size & Price</label>
-                                                <select class="prod-modal" id="size_<?php echo $product['details']['product_id']; ?>" name="size_price">
-                                                    <?php foreach ($product['prices'] as $priceInfo) {
-                                                        echo "<option value='" . htmlspecialchars($priceInfo['size']) . "'>" .
-                                                            htmlspecialchars(ucfirst($priceInfo['size'])) .
-                                                            " - ₱" . htmlspecialchars(number_format($priceInfo['price'], 2)) . "</option>";
-                                                    }?>
-                                                </select>
-                                            </div>
+                                            <label for="size_<?php echo $product['details']['product_id']; ?>">Size & Price</label>
+                                            <select class="prod-modal" id="size_<?php echo $product['details']['product_id']; ?>" name="size_price">
+                                                <?php foreach ($product['prices'] as $priceInfo): ?>
+                                                    <option value="<?php echo htmlspecialchars($priceInfo['size']); ?>">
+                                                        <?php echo htmlspecialchars(ucfirst($priceInfo['size'])); ?> - ₱
+                                                        <?php echo htmlspecialchars(number_format($priceInfo['price'], 2)); ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <p>No products found.</p>
-                    <?php endif; ?>
-                </div>
+                        </div>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p>No products found.</p>
+                <?php endif; ?>
             </div>
+
 
             <!-- Add to Cart / Place order -->
             <div class="place-order" id="place-order">
@@ -208,68 +285,91 @@
         </div>
     </form>
 
-<!-- Options Modal -->
-<div class="options-modal" id="options-modal" data-client-id="<?php echo htmlspecialchars($client_id); ?>" data-id="<?php echo htmlspecialchars($product['details']['product_id'])?>">
-    <div class="container-grid" id="container-grid">
-        <div class="product-grid" id="product-grid">
-            <img src="<?php echo htmlspecialchars($product['details']['image_path']); ?>" alt="Product Image">
-            <h4><?php echo htmlspecialchars($product['details']['product_name']); ?></h4>
+    <!-- Options Modal -->
+    <div class="options-modal" id="options-modal" data-client-id="<?php echo htmlspecialchars($client_id); ?>" data-id="<?php echo htmlspecialchars($product['details']['product_id'])?>">
+        <div class="container-grid" id="container-grid">
+            <div class="product-grid" id="product-grid">
+                <img src="<?php echo htmlspecialchars($product['details']['image_path']); ?>" alt="Product Image">
+                <h4><?php echo htmlspecialchars($product['details']['product_name']); ?></h4>
 
-            <h5>Description:</h5>
-            <p><?php echo htmlspecialchars($product['details']['prodDescription']); ?></p>
+                <h5>Description:</h5>
+                <p><?php echo htmlspecialchars($product['details']['prodDescription']); ?></p>
+            </div>
+            <a href="#" class="close"><i class="fa-solid fa-xmark"></i></a>
+            <div class="detail-grid">
+                <!-- Type Dropdown -->
+                <div class="detail-row">
+                    <label for="type_<?php echo $product['details']['product_id']; ?>">Type</label>
+                    <select class="select-modal" id="type_<?php echo $product['details']['product_id']; ?>" name="type">
+                        <?php
+                        $types = explode(',', $product['details']['type']);
+                        foreach ($types as $type): ?>
+                            <option value="<?php echo htmlspecialchars(trim($type)); ?>">
+                                <?php echo htmlspecialchars(trim($type)); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <!-- Add-Ons Dropdown -->
+                <div class="detail-row">
+                    <label for="addOn_<?php echo $product['details']['product_id']; ?>">Add-Ons</label>
+                    <select class="select-modal" id="addOn_<?php echo $product['details']['product_id']; ?>" name="add_on">
+                        <option value="">None</option>
+                        <?php
+                        $addOns = explode(',', $product['details']['add_ons']);
+                        foreach ($addOns as $addOn): ?>
+                            <option value="<?php echo htmlspecialchars(trim($addOn)); ?>">
+                                <?php echo htmlspecialchars(trim($addOn)); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <!-- Size & Price Dropdown -->
+                <div class="detail-row">
+                    <label for="size_<?php echo $product['details']['product_id']; ?>">Size & Price</label>
+                    <select class="select-modal" id="size_<?php echo $product['details']['product_id']; ?>" name="size_price">
+                        <?php foreach ($product['prices'] as $priceInfo): ?>
+                            <option value="<?php echo htmlspecialchars($priceInfo['size']); ?>"
+                                    data-price="<?php echo htmlspecialchars($priceInfo['price']); ?>">
+                                <?php echo htmlspecialchars(ucfirst($priceInfo['size'])); ?> - ₱
+                                <?php echo htmlspecialchars(number_format($priceInfo['price'], 2)); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+
+                <!-- Reviews Section -->
+
+                    <div class="reviews-section">
+                        <h5>Reviews:</h5>
+
+                        <!-- Average Rating -->
+                        <!-- will be Poppulated by js -->
+
+                        <!-- User Comments -->
+                        <div class="comments">
+                        <!-- will be Poppulated by js -->
+
+
+                    </div>
+
+                </div>
+                <div class="LeaveReview">
+                    <button class="btn-review" id="btn-review" name="btn-review">Leave a Review</button>
+                </div>
+
+
+
         </div>
-        <a href="#" class="close"><i class="fa-solid fa-xmark"></i></a>
-        <div class="detail-grid">
-            <!-- Type Dropdown -->
-            <div class="detail-row">
-                <label for="type_<?php echo $product['details']['product_id']; ?>">Type</label>
-                <select class="select-modal" id="type_<?php echo $product['details']['product_id']; ?>" name="type">
-                    <?php
-                    $types = explode(',', $product['details']['type']);
-                    foreach ($types as $type): ?>
-                        <option value="<?php echo htmlspecialchars(trim($type)); ?>">
-                            <?php echo htmlspecialchars(trim($type)); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-
-            <!-- Add-Ons Dropdown -->
-            <div class="detail-row">
-                <label for="addOn_<?php echo $product['details']['product_id']; ?>">Add-Ons</label>
-                <select class="select-modal" id="addOn_<?php echo $product['details']['product_id']; ?>" name="add_on">
-                    <option value="">None</option>
-                    <?php
-                    $addOns = explode(',', $product['details']['add_ons']);
-                    foreach ($addOns as $addOn): ?>
-                        <option value="<?php echo htmlspecialchars(trim($addOn)); ?>">
-                            <?php echo htmlspecialchars(trim($addOn)); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-
-            <!-- Size & Price Dropdown -->
-            <div class="detail-row">
-                <label for="size_<?php echo $product['details']['product_id']; ?>">Size & Price</label>
-                <select class="select-modal" id="size_<?php echo $product['details']['product_id']; ?>" name="size_price">
-                    <?php foreach ($product['prices'] as $priceInfo): ?>
-                        <option value="<?php echo htmlspecialchars($priceInfo['size']); ?>"
-                                data-price="<?php echo htmlspecialchars($priceInfo['price']); ?>">
-                            <?php echo htmlspecialchars(ucfirst($priceInfo['size'])); ?> - ₱
-                            <?php echo htmlspecialchars(number_format($priceInfo['price'], 2)); ?>
-                        </option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
-        </div>
-
-        <!-- Add to Cart Button -->
-        <div class="corner">
+         <!-- Add to Cart Button -->
+         <div class="corner">
             <button class="btn-cart" id="btn-cart" name="btn-cart">Add to Cart</button>
         </div>
+        </div>
     </div>
-</div>
+
 
 
     <!-- THANK YOU NOTE -->

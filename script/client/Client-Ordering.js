@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+
 //Options modal
 document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('options-modal'); // Select the modal
@@ -46,6 +47,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalTypeSelect = modal.querySelector('select[name="type"]'); // Modal type dropdown
     const modalAddOnSelect = modal.querySelector('select[name="add_on"]'); // Modal add-ons dropdown
     const modalSizePriceSelect = modal.querySelector('select[name="size_price"]'); // Modal size & price dropdown
+    const reviewSection = document.querySelector('.reviews-section');
+
+     // Add active class on hover
+     reviewSection.addEventListener('mouseenter', () => {
+        reviewSection.classList.add('active');
+    });
+
+    // Remove active class when clicking outside
+    document.addEventListener('click', (event) => {
+        if (!reviewSection.contains(event.target)) {
+            reviewSection.classList.remove('active');
+        }
+    });
+
+    // Helper function to render stars
+    function renderStars(rating) {
+        const fullStars = Math.floor(rating);
+        const halfStar = rating - fullStars >= 0.5;
+        const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+
+        let starsHTML = '';
+        for (let i = 0; i < fullStars; i++) starsHTML += '<i class="fa-solid fa-star"></i>';
+        if (halfStar) starsHTML += '<i class="fa-solid fa-star-half"></i>';
+        for (let i = 0; i < emptyStars; i++) starsHTML += '<i class="fa-regular fa-star"></i>';
+        return starsHTML;
+    }
 
     // Function to populate and show the modal with product details
     function showModal(card) {
@@ -56,6 +83,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const productTypes = card.getAttribute('data-types').split(',');
         const productAddOns = card.getAttribute('data-addons').split(',');
         const productPrices = JSON.parse(card.getAttribute('data-prices'));
+        const averageRating = parseFloat(card.getAttribute('data-average-rating') || 0).toFixed(1);
+        const totalReviews = parseInt(card.getAttribute('data-total-reviews') || 0, 10);
+        const comments = JSON.parse(card.getAttribute('data-comments') || '[]');
 
         // Populate modal content
         modal.dataset.id = productId;
@@ -76,7 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
             modalAddOnSelect.innerHTML += `<option value="${addOn.trim()}">${addOn.trim()}</option>`;
         });
 
-
         // Populate Size & Price Dropdown with data-price attribute
         modalSizePriceSelect.innerHTML = '';
         productPrices.forEach(priceInfo => {
@@ -86,6 +115,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 </option>`;
         });
 
+        // Populate Reviews Section
+        const reviewsSection = modal.querySelector('.reviews-section');
+        reviewsSection.innerHTML = `
+            <div class="average-rating">
+                <p>Average Rating: <strong>${averageRating}</strong> / 5</p>
+                <div class="stars">${renderStars(averageRating)}</div>
+                <p>(${totalReviews} Reviews)</p>
+            </div>
+            <div class="comments">
+                ${comments.length > 0 ? comments.map(comment => `
+                    <div class="comment">
+                        <p><strong>${comment.user}</strong></p>
+                        <p>${comment.comment}</p>
+                        <div class="stars">${renderStars(comment.rating)}</div>
+                    </div>`).join('') : '<p>No reviews available.</p>'}
+            </div>
+        `;
 
         modal.style.display = 'block'; // Show the modal
     }
@@ -120,6 +166,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
+
 // GET PRODUCT NAME
 
 // ADD TO CART
@@ -132,11 +180,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Load saved products from localStorage
     loadSavedProducts();
-
     console.log('Add to cart script. up and running');
 
     // Add to Cart Button Click Handler
     addToCartButton.addEventListener("click", () => {
+        console.log("Add to Cart button clicked.");
+
         // Retrieve product details from modal
         const productId = modal.dataset.id;
         const modalImage = modal.querySelector(".product-grid img").src;
@@ -150,6 +199,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const selectedType = typeElement?.value || "N/a";
         const addOnsElement = modal.querySelector("select[name='add_on']");
         const selectedAddOns = addOnsElement?.value || "N/a";
+
+        console.log("Product details retrieved:", {
+            productId, modalName, modalPrice, selectedSize, selectedType, selectedAddOns
+        });
 
         // Create a unique product ID using productId + size
         const uniqueProductId = `${productId}_${selectedSize}`;
@@ -169,6 +222,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // Check if the product already exists in the cart
         const existingProduct = productOrder.querySelector(`[data-id="${product.id}"]`);
         if (existingProduct) {
+            console.log("Product already in cart, incrementing quantity.");
+
             // Increment the quantity if the product already exists
             const quantityElement = existingProduct.querySelector(".stepper-value");
             let quantity = parseInt(quantityElement.textContent);
@@ -183,6 +238,8 @@ document.addEventListener("DOMContentLoaded", () => {
             // Update overall total price
             totalPrice += product.price;
         } else {
+            console.log("Adding new product to the cart:", product);
+
             // Add a new product row if it doesn't exist
             const productRow = document.createElement("div");
             productRow.classList.add("product-row");
@@ -219,6 +276,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Update total price display
         updateTotalPriceDisplay();
+        console.log("Total price after adding product:", totalPrice);
+
 
         // Save products to localStorage
         saveProducts();
@@ -231,7 +290,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const decrementButton = productRow.querySelector(".decrement");
         const incrementButton = productRow.querySelector(".increment");
         const quantityValue = productRow.querySelector(".stepper-value");
-        const totalPriceElementForProduct = productRow.querySelector(".price-con #total-price");
+        const totalPriceElementForProduct = productRow.querySelector(".price-con .total-price");
+
+        if (!totalPriceElementForProduct) {
+            console.error("Error: Total price element not found for the product.");
+            return;
+        }
 
         decrementButton.addEventListener("click", () => {
             let quantity = parseInt(quantityValue.textContent);
@@ -267,21 +331,43 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+
     function handleRemoveProduct(productRow) {
         const removeButton = productRow.querySelector(".remove-prod");
         removeButton.addEventListener("click", (event) => {
             event.preventDefault();
-            const quantity = parseInt(productRow.querySelector(".stepper-value").textContent);
-            const productPrice = parseFloat(productRow.querySelector("#total-price").textContent) / quantity;
+
+            const quantityElement = productRow.querySelector(".stepper-value");
+            if (!quantityElement) {
+                console.error("Error: Quantity element not found.");
+                return;
+            }
+
+            const quantity = parseInt(quantityElement.textContent);
+            const productPriceElement = productRow.querySelector(".total-price");
+            if (!productPriceElement) {
+                console.error("Error: Product price element not found in the row.");
+                return;
+            }
+
+            const productPrice = parseFloat(productPriceElement.textContent) / quantity;
+            if (isNaN(productPrice)) {
+                console.error("Error: Product price is invalid.");
+                return;
+            }
+
             totalPrice -= productPrice * quantity;
             if (totalPrice < 0) totalPrice = 0; // Prevent negative total price
+
             productRow.remove();
             updateTotalPriceDisplay();
             saveProducts();
         });
     }
 
+
     function updateTotalPriceDisplay() {
+        console.log("Updating total price display to:", totalPrice);
         totalPriceElement.textContent = `₱${totalPrice.toFixed(2)}`;
     }
 
@@ -295,10 +381,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const type = row.querySelector(".product-info p:nth-child(3)")?.textContent || "";
             const quantity = parseInt(row.querySelector(".stepper-value").textContent) || 0;
             const addOns = row.querySelector(".product-info p:nth-child(4)")?.textContent || "";
-            const price = parseFloat(row.querySelector("#total-price").textContent) / (quantity || 1); // Avoid division by zero
+            const priceElement = row.querySelector("#total-price");
+            const price = priceElement ? parseFloat(priceElement.textContent) / (quantity || 1) : 0; // Avoid null
             const image = row.querySelector("img").src;
             products.push({ id, name, size, type, addOns, quantity, price, image });
         });
+        console.log("Saving products to localStorage:", products);
         localStorage.setItem("products", JSON.stringify(products));
     }
 
@@ -338,8 +426,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-
-
 //Pushing to the database
 document.getElementById("btn-order").addEventListener("click", () => {
     const productOrder = document.querySelectorAll("#product-order .product-row");
@@ -364,9 +450,10 @@ document.getElementById("btn-order").addEventListener("click", () => {
         const name = row.querySelector("h4").textContent;
         const size = row.querySelector(".price-con p").textContent;
         const type = row.querySelector(".product-info p:nth-child(2)")?.textContent.trim() || "Unknown Type";
-        const addOns = row.querySelector(".product-info p:nth-child(3)").textContent;
-        const quantity = parseInt(row.querySelector(".stepper-value").textContent);
-        const totalPrice = parseFloat(row.querySelector("#total-price").textContent);
+        const addOns = row.querySelector(".product-info p:nth-child(3)")?.textContent.trim() || "No Add-Ons";
+        const totalPriceElement = row.querySelector("#total-price");
+        console.log(totalPriceElement);
+        const totalPrice = totalPriceElement ? parseFloat(totalPriceElement.textContent) : 0; // Fallback for null
         const productId = id.split("-")[0];
 
         orderData.push({

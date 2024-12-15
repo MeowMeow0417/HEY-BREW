@@ -106,6 +106,7 @@
                 <a href="#home" class="home-btn">Home</a>
                 <a href="#blog" class="blog-btn">Blog</a>
                 <a href="#services" class="service-btn">Services</a>
+                <a href="#reviews">Reviews</a>
                 <a href="#about" class="about-btn">About</a>
 
                 <div class="auth-buttons">
@@ -249,6 +250,13 @@
             </div>
         </div>
     </section>
+
+<!-- Reviews -->
+ <section class="Reviews" id="reviews">
+    <div class="container-reviews">
+
+    </div>
+ </section>
 
 
 
