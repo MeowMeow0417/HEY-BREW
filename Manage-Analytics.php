@@ -71,11 +71,11 @@
                         <h4>Total Sales</h4>
                         <p class="metric">₱0.00</p>
                     </div>
-
                     <div class="metric-card">
-                        <h4>Download Sales</h4>
-                        <a href="" class="link"><p class="metric">></p></a>
+                         <h4>Total Reviews</h4>
+                        <p class="metric">500</p>
                     </div>
+
 
                 </div>
 
@@ -88,31 +88,34 @@
                             <canvas id="ratingChart"></canvas>
                         </div>
                         <div class="metric-column">
-                            <div class="metric-card">
+                            <div class="select-card">
+                                <label for="productSelect">Select a Product:</label>
+                                <select id="productSelect">
+                                    <!-- Products will be populated dynamically here -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="metric-row">
+                            <div class="metric-card total-reviews">
                                 <h4>Total Reviews</h4>
-                                <p class="metric">500</p>
+                                <p class="metric">0</p>
                             </div>
-                            <div class="metric-card">
+                            <div class="metric-card average-rating">
                                 <h4>Average Rating</h4>
-                                <p class="metric">4.5/5</p>
+                                <p class="metric">0/5</p>
                             </div>
-                            <div class="metric-card">
+                            <div class="metric-card most-reviewed-product">
                                 <h4>Most Reviewed Product</h4>
-                                <p class="metric">Espresso Blend</p>
+                                <p class="metric">N/A</p>
                             </div>
-                            <div class="metric-card">
-                                <h4>Download Product Reviews</h4>
-                                <a href=""><p class="metric">></p></a>
-                            </div>
-
                         </div>
                     </div>
-                <div class="container-3">
+                <!-- <div class="container-3">
                     <div class="chart-container chart-3">
                         <h3>Sentiment Analysis</h3>
                         <canvas id="sentimentChart"></canvas>
                     </div>
-                </div>
+                </div> -->
         </div>
     </div>
 

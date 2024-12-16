@@ -23,8 +23,6 @@ const salesChart = new Chart(ctxSales, {
 });
 
 
-
-
 // Fetch and Update Sales Data
 async function fetchSalesData(filter = 'month') {
     try {
@@ -62,12 +60,8 @@ async function fetchSalesData(filter = 'month') {
     }
 }
 
-
 // Initialize Filter Buttons
 setupFilterButtons();
-
-
-
 
 // Handle Button Clicks to Change Filters
 function setupFilterButtons() {
@@ -104,105 +98,120 @@ function formatDatetime(datetime, filter) {
 
 
 
-
-
-// Initial Data Fetch for Default Filter
-
-
-
-// Review Ratings Distribution (Pie Chart)
-// Function to update the query parameter in the URL
-function updateQueryParam(param, value) {
-    const url = new URL(window.location.href);
-
-    // Update or add the query parameter
-    url.searchParams.set(param, value);
-
-    // Update the browser's address bar without reloading the page
-    history.replaceState(null, '', url.toString());
-}
-
-// Function to ensure the product ID is set
-function ensureProductId() {
-    const urlParams = new URLSearchParams(window.location.search);
-    let productId = urlParams.get('product_id');
-
-    if (!productId) {
-        // Dynamically set a default product_id (e.g., 123)
-        productId = '123'; // Replace with your logic for determining the product ID
-        updateQueryParam('product_id', productId);
-
-        console.log(`Product ID was missing. Set to default: ${productId}`);
-    }
-
-    return productId; // Return the productId for use outside the function
-}
-
-// Get the product ID on page load
-const productId = ensureProductId();
-
-if (productId) {
-    // Fetch data and render the chart only if productId is valid
-    axios.get(`php/get-ratings.php?product_id=${productId}`)
-        .then(response => {
-            console.log('Response from server:', response.data); // Log the server response
-            if (response.data && Array.isArray(response.data)) {
-                const ratingData = response.data;
-
-                // Render the chart
-                const ctxRatings = document.getElementById('ratingChart').getContext('2d');
-                new Chart(ctxRatings, {
-                    type: 'pie',
-                    data: {
-                        labels: ['5 Stars', '4 Stars', '3 Stars', '2 Stars', '1 Star'],
-                        datasets: [{
-                            label: 'Review Ratings',
-                            data: ratingData,
-                            backgroundColor: ['#28a745', '#ffcc00', '#f39c12', '#e74c3c', '#dcdcdc']
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(tooltipItem) {
-                                        const count = ratingData[tooltipItem.dataIndex];
-                                        return `${tooltipItem.label}: ${count} Reviews`;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            } else {
-                console.error('Invalid data received from the server:', response.data);
-            }
-        })
-        .catch(error => {
-            console.error('Error fetching rating data:', error);
-        });
-} else {
-    console.error('Product ID is missing from the URL.');
-    alert('Product ID is missing from the URL. Please include it as a query parameter, e.g., ?product_id=123');
-}
-
-
-
-
-// Sentiment Analysis (Bar Chart)
-var ctxSentiment = document.getElementById('sentimentChart').getContext('2d');
-var sentimentChart = new Chart(ctxSentiment, {
-    type: 'line',
+// Initial Data Fetch for Default Filter. Initialize the Chart.js bar chart
+// Initialize the Chart.js bar chart
+var ctxRatings = document.getElementById('ratingChart').getContext('2d');
+var ratingChart = new Chart(ctxRatings, {
+    type: 'bar',
     data: {
-        labels: ['Positive', 'Neutral', 'Negative'],
+        labels: ['1 Star', '2 Stars', '3 Stars', '4 Stars', '5 Stars'], // Match server data order
         datasets: [{
-            label: 'Sentiment Analysis',
-            data: [500, 25, 15],
-            backgroundColor: ['#28a745', '#f39c12', '#e74c3c']
+            label: 'Review Ratings',
+            data: [0, 0, 0, 0, 0], // Placeholder data
+            backgroundColor: ['#dcdcdc', '#e74c3c', '#f39c12', '#ffcc00', '#28a745']
         }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+        },
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: 'Ratings'
+                }
+            },
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Number of Reviews'
+                }
+            }
+        }
     }
 });
+
+/// Fetch product IDs dynamically and populate the dropdown
+// Function to fetch review metrics for a product
+function fetchReviewMetrics(productId) {
+    if (!productId || isNaN(productId)) {
+        console.error("Invalid product ID.");
+        return;
+    }
+
+    axios.get(`php/get-review-metrics.php?product_id=${productId}`)
+        .then(function (response) {
+            if (response.status === 200 && response.data) {
+                const metrics = response.data;
+
+                // Update the Total Reviews metric
+                document.querySelector('.total-reviews .metric').textContent = metrics.totalReviews;
+
+                // Update the Average Rating metric
+                document.querySelector('.average-rating .metric').textContent = `${metrics.averageRating}/5`;
+
+                // Update the Most Reviewed Product metric (if necessary)
+                if (metrics.mostReviewedProduct) {
+                    document.querySelector('.most-reviewed-product .metric').textContent = metrics.mostReviewedProduct;
+                }
+            } else {
+                console.error("Error fetching review metrics.");
+            }
+        })
+        .catch(function (error) {
+            console.error("Error fetching review metrics:", error);
+        });
+}
+
+// Fetch product IDs dynamically and populate the dropdown
+function fetchProductIds() {
+    axios.get('php/get-product-ids.php') // Replace with your actual endpoint
+        .then(function (response) {
+            if (response.status === 200 && Array.isArray(response.data)) {
+                const productSelect = document.getElementById('productSelect');
+                productSelect.innerHTML = ''; // Clear existing options
+
+                // Add a default "Select a product" option
+                const defaultOption = document.createElement('option');
+                defaultOption.textContent = 'Select a Product';
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                productSelect.appendChild(defaultOption);
+
+                // Populate the dropdown with product data
+                response.data.forEach(product => {
+                    const option = document.createElement('option');
+                    option.value = product.id;
+                    option.textContent = product.name || `Product ${product.id}`;
+                    productSelect.appendChild(option);
+                });
+
+                // Automatically load data for the first product (if available)
+                if (response.data.length > 0) {
+                    const firstProductId = response.data[0].id;
+                    fetchRatings(firstProductId); // Fetch ratings for the first product
+                    fetchReviewMetrics(firstProductId); // Fetch review metrics for the first product
+                }
+            } else {
+                console.error("Invalid response format or no products available.");
+            }
+        })
+        .catch(function (error) {
+            console.error("Error fetching product IDs:", error);
+        });
+}
+
+// Add event listener for product selection
+document.getElementById('productSelect').addEventListener('change', function () {
+    const productId = this.value;
+    fetchRatings(productId); // Fetch ratings for selected product
+    fetchReviewMetrics(productId); // Fetch review metrics for selected product
+});
+
+// Load product IDs and review metrics on page load
+fetchProductIds();

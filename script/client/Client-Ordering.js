@@ -393,8 +393,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-
-
     function loadSavedProducts() {
         const savedProducts = JSON.parse(localStorage.getItem("products")) || [];
         totalPrice = 0; // Reset total price before loading
@@ -437,7 +435,7 @@ async function submitOrder() {
             const addOns = row.querySelector(".product-info p:nth-child(3)")?.textContent.trim() || "None";
             const quantity = parseInt(row.querySelector(".stepper-value")?.textContent) || 1;
             const totalPrice = parseFloat(row.querySelector(".total-price")?.textContent) || 0;
-            const productId = id.split("-")[0];
+            const productId = id.split('_')[0];
 
             orderData.push({
                 product_id: productId,
@@ -453,12 +451,7 @@ async function submitOrder() {
         }
     });
 
-    // Function to Clear Cart
-    const clearCart = () => {
-        document.querySelector("#product-order").innerHTML = "";
-        document.getElementById("total-price").textContent = "₱0.00";
-        localStorage.removeItem("products");
-    };
+    console.log("Submitting order data:", orderData); // Add debugging
 
     // Submit Order Using Axios
     try {
@@ -467,17 +460,25 @@ async function submitOrder() {
             order_items: orderData
         });
 
-        console.log(response.data);
-        clearCart();
+        if (response.data.success) {
+            console.log("Order submitted successfully:", response.data);
 
-        // Show the modal on successful order submission
-        const modal = document.getElementById("modal");
-        modal.style.display = "block";
+            // Clear the cart
+            document.querySelector("#product-order").innerHTML = "";
+            document.getElementById("total-price").textContent = "₱0.00";
+            localStorage.removeItem("products");
 
-        // Hide the modal after 2 seconds
-        setTimeout(() => {
-            modal.style.display = "none";
-        }, 2000);
+            // Show success modal
+            const modal = document.getElementById("modal");
+            modal.style.display = "block";
+
+            // Hide the modal after 2 seconds
+            setTimeout(() => {
+                modal.style.display = "none";
+            }, 2000);
+        } else {
+            throw new Error(response.data.message || "Failed to submit order");
+        }
     } catch (error) {
         console.error("Error during order submission:", error);
         alert("An error occurred while placing your order. Please try again later.");
