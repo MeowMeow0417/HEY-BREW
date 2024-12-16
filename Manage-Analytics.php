@@ -96,6 +96,7 @@
                             </div>
                         </div>
                         <div class="metric-row">
+                        <div class="no-reviews-message" style="color: #ff0000; font-weight: bold;"></div>
                             <div class="metric-card total-reviews">
                                 <h4>Total Reviews</h4>
                                 <p class="metric">0</p>

@@ -137,39 +137,8 @@ var ratingChart = new Chart(ctxRatings, {
 });
 
 /// Fetch product IDs dynamically and populate the dropdown
-// Function to fetch review metrics for a product
-function fetchReviewMetrics(productId) {
-    if (!productId || isNaN(productId)) {
-        console.error("Invalid product ID.");
-        return;
-    }
-
-    axios.get(`php/get-review-metrics.php?product_id=${productId}`)
-        .then(function (response) {
-            if (response.status === 200 && response.data) {
-                const metrics = response.data;
-
-                // Update the Total Reviews metric
-                document.querySelector('.total-reviews .metric').textContent = metrics.totalReviews;
-
-                // Update the Average Rating metric
-                document.querySelector('.average-rating .metric').textContent = `${metrics.averageRating}/5`;
-
-                // Update the Most Reviewed Product metric (if necessary)
-                if (metrics.mostReviewedProduct) {
-                    document.querySelector('.most-reviewed-product .metric').textContent = metrics.mostReviewedProduct;
-                }
-            } else {
-                console.error("Error fetching review metrics.");
-            }
-        })
-        .catch(function (error) {
-            console.error("Error fetching review metrics:", error);
-        });
-}
-
-// Fetch product IDs dynamically and populate the dropdown
 function fetchProductIds() {
+    // Use Axios to get the product data from the PHP endpoint
     axios.get('php/get-product-ids.php') // Replace with your actual endpoint
         .then(function (response) {
             if (response.status === 200 && Array.isArray(response.data)) {
@@ -186,7 +155,7 @@ function fetchProductIds() {
                 // Populate the dropdown with product data
                 response.data.forEach(product => {
                     const option = document.createElement('option');
-                    option.value = product.id;
+                    option.value = product.id; // Assuming 'id' is the field name
                     option.textContent = product.name || `Product ${product.id}`;
                     productSelect.appendChild(option);
                 });
@@ -206,12 +175,100 @@ function fetchProductIds() {
         });
 }
 
+// Fetch ratings for a product and update the chart
+// Fetch ratings for a product and update the chart
+function fetchRatings(productId) {
+    if (!productId || isNaN(productId)) {
+        console.error("Invalid product ID.");
+        return;
+    }
+
+    axios.get(`php/get-ratings.php?product_id=${productId}`) // Replace with your actual endpoint
+        .then(function (response) {
+            if (response.status === 200 && Array.isArray(response.data)) {
+                const ratings = response.data;
+
+                // Check if all ratings are zero (i.e., no reviews exist)
+                const totalRatings = ratings.reduce((sum, count) => sum + count, 0);
+
+                if (totalRatings === 0) {
+                    // Display a message or handle no reviews case
+                    console.warn("This product has no reviews.");
+                    ratingChart.data.datasets[0].data = [0, 0, 0, 0, 0]; // Reset chart data
+                    ratingChart.update();
+
+                    // Optionally display a message in the UI
+                    document.querySelector('.no-reviews-message').textContent = "No reviews available for this product.";
+                } else {
+                    // Update chart data
+                    document.querySelector('.no-reviews-message').textContent = ""; // Clear any existing message
+                    ratingChart.data.datasets[0].data = ratings;
+                    ratingChart.update();
+                }
+            } else {
+                console.error("Unexpected data format or error fetching ratings.");
+            }
+        })
+        .catch(function (error) {
+            console.error("Error fetching ratings:", error);
+        });
+}
+
+// Fetch review metrics for a product and update the page
+function fetchReviewMetrics(productId) {
+    if (!productId || isNaN(productId)) {
+        console.error("Invalid product ID.");
+        return;
+    }
+
+    axios.get(`php/get-review-metrics.php?product_id=${productId}`)
+        .then(function (response) {
+            if (response.status === 200 && response.data) {
+                const metrics = response.data;
+
+                // Check if total reviews are zero
+                if (metrics.totalReviews === 0) {
+                    console.warn("This product has no reviews.");
+
+                    // Update the UI to reflect no reviews
+                    document.querySelector('.total-reviews .metric').textContent = "0";
+                    document.querySelector('.average-rating .metric').textContent = "N/A";
+                    document.querySelector('.most-reviewed-product .metric').textContent = "N/A";
+
+                    // Optionally display a message
+                    document.querySelector('.no-reviews-message').textContent = "No reviews available for this product.";
+                } else {
+                    // Update metrics
+                    document.querySelector('.total-reviews .metric').textContent = metrics.totalReviews;
+                    document.querySelector('.average-rating .metric').textContent = `${metrics.averageRating}/5`;
+
+                    // Update most reviewed product (optional)
+                    if (metrics.mostReviewedProduct) {
+                        document.querySelector('.most-reviewed-product .metric').textContent = metrics.mostReviewedProduct;
+                    } else {
+                        document.querySelector('.most-reviewed-product .metric').textContent = "N/A";
+                    }
+
+                    // Clear the "no reviews" message
+                    document.querySelector('.no-reviews-message').textContent = "";
+                }
+            } else {
+                console.error("Error fetching review metrics.");
+            }
+        })
+        .catch(function (error) {
+            console.error("Error fetching review metrics:", error);
+        });
+}
+
 // Add event listener for product selection
 document.getElementById('productSelect').addEventListener('change', function () {
     const productId = this.value;
-    fetchRatings(productId); // Fetch ratings for selected product
-    fetchReviewMetrics(productId); // Fetch review metrics for selected product
+
+    // Fetch data for the selected product
+    fetchRatings(productId);
+    fetchReviewMetrics(productId);
 });
 
-// Load product IDs and review metrics on page load
+// Load product IDs on page load
 fetchProductIds();
