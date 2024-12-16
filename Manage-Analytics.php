@@ -72,9 +72,10 @@
                         <p class="metric">₱0.00</p>
                     </div>
                     <div class="metric-card">
-                         <h4>Total Reviews</h4>
-                        <p class="metric">500</p>
+                        <h4>Download the sales data</h4>
+                        <button id="downloadSalesData">Download</button>
                     </div>
+
 
 
                 </div>
@@ -106,6 +107,15 @@
                                 <p class="metric">0/5</p>
                             </div>
                             <div class="metric-card most-reviewed-product">
+                                <h4>Most Reviewed Product</h4>
+                                <p class="metric">N/A</p>
+                            </div>
+                            <div class="metric-card">
+                                <h4>Download product reviews</h4>
+                                <button id="downloadRatingsData">Download</button>
+                            </div>
+
+                            <div class="metric-card ">
                                 <h4>Most Reviewed Product</h4>
                                 <p class="metric">N/A</p>
                             </div>

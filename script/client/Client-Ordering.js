@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </option>`;
         });
 
-        // Populate Reviews Section
+       // Populate Reviews Section
         const reviewsSection = modal.querySelector('.reviews-section');
         reviewsSection.innerHTML = `
             <div class="average-rating">
@@ -167,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>`).join('') : '<p>No reviews available.</p>'}
             </div>
         `;
+
 
         modal.style.display = 'block'; // Show the modal
     }
@@ -438,11 +439,17 @@ async function submitOrder() {
             const name = row.querySelector(".product-info h4")?.textContent.trim() || "Unknown";
             let size = row.querySelector(".price-con p")?.textContent.trim() || "N/A";
 
-// Validate and map size
-const validSizes = ["Small", "Medium", "Large"];
+// Convert size to lowercase for case-insensitive comparison
+const validSizes = ["small", "medium", "large"];
+size = size.toLowerCase();  // Convert size to lowercase
+
 if (!validSizes.includes(size)) {
-    size = "Small"; // Default value
+    size = "small"; // Default value
 }
+
+// Capitalize the first letter for display or storage
+size = size.charAt(0).toUpperCase() + size.slice(1); // Converts to "Small", "Medium", "Large"
+
 
             const type = row.querySelector(".product-info p:nth-child(2)")?.textContent.trim() || "None";
             const addOns = row.querySelector(".product-info p:nth-child(3)")?.textContent.trim() || "None";

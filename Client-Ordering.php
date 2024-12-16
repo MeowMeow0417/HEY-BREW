@@ -71,7 +71,7 @@
                                 r.product_id,
                                 r.rating,
                                 r.comment,
-                                c.client_id AS user
+                                c.username AS user
                              FROM
                                 product_reviews r
                              JOIN

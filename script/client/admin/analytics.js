@@ -175,7 +175,50 @@ function fetchProductIds() {
         });
 }
 
-// Fetch ratings for a product and update the chart
+// Function to convert data to CSV format
+function convertToCSV(data, headers) {
+    const rows = [];
+    // Add headers
+    rows.push(headers.join(","));
+    // Add data rows
+    data.forEach(row => {
+        rows.push(row.join(","));
+    });
+    return rows.join("\n");
+}
+
+// Function to trigger CSV download
+function downloadSalesData() {
+    const labels = salesChart.data.labels;
+    const sales = salesChart.data.datasets[0].data;
+
+    if (labels.length === 0 || sales.length === 0) {
+        alert("No sales data available to download.");
+        return;
+    }
+
+    const data = labels.map((label, index) => [label, sales[index]]);
+    const headers = ["Date", "Sales in ₱"];
+
+    const csv = convertToCSV(data, headers);
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "sales_data.csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// Attach event listener to the download button
+document.getElementById("downloadSalesData").addEventListener("click", downloadSalesData);
+
+
+
+
 // Fetch ratings for a product and update the chart
 function fetchRatings(productId) {
     if (!productId || isNaN(productId)) {
@@ -272,3 +315,40 @@ document.getElementById('productSelect').addEventListener('change', function () 
 
 // Load product IDs on page load
 fetchProductIds();
+
+
+// Function to trigger CSV download for ratings data
+function downloadRatingsData() {
+    const ratingsData = ratingChart.data.datasets[0].data;
+
+    if (ratingsData.every(rating => rating === 0)) {
+        alert("No ratings data available to download.");
+        return;
+    }
+
+    const data = [
+        ["Rating", "Number of Reviews"],
+        ["1 Star", ratingsData[0]],
+        ["2 Stars", ratingsData[1]],
+        ["3 Stars", ratingsData[2]],
+        ["4 Stars", ratingsData[3]],
+        ["5 Stars", ratingsData[4]],
+    ];
+
+    const headers = ["Rating", "Number of Reviews"];
+
+    const csv = convertToCSV(data, headers);
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "ratings_data.csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// Attach event listener to the download button
+document.getElementById("downloadRatingsData").addEventListener("click", downloadRatingsData);
