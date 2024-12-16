@@ -73,73 +73,8 @@ function updateOrderStatus(selectElement) {
     const totalPrice = parseFloat(selectElement.dataset.totalPrice);
     const orderDate = selectElement.dataset.orderDate;
 
-    console.log("Order ID:", orderId, "Total Price:", totalPrice, "Order Date", orderDate); // Debugging values
-    console.log(typeof axios);
+    console.log("Order ID:", orderId, "Total Price:", totalPrice, "Order Date:", orderDate);
 
-    if (isNaN(totalPrice)) {
-        console.error("Error: Total Price is invalid.");
-        alert("Unable to retrieve total price for the order. Please check the details and try again.");
-        return;
-    }
-
-    // Handle different statuses
-    if (selectedStatus === 'completed' || selectedStatus === 'pending' || selectedStatus === 'cancelled') {
-        let deleteAfterMs = 0;
-
-        if (selectedStatus === 'completed' || selectedStatus === 'pending') {
-            // Delete within the day
-            const now = new Date();
-            const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
-            deleteAfterMs = endOfDay - now;
-        } else if (selectedStatus === 'cancelled') {
-            // Delete after 5 minutes
-            deleteAfterMs = 5 * 60 * 1000; // 5 minutes in milliseconds
-        }
-
-        // Schedule deletion
-        setTimeout(() => {
-            axios.post('php/delete_order.php', { orderId: orderId })
-                .then(response => {
-                    if (response.data.success) {
-                        console.log(`Order ${orderId} deleted successfully.`);
-                    } else {
-                        console.error(`Failed to delete order ${orderId}:`, response.data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error("Error deleting order:", error);
-                });
-        }, deleteAfterMs);
-    }
-
-    if (selectedStatus === 'completed') {
-        // Post data to log sales
-        axios.post('php/salesData.php', `orderId=${orderId}&totalPrice=${totalPrice}&orderDate=${orderDate}`, {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        })
-        .then(response => {
-            console.log("Server Response:", response.data);
-
-            if (response.data.success) {
-                // alert("Order marked as completed and sales logged successfully.");
-            } else {
-                console.error("Server Error:", response.data.message);
-                alert("Failed to log the sales. Please try again.");
-                selectElement.value = selectElement.dataset.status; // Revert on error
-            }
-        })
-        .catch(error => {
-            console.error("Error:", error);
-            alert("An error occurred while updating the order status.");
-            selectElement.value = selectElement.dataset.status; // Revert on error
-        });
-    }
-
-    selectElement.setAttribute('data-status', capitalizeFirstLetter(selectedStatus));
-
-    // Optionally disable while updating and then enable after response
     selectElement.disabled = true;
 
     axios.post('php/update_order_status.php', {
@@ -149,28 +84,46 @@ function updateOrderStatus(selectElement) {
     .then(response => {
         if (response.data.success) {
             console.log(`Order ${orderId} updated to ${selectedStatus}.`);
+
+            if (selectedStatus === 'completed') {
+                const salesData = new URLSearchParams();
+                salesData.append('orderId', orderId);
+                salesData.append('totalPrice', totalPrice);
+                salesData.append('orderDate', orderDate);
+
+                return axios.post('php/salesData.php', salesData, {
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                });
+            }
         } else {
-            console.error(`Failed to update order ${orderId}.`);
+            throw new Error(`Failed to update order ${orderId}.`);
+        }
+    })
+    .then(response => {
+        if (response && response.data.success) {
+            console.log("Sales logged successfully:", response.data);
+        } else if (response) {
+            console.error("Failed to log sales:", response.data.message);
+            alert("Failed to log the sales. Please try again.");
         }
     })
     .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while updating the order status.');
+        console.error("Error:", error);
+        alert("An error occurred while processing the request.");
+        selectElement.value = selectElement.dataset.status; // Revert on error
+    })
+    .finally(() => {
+        selectElement.disabled = false; // Re-enable the select element
     });
+
+    selectElement.setAttribute('data-status', capitalizeFirstLetter(selectedStatus));
 }
-
-
-
 
 
 // Utility function to capitalize the first letter
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
-
-
-
-
 
 
 
@@ -205,20 +158,3 @@ function initializeStatusSelects() {
         select.setAttribute('data-status', select.value);
     });
 }
-
-// document.addEventListener('DOMContentLoaded', () => {
-//     const orderTable = document.getElementById('orderTable');
-
-//     orderTable.addEventListener('click', (event) => {
-//         const customerRow = event.target.closest('.customer-row');
-//         if (customerRow) {
-//             const customerId = customerRow.getAttribute('data-customer-id');
-//             showOrderDetails(customerId);
-//         }
-//     });
-
-//     orderTable.addEventListener('change', handleStatusChange);
-
-//     // Initialize status selects
-//     initializeStatusSelects();
-// });

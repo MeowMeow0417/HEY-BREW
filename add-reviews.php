@@ -1,8 +1,10 @@
 <?php
+session_start(); // Start session for client authentication
 include("php/config.php");
 include("php/connection.php");
 include("php/authenticate_client.php");
 
+// Redirect if "close" button is clicked
 if (isset($_POST['close'])) {
     header('Location: Client-Ordering.php');
     exit();
@@ -37,6 +39,7 @@ if (isset($_POST['stars-input'], $_POST['comments'], $_POST['product_id'])) {
     $comment = htmlspecialchars(trim($_POST['comments']));
     $client_id = $_SESSION['client_id']; // Ensure the user is logged in
 
+    // Validate inputs
     if ($rating >= 1 && $rating <= 5 && !empty($comment)) {
         $query = "INSERT INTO product_reviews (product_id, client_id, rating, comment) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($query);
@@ -44,18 +47,25 @@ if (isset($_POST['stars-input'], $_POST['comments'], $_POST['product_id'])) {
         if ($stmt) {
             $stmt->bind_param("iiis", $product_id, $client_id, $rating, $comment);
             if ($stmt->execute()) {
-                echo "<p>Review submitted successfully.</p>";
+                echo "<p class='success'>Review submitted successfully.</p>";
             } else {
-                echo "<p>Error executing the query: " . $stmt->error . "</p>";
+                echo "<p class='error'>Error executing the query: " . $stmt->error . "</p>";
             }
+            $stmt->close(); // Close statement
         } else {
-            echo "<p>Error preparing the statement: " . $conn->error . "</p>";
+            echo "<p class='error'>Error preparing the statement: " . $conn->error . "</p>";
         }
     } else {
         $errorMessage = "Invalid rating or comment. Please provide a valid input.";
     }
 }
 ?>
+
+<!-- Display errors or success messages -->
+<?php if (!empty($errorMessage)): ?>
+    <p class="error"><?php echo $errorMessage; ?></p>
+<?php endif; ?>
+
 
 <!DOCTYPE html>
 <html lang="en">

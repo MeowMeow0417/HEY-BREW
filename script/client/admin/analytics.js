@@ -22,32 +22,38 @@ const salesChart = new Chart(ctxSales, {
     }
 });
 
-// Fetch and Update Sales Data
+
+
+
 // Fetch and Update Sales Data
 async function fetchSalesData(filter = 'month') {
     try {
-        // API call to fetch sales data
         const response = await fetch(`php/get_salesData.php?action=get&filter=${filter}`);
         if (!response.ok) {
             throw new Error(`Network response was not ok. Status: ${response.status}`);
         }
 
         const data = await response.json();
+        console.log("API Response:", data);
 
         if (data.salesData && Array.isArray(data.salesData)) {
-            // Extract datetime and sales values
             const labels = data.salesData.map(entry => formatDatetime(entry.datetime, filter));
             const sales = data.salesData.map(entry => entry.sales);
 
-            // Update chart
+            if (labels.length === 0 || sales.length === 0) {
+                console.warn("No data available to update the chart.");
+                return;
+            }
+
             salesChart.data.labels = labels;
             salesChart.data.datasets[0].data = sales;
-            salesChart.update();
+            console.log("Updated Chart Data:", salesChart.data);
+
+            salesChart.update(); // Trigger re-render
         } else {
-            console.error('Invalid sales data format:', data);
+            console.error("Invalid sales data format:", data);
         }
 
-        // Update Total Sales Metric
         if (data.totalSales !== undefined) {
             document.querySelector('.metric').textContent = `₱${data.totalSales.toLocaleString()}`;
         }
@@ -55,6 +61,7 @@ async function fetchSalesData(filter = 'month') {
         console.error(`Error fetching sales data for ${filter}:`, error);
     }
 }
+
 
 // Initialize Filter Buttons
 setupFilterButtons();
@@ -96,27 +103,95 @@ function formatDatetime(datetime, filter) {
 }
 
 
+
+
+
 // Initial Data Fetch for Default Filter
 
 
 
-
-
-
-
 // Review Ratings Distribution (Pie Chart)
-var ctxRatings = document.getElementById('ratingChart').getContext('2d');
-var ratingChart = new Chart(ctxRatings, {
-    type: 'pie',
-    data: {
-        labels: ['6 stars', '5 Stars', '4 Stars', '3 Stars', '2 Stars', '1 Star'],
-        datasets: [{
-            label: 'Review Ratings',
-            data: [ 25, 50, 30, 10, 5, 5],
-            backgroundColor: ['#00as00', '#28a745', '#ffcc00', '#f39c12', '#e74c3c', '#dcdcdc']
-        }]
+// Function to update the query parameter in the URL
+function updateQueryParam(param, value) {
+    const url = new URL(window.location.href);
+
+    // Update or add the query parameter
+    url.searchParams.set(param, value);
+
+    // Update the browser's address bar without reloading the page
+    history.replaceState(null, '', url.toString());
+}
+
+// Function to ensure the product ID is set
+function ensureProductId() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let productId = urlParams.get('product_id');
+
+    if (!productId) {
+        // Dynamically set a default product_id (e.g., 123)
+        productId = '123'; // Replace with your logic for determining the product ID
+        updateQueryParam('product_id', productId);
+
+        console.log(`Product ID was missing. Set to default: ${productId}`);
     }
-});
+
+    return productId; // Return the productId for use outside the function
+}
+
+// Get the product ID on page load
+const productId = ensureProductId();
+
+if (productId) {
+    // Fetch data and render the chart only if productId is valid
+    axios.get(`php/get-ratings.php?product_id=${productId}`)
+        .then(response => {
+            console.log('Response from server:', response.data); // Log the server response
+            if (response.data && Array.isArray(response.data)) {
+                const ratingData = response.data;
+
+                // Render the chart
+                const ctxRatings = document.getElementById('ratingChart').getContext('2d');
+                new Chart(ctxRatings, {
+                    type: 'pie',
+                    data: {
+                        labels: ['5 Stars', '4 Stars', '3 Stars', '2 Stars', '1 Star'],
+                        datasets: [{
+                            label: 'Review Ratings',
+                            data: ratingData,
+                            backgroundColor: ['#28a745', '#ffcc00', '#f39c12', '#e74c3c', '#dcdcdc']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        const count = ratingData[tooltipItem.dataIndex];
+                                        return `${tooltipItem.label}: ${count} Reviews`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error('Invalid data received from the server:', response.data);
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching rating data:', error);
+        });
+} else {
+    console.error('Product ID is missing from the URL.');
+    alert('Product ID is missing from the URL. Please include it as a query parameter, e.g., ?product_id=123');
+}
+
+
+
 
 // Sentiment Analysis (Bar Chart)
 var ctxSentiment = document.getElementById('sentimentChart').getContext('2d');

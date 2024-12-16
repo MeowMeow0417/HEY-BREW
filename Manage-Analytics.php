@@ -119,6 +119,7 @@
 
     <!-- Include JavaScript for charts (e.g., Chart.js) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="script/client/admin/analytics.js"></script> <!-- JavaScript to handle chart rendering -->
 </body>
 </html>
