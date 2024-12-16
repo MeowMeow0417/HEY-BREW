@@ -1,3 +1,4 @@
+// something
 document.addEventListener('DOMContentLoaded', () => {
     const categoryRow = document.querySelector('.category-row');
     const categoryBoxes = document.querySelectorAll('.category-box');
@@ -392,8 +393,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     }
-
-
 
     function loadSavedProducts() {
         const savedProducts = JSON.parse(localStorage.getItem("products")) || [];
