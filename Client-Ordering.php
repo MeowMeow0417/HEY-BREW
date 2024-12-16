@@ -135,6 +135,7 @@
     });
 
 
+
 ?>
 
 
@@ -166,7 +167,6 @@
                 <!-- Search bar -->
                 <input name="search-bar" class="search-bar" id="searchInput" type="text" placeholder="Search">
             </div>
-
 
             <div class="right-bar">
                 <!-- Profile -->
@@ -216,7 +216,7 @@
                 </div>
             </div>
 
-            <div class="container">
+        <div class="container">
             <!-- Products displayed in a grid -->
             <div class="productLine">
                 <?php if ($filteredProducts): ?>
@@ -263,28 +263,8 @@
                     <p>No products found.</p>
                 <?php endif; ?>
             </div>
-
-
-            <!-- Add to Cart / Place order -->
-            <div class="place-order" id="place-order">
-                <div class="order-section" id="order-section">
-                    <div class="header-order" id="header-order">
-                        <i class="fa-solid fa-chevron-up" id="cartArrow"></i>
-                    </div>
-                    <div class="product-order" id="product-order"  data-id="" data-client-id="<?php echo htmlspecialchars($client_id); ?>">
-                    <!-- Poppulated Dynamically using JS-->
-
-                    </div>
-
-                    <div class="fixed-footer">
-                    <p class="total-Price">Total: <span class="total-price" id="total-price"></span></p>
-                    <button class="btn-order" id="btn-order" name="btn-order">Place Order</button>
-                    </div>
-                </div>
-            </div>
         </div>
     </form>
-
     <!-- Options Modal -->
     <div class="options-modal" id="options-modal" data-client-id="<?php echo htmlspecialchars($client_id); ?>" data-id="<?php echo htmlspecialchars($product['details']['product_id'])?>">
         <div class="container-grid" id="container-grid">
@@ -310,7 +290,6 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-
                 <!-- Add-Ons Dropdown -->
                 <div class="detail-row">
                     <label for="addOn_<?php echo $product['details']['product_id']; ?>">Add-Ons</label>
@@ -325,7 +304,6 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-
                 <!-- Size & Price Dropdown -->
                 <div class="detail-row">
                     <label for="size_<?php echo $product['details']['product_id']; ?>">Size & Price</label>
@@ -339,29 +317,23 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-
                 <!-- Reviews Section -->
-
                     <div class="reviews-section">
                         <h5>Reviews:</h5>
-
                         <!-- Average Rating -->
                         <!-- will be Poppulated by js -->
-
                         <!-- User Comments -->
                         <div class="comments">
                         <!-- will be Poppulated by js -->
-
-
                     </div>
 
                 </div>
                 <div class="LeaveReview">
-                    <button class="btn-review" id="btn-review" name="btn-review">Leave a Review</button>
+                    <form method="POST" action="add-reviews.php">
+                        <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['details']['product_id']); ?>">
+                        <button class="btn-review" name="btn-review" type="submit">Leave a Review</button>
+                    </form>
                 </div>
-
-
-
         </div>
          <!-- Add to Cart Button -->
          <div class="corner">
@@ -370,16 +342,28 @@
         </div>
     </div>
 
+    <!-- Add to Cart / Place order -->
+    <div class="place-order" id="place-order">
+        <div class="order-section" id="order-section">
+                <div class="header-order" id="header-order">
+                <i class="fa-solid fa-chevron-up" id="cartArrow"></i>
+            </div>
+            <div class="product-order" id="product-order"  data-id="" data-client-id="<?php echo htmlspecialchars($client_id); ?>">
+            <!-- Poppulated Dynamically using JS-->
 
+            </div>
 
+            <div class="fixed-footer">
+            <p class="total-Price">Total: <span class="total-price" id="total-price"></span></p>
+            <button class="btn-order" id="btn-order" name="btn-order">Place Order</button>
+            </div>
+        </div>
+    </div>
     <!-- THANK YOU NOTE -->
     <div class="note-modal" id="modal">
         <p>Thank you for your purchase!</p>
         <p>Your order is now being processed.</p>
     </div>
-
-
-
     <script src="script/client/Client-Ordering.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>

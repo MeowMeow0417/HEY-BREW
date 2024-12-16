@@ -1,6 +1,7 @@
 <?php
 include("php/config.php");
 include("php/connection.php");
+include("php/athenticate_admin.php");
 
 if (isset($_POST['back'])) {
     header("location: Manage-Products.php");

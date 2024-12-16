@@ -36,8 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-
-//Options modal
+// Options modal
 document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('options-modal'); // Select the modal
     const closeModalButton = modal.querySelector('.close'); // Select the close button
@@ -47,10 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalTypeSelect = modal.querySelector('select[name="type"]'); // Modal type dropdown
     const modalAddOnSelect = modal.querySelector('select[name="add_on"]'); // Modal add-ons dropdown
     const modalSizePriceSelect = modal.querySelector('select[name="size_price"]'); // Modal size & price dropdown
-    const reviewSection = document.querySelector('.reviews-section');
+    const modalProductIdInput = modal.querySelector('input[name="product_id"]'); // Hidden product ID input
+    const reviewSection = document.querySelector('.reviews-section'); // Reviews section in modal
 
-     // Add active class on hover
-     reviewSection.addEventListener('mouseenter', () => {
+    // Add active class on hover
+    reviewSection.addEventListener('mouseenter', () => {
         reviewSection.classList.add('active');
     });
 
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to populate and show the modal with product details
     function showModal(card) {
-        const productId = card.getAttribute('data-id');
+        const productId = card.getAttribute('data-id'); // Get product ID
         const productName = card.getAttribute('data-name');
         const productImage = card.getAttribute('data-image');
         const productDescription = card.getAttribute('data-description');
@@ -88,7 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const comments = JSON.parse(card.getAttribute('data-comments') || '[]');
 
         // Populate modal content
-        modal.dataset.id = productId;
+        modal.dataset.id = productId; // Set modal data-id for reference
+        modalProductIdInput.value = productId; // Set hidden product ID input value
         modalImage.src = productImage || '';
         modalImage.alt = productName || 'Product Image';
         modalName.textContent = productName || 'Unknown Product';
@@ -164,7 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
 
 
 
