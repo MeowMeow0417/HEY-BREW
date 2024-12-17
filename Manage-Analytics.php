@@ -1,14 +1,38 @@
 <?php
-    include("php/config.php");
-    include("php/connection.php");
-    include("php/athenticate_admin.php");
+include("php/config.php");
+include("php/connection.php");
+include("php/athenticate_admin.php");
 
-    if(isset($_POST['all-reviews'])){
-        header ('Location: Manage-reviews.php');
-        exit();
+if (isset($_POST['all-reviews'])) {
+    header('Location: Manage-reviews.php');
+    exit();
+}
+
+// Query to find the most reviewed product
+$query = "SELECT p.product_name, COUNT(pr.review_id) AS review_count
+          FROM product_reviews AS pr
+          INNER JOIN products AS p ON pr.product_id = p.product_id
+          GROUP BY pr.product_id
+          ORDER BY review_count DESC
+          LIMIT 1"; // Get the product with the highest review count
+
+// Prepare and execute the query
+if ($stmt = $conn->prepare($query)) {
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result && $result->num_rows > 0) {
+        $mostReviewedProduct = $result->fetch_assoc();
+        $mostReviewedProductName = htmlspecialchars($mostReviewedProduct['product_name'], ENT_QUOTES, 'UTF-8');
+    } else {
+        $mostReviewedProductName = "No reviews available";
     }
 
-
+    $stmt->close();
+} else {
+    $mostReviewedProductName = "Error fetching data";
+    error_log("SQL error: " . $conn->error);
+}
 ?>
 
 <!DOCTYPE html>
@@ -120,7 +144,9 @@
                             </div>
                             <div class="metric-card most-reviewed-product">
                                 <h4>Most Reviewed Product</h4>
-                                <p class="metric">N/A</p>
+                                <p class="metric">
+                                    <?php echo $mostReviewedProductName; ?>
+                                </p>
                             </div>
                             <div class="metric-card">
                                 <h4>Download Table Reviews</h4>

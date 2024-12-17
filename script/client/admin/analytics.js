@@ -282,21 +282,10 @@ function fetchReviewMetrics(productId) {
                     // Update the UI to reflect no reviews
                     document.querySelector('.total-reviews .metric').textContent = "0";
                     document.querySelector('.average-rating .metric').textContent = "N/A";
-                    document.querySelector('.most-reviewed-product .metric').textContent = "N/A";
-
-                    // Optionally display a message
-                    document.querySelector('.no-reviews-message').textContent = "No reviews available for this product.";
                 } else {
                     // Update metrics
                     document.querySelector('.total-reviews .metric').textContent = metrics.totalReviews;
                     document.querySelector('.average-rating .metric').textContent = `${metrics.averageRating}/5`;
-
-                    // Update most reviewed product (optional)
-                    if (metrics.mostReviewedProduct) {
-                        document.querySelector('.most-reviewed-product .metric').textContent = metrics.mostReviewedProduct;
-                    } else {
-                        document.querySelector('.most-reviewed-product .metric').textContent = "N/A";
-                    }
 
                     // Clear the "no reviews" message
                     document.querySelector('.no-reviews-message').textContent = "";
