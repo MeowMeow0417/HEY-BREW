@@ -85,6 +85,7 @@ function updateOrderStatus(selectElement) {
         if (response.data.success) {
             console.log(`Order ${orderId} updated to ${selectedStatus}.`);
 
+            // Send sales data only when status is 'completed'
             if (selectedStatus === 'completed') {
                 const salesData = new URLSearchParams();
                 salesData.append('orderId', orderId);
@@ -101,7 +102,7 @@ function updateOrderStatus(selectElement) {
     })
     .then(response => {
         if (response && response.data.success) {
-            console.log("Sales logged successfully:", response.data);
+            console.log("Sales logged successfully:", response.data.message);
         } else if (response) {
             console.error("Failed to log sales:", response.data.message);
             alert("Failed to log the sales. Please try again.");
@@ -120,12 +121,12 @@ function updateOrderStatus(selectElement) {
 }
 
 
+// addition of other stuff
+
 // Utility function to capitalize the first letter
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
 }
-
-
 
 // Add event listeners for rows
 document.addEventListener('DOMContentLoaded', () => {

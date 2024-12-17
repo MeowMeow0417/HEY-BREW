@@ -23,6 +23,10 @@ const salesChart = new Chart(ctxSales, {
 });
 
 
+// Global variable to store detailed sales data
+let detailedSalesData = [];
+
+// Fetch and Update Sales Data
 // Fetch and Update Sales Data
 async function fetchSalesData(filter = 'month') {
     try {
@@ -35,6 +39,9 @@ async function fetchSalesData(filter = 'month') {
         console.log("API Response:", data);
 
         if (data.salesData && Array.isArray(data.salesData)) {
+            detailedSalesData = data.salesData; // Store the detailed data globally
+
+            // Update chart with new data
             const labels = data.salesData.map(entry => formatDatetime(entry.datetime, filter));
             const sales = data.salesData.map(entry => entry.sales);
 
@@ -45,13 +52,15 @@ async function fetchSalesData(filter = 'month') {
 
             salesChart.data.labels = labels;
             salesChart.data.datasets[0].data = sales;
-            console.log("Updated Chart Data:", salesChart.data);
 
-            salesChart.update(); // Trigger re-render
+            console.log("Updated Chart Data:", salesChart.data);
+            salesChart.update();
+
         } else {
             console.error("Invalid sales data format:", data);
         }
 
+        // Update total sales display
         if (data.totalSales !== undefined) {
             document.querySelector('.metric').textContent = `₱${data.totalSales.toLocaleString()}`;
         }
@@ -59,6 +68,67 @@ async function fetchSalesData(filter = 'month') {
         console.error(`Error fetching sales data for ${filter}:`, error);
     }
 }
+
+
+
+// Function to trigger CSV download
+function downloadSalesData() {
+    // Check if the sales data is available
+    if (!Array.isArray(detailedSalesData) || detailedSalesData.length === 0) {
+        alert("No detailed sales data available to download.");
+        return;
+    }
+
+    // Headers for detailed CSV file
+    const headers = ["Date", "Product Name", "Category", "Quantity Sold", "Sales Amount"];
+
+    // Map the detailed data into CSV rows
+    const csvData = detailedSalesData.map(item => [
+        formatDatetime(item.datetime, 'month'), // Format date
+        item.product_name || "N/A",             // Default to "N/A" if undefined
+        item.category || "N/A",
+        item.quantity || 0,
+        item.sales || 0
+    ]);
+
+    // Convert the rows into CSV format
+    const csv = convertToCSV(csvData, headers);
+
+    // Create and download the CSV file
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "detailed_sales_data.csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// Utility function to convert data to CSV format
+function convertToCSV(data, headers) {
+    const csvRows = [];
+
+    // Add headers to the CSV file
+    csvRows.push(headers.join(","));
+
+    // Add data rows
+    for (const row of data) {
+        csvRows.push(row.join(","));
+    }
+
+    return csvRows.join("\n");
+}
+
+
+// Add event listener for downloading
+document.getElementById("downloadSalesData").addEventListener("click", downloadSalesData);
+
+// Initialize fetch
+fetchSalesData('day');
+
 
 // Initialize Filter Buttons
 setupFilterButtons();
@@ -95,6 +165,7 @@ function formatDatetime(datetime, filter) {
             return datetime; // Fallback: full datetime
     }
 }
+
 
 
 
@@ -186,38 +257,6 @@ function convertToCSV(data, headers) {
     });
     return rows.join("\n");
 }
-
-// Function to trigger CSV download
-function downloadSalesData() {
-    const labels = salesChart.data.labels;
-    const sales = salesChart.data.datasets[0].data;
-
-    if (labels.length === 0 || sales.length === 0) {
-        alert("No sales data available to download.");
-        return;
-    }
-
-    const data = labels.map((label, index) => [label, sales[index]]);
-    const headers = ["Date", "Sales in ₱"];
-
-    const csv = convertToCSV(data, headers);
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "sales_data.csv";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-}
-
-// Attach event listener to the download button
-document.getElementById("downloadSalesData").addEventListener("click", downloadSalesData);
-
-
-
 
 // Fetch ratings for a product and update the chart
 function fetchRatings(productId) {

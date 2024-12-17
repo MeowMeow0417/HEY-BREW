@@ -110,14 +110,13 @@
                                 <h4>Most Reviewed Product</h4>
                                 <p class="metric">N/A</p>
                             </div>
-                            <div class="metric-card">
-                                <h4>Download product reviews</h4>
-                                <button id="downloadRatingsData">Download</button>
-                            </div>
-
                             <div class="metric-card ">
                                 <h4>Most Reviewed Product</h4>
                                 <p class="metric">N/A</p>
+                            </div>
+                            <div class="metric-card">
+                                <h4>Download product reviews</h4>
+                                <button id="downloadRatingsData">Download</button>
                             </div>
                         </div>
                     </div>
