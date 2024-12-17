@@ -14,13 +14,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     exit;
 }
 
-if (isset($_GET['action']) && $_GET['action'] === 'get') {
+$action = $_GET['action'] ?? null;
+
+// Primary Endpoint: Aggregate Data for Graphs
+if ($action === 'get') {
     $filter = $_GET['filter'] ?? 'month'; // Default to 'month' if no filter is provided
 
     try {
         $query = "";
-        $groupBy = "";
-        $params = [];
 
         // Adjust query based on the filter
         switch ($filter) {
@@ -56,7 +57,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'get') {
                 break;
         }
 
-        // Fetch sales data
+        // Fetch aggregated sales data
         $stmt = $conn->prepare($query);
         if (!$stmt) {
             throw new Exception("Failed to prepare statement: " . $conn->error);
@@ -73,7 +74,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'get') {
             ];
         }
 
-        // Fetch total sales data
+        // Fetch total sales
         $totalStmt = $conn->prepare("
             SELECT SUM(total_sales) AS total_sales
             FROM salesData
@@ -81,8 +82,9 @@ if (isset($_GET['action']) && $_GET['action'] === 'get') {
                      ($filter === 'week' ? "WEEK(date) = WEEK(CURDATE()) AND YEAR(date) = YEAR(CURDATE())" :
                       "MONTH(date) = MONTH(CURDATE()) AND YEAR(date) = YEAR(CURDATE())"))
         );
+
         if (!$totalStmt) {
-            throw new Exception("Failed to prepare statement for total sales: " . $conn->error);
+            throw new Exception("Failed to prepare total sales statement: " . $conn->error);
         }
 
         $totalStmt->execute();
@@ -97,8 +99,47 @@ if (isset($_GET['action']) && $_GET['action'] === 'get') {
         http_response_code(500);
         echo json_encode(["error" => $e->getMessage()]);
     } finally {
-        if (isset($stmt) && $stmt instanceof mysqli_stmt) $stmt->close();
-        if (isset($totalStmt) && $totalStmt instanceof mysqli_stmt) $totalStmt->close();
+        if (isset($stmt)) $stmt->close();
+        if (isset($totalStmt)) $totalStmt->close();
+        $conn->close();
+    }
+}
+
+// Secondary Endpoint: Detailed Product-Level Data for Download
+else if ($action === 'details') {
+    try {
+        $query = "
+            SELECT s.date AS datetime, i.product_name, i.quantity, i.sales_amount
+            FROM salesData AS s
+            JOIN salesData_items AS i ON s.id = i.sale_id
+            WHERE MONTH(s.date) = MONTH(CURDATE()) AND YEAR(s.date) = YEAR(CURDATE())
+            ORDER BY s.date ASC
+        ";
+
+        $stmt = $conn->prepare($query);
+        if (!$stmt) {
+            throw new Exception("Failed to prepare statement for details: " . $conn->error);
+        }
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $detailedData = [];
+        while ($row = $result->fetch_assoc()) {
+            $detailedData[] = [
+                "datetime" => $row['datetime'],
+                "product_name" => $row['product_name'],
+                "quantity" => (int)$row['quantity'],
+                "sales_amount" => (float)$row['sales_amount']
+            ];
+        }
+
+        echo json_encode(["details" => $detailedData]);
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode(["error" => $e->getMessage()]);
+    } finally {
+        if (isset($stmt)) $stmt->close();
         $conn->close();
     }
 } else {
