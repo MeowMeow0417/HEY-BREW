@@ -1,79 +1,97 @@
-class Marquee {
-    constructor(element, options = {}) {
-        this.container = element;
-        this.options = {
-            repeat: 3,
-            gap: '1.5rem',
-            duration: '40s',
-            ...options
-        };
-        
-        this.init();
-    }
+document.addEventListener('DOMContentLoaded', function() {
+    const fetchAndDisplayReviews = async () => {
+        try {
+            console.log('Fetching reviews...');
+            const response = await fetch('./homepage-review.php');
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const text = await response.text();
+            console.log('Raw response:', text);
+            
+            let reviews;
+            try {
+                reviews = JSON.parse(text);
+            } catch (e) {
+                console.error('JSON parsing error:', e);
+                console.log('Problematic text:', text);
+                return;
+            }
+            
+            console.log('Parsed reviews:', reviews);
+            
+            if (!reviews || reviews.length === 0) {
+                console.log('No reviews found');
+                return;
+            }
 
-    init() {
-        const topRow = this.container.querySelector('#marquee-top');
-        const bottomRow = this.container.querySelector('#marquee-bottom');
+            const topRow = document.getElementById('marquee-top');
+            const bottomRow = document.getElementById('marquee-bottom');
+            
+            if (!topRow || !bottomRow) {
+                console.error('Could not find marquee rows');
+                return;
+            }
 
-        topRow.style.setProperty('--gap', this.options.gap);
-        topRow.style.setProperty('--duration', this.options.duration);
-        bottomRow.style.setProperty('--gap', this.options.gap);
-        bottomRow.style.setProperty('--duration', this.options.duration);
-        
-        // Split reviews into two groups for top and bottom rows
-        const reviews = this.getReviews();
-        const midPoint = Math.ceil(reviews.length / 2);
-        const topReviews = reviews.slice(0, midPoint);
-        const bottomReviews = reviews.slice(midPoint);
-
-        for (let i = 0; i < this.options.repeat; i++) {
-            const topDiv = document.createElement('div');
-            topDiv.className = 'marquee-content';
-            topDiv.innerHTML = this.generateReviewsHTML(topReviews);
-            topRow.appendChild(topDiv);
-
-            const bottomDiv = document.createElement('div');
-            bottomDiv.className = 'marquee-content';
-            bottomDiv.innerHTML = this.generateReviewsHTML(bottomReviews);
-            bottomRow.appendChild(bottomDiv);
-        }
-    }
-
-    getReviews() {
-        return [
-            { name: 'Andrei', stars: 5, text: 'Great product! Highly recommended. The quality exceeded my expectations.' },
-            { name: 'Janina', stars: 4, text: 'Very satisfied with my purchase. Good value for money and fast shipping.' },
-            { name: 'Mary', stars: 5, text: 'Excellent quality and outstanding customer service. Will definitely buy again!' },
-            { name: 'Marga', stars: 4, text: 'Good product overall. A few minor issues, but nothing major to complain about.' },
-            { name: 'Gilbert', stars: 5, text: 'Exceeded my expectations! This product has made a significant difference in my daily routine.' },
-            { name: 'Tomas', stars: 4, text: 'Very happy with this product. It does exactly what it promises and arrived on time.' },
-            { name: 'Keazer', stars: 5, text: 'Outstanding product and customer service. The team went above and beyond to ensure my satisfaction.' },
-            { name: 'Gifted', stars: 5, text: 'Outstanding product and customer service. The team went above and beyond to ensure my satisfaction.' },
-            { name: 'Keazer', stars: 5, text: 'Outstanding product and customer service. The team went above and beyond to ensure my satisfaction.' },
-            { name: 'Dominic', stars: 4, text: 'Would definitely buy again. Great quality for the price and very user-friendly.' }
-        ];
-    }
-
-    generateReviewsHTML(reviews) {
-        return reviews.map(review => `
-            <div class="review-card">
-                <div class="review-header">
-                    <div class="avatar" aria-hidden="true"></div>
-                    <div class="customer-info">
-                        <p class="customer-name">${review.name}</p>
-                        <p class="customer-stars" aria-label="${review.stars} stars">${'★'.repeat(review.stars)}</p>
+            // Clear existing content
+            topRow.innerHTML = '';
+            bottomRow.innerHTML = '';
+            
+            // Create review cards
+            const createReviewCard = (review) => {
+                console.log('Creating card for review:', review);
+                const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+                return `
+                    <div class="review-card">
+                        <div class="review-header">
+                            <div class="avatar"></div>
+                            <div class="customer-info">
+                                <p class="customer-name">${review.username}</p>
+                                <p class="customer-stars">${stars}</p>
+                            </div>
+                        </div>
+                        <p class="review-text">${review.comment}</p>
+                        <p class="product-name">Product: ${review.product_name}</p>
                     </div>
-                </div>
-                <p class="review-text">${review.text}</p>
-            </div>
-        `).join('');
-    }
-}
+                `;
+            };
 
-// Initialize the marquee
-new Marquee(document.getElementById('marquee'), {
-    repeat: 3,
-    gap: '1.5rem',
-    duration: '20s'
+            // Split reviews between top and bottom rows
+            const midPoint = Math.ceil(reviews.length / 2);
+            const topReviews = reviews.slice(0, midPoint);
+            const bottomReviews = reviews.slice(midPoint);
+
+            // Create marquee content
+            const createMarqueeContent = (reviewsArray) => {
+                const content = document.createElement('div');
+                content.className = 'marquee-content';
+                content.innerHTML = reviewsArray.map(review => createReviewCard(review)).join('');
+                return content;
+            };
+
+            // Add content to rows
+            const topContent = createMarqueeContent(topReviews);
+            const bottomContent = createMarqueeContent(bottomReviews);
+
+            topRow.appendChild(topContent.cloneNode(true));
+            topRow.appendChild(topContent.cloneNode(true));
+            bottomRow.appendChild(bottomContent.cloneNode(true));
+            bottomRow.appendChild(bottomContent.cloneNode(true));
+
+        } catch (error) {
+            console.error('Error details:', {
+                message: error.message,
+                stack: error.stack
+            });
+        }
+    };
+
+    // Initial load
+    fetchAndDisplayReviews();
+
+    // Refresh reviews every 5 minutes
+    setInterval(fetchAndDisplayReviews, 300000);
 });
 

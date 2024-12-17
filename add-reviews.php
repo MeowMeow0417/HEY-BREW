@@ -1,5 +1,4 @@
 <?php
-session_start(); // Start session for client authentication
 include("php/config.php");
 include("php/connection.php");
 include("php/authenticate_client.php");

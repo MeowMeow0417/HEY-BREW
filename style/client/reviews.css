@@ -50,109 +50,95 @@ h1 {
 .marquee-container {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 4rem;
     overflow: hidden;
     width: 120%;
+    padding: 0 2rem;
 }
 
 .marquee-row {
     display: flex;
     overflow: hidden;
     width: 100%;
+    position: relative;
 }
 
 .marquee-content {
     display: flex;
-    gap: var(--gap, 1.5rem);
-    padding: 0.5rem 0;
-    min-width: max-content; /* Changed to max-content */
+    position: relative;
+    gap: 2rem;
 }
 
+/* Base animations for each row */
 .marquee-row:first-child .marquee-content {
-    animation: scrollLeft var(--duration, 40s) linear infinite;
+    animation: scrollLeft 40s linear infinite;
+    animation-play-state: running;
 }
 
 .marquee-row:last-child .marquee-content {
-    animation: scrollRight var(--duration, 40s) linear infinite;
+    animation: scrollRight 40s linear infinite;
+    animation-play-state: running;
 }
 
-.marquee-row:hover .marquee-content {
-    animation-play-state: paused;
-}
-
-
-@keyframes scrollLeft {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(calc(-50% - var(--gap)));
-    }
-}
-
-@keyframes scrollRight {
-    0% {
-        transform: translateX(calc(-50% - var(--gap)));
-    }
-    100% {
-        transform: translateX(0);
-    }
+/* Explicit pause on hover with higher specificity */
+.marquee-row:first-child:hover .marquee-content,
+.marquee-row:last-child:hover .marquee-content {
+    animation-play-state: paused !important;
 }
 
 .review-card {
+    flex: 0 0 auto;
+    width: 350px;
+    margin: 0 2rem;
+    padding: 1.5rem;
     background-color: #8B4513;
     border-radius: 15px;
-    padding: 20px;
-    width: 300px;
-    min-width: 300px;
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
-    flex-shrink: 0;
-    margin-right: var(--gap, 1.5rem); /* Added margin-right */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Remove margin-right from the last card in each set */
-.review-card:last-child {
-    margin-right: 0;
+.review-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
 }
-
-/* Ensure proper spacing between duplicated sets */
-.marquee-content > .review-card:last-of-type {
-    margin-right: var(--gap, 1.5rem);
-}
-
 
 .review-header {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
-}
-
-.avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #fff;
-    margin-right: 15px;
+    margin-bottom: 1rem;
 }
 
 .customer-info {
-    color: #fff;
+    margin-left: 1rem;
 }
 
 .customer-name {
     font-weight: bold;
     margin: 0;
-    font-size: 1.1rem;
 }
 
 .customer-stars {
-    margin: 5px 0 0;
-    font-size: 1rem;
+    color: #FFD700;
+    margin: 0.25rem 0;
 }
 
 .review-text {
-    color: #fff;
-    font-size: 1rem;
-    line-height: 1.4;
+    margin: 1rem 0;
+}
+
+.product-name {
+    font-style: italic;
+    opacity: 0.9;
+}
+
+@keyframes scrollLeft {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+}
+
+@keyframes scrollRight {
+    from { transform: translateX(-50%); }
+    to { transform: translateX(0); }
 }
 

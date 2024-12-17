@@ -105,8 +105,7 @@
             <a href="#home" class="logo">Hey Brew Hide Out</a>
             <div class="nav-links">
                 <a href="#home" class="home-btn">Home</a>
-                <a href="#blog" class="blog-btn">Blog</a>
-                <a href="#services" class="service-btn">Services</a>
+                <a href="#services" class="service-btn">Offers</a>
                 <a href="#reviews" class="reviews-btn">Reviews</a>
                 <a href="#about" class="about-btn">About</a>
 
@@ -194,59 +193,38 @@
         </div>
     </section>
 
-    <section class="blog" id="blog">
-        <div class="blog-container">
-            <div class="blog-content">
-                <h4>Blog</h4>
-                <h2>Exciting Events at Hey Brew Hideout</h2>
-                <div class="print">
-                <p>At Hey Brew Hideout Cafe, we believe in bringing people together for more than just great food and drinks. That's why we host exciting raffles where you can win awesome prizes! Whether you're here to relax or hang out with friends, our raffles add an extra thrill to your visit.</p>
-                <p class="ifP">If you're a gamer, you won't want to miss our tournaments! Show off your skills, compete for top spots, and enjoy the friendly competition. Stay tuned for updates on upcoming events, and make sure to join in on the fun!</p>
-                    </div>
-            </div>
-            <div class="image-container">
-                <div class="blog-image">
-                    <img src="style/images/blog/raffle.png" alt="Image 1">
-                </div>
-                <div class="blog-image">
-                    <img src="style/images/blog/tourna.png" alt="Image 2">
-                </div>
-            </div>
-        </div>
-    </section>
-
 
     <section class="services" id="service">
         <div class="logo-wrapper">
             <img src="style/images/service/heybrewlogo.jpg" alt="Hey Brew Hideout Cafe Logo" class="logo">
         </div>
         <div class="container">
-            <h1>Services and Limited Offers</h1>
-            <p class="subtitle">Experience the offers and services of<br>our Cafe's Hideout!</p>
+            <h1>Special Offers</h1>
+            <p class="subtitle">Experience the Special Offers of<br>our Cafe's Hideout!</p>
 
             <div class="services-grid">
                 <div class="service-card">
-                    <h2>Mango Graham Float</h2>
+                    <h2>Rent Venue</h2>
                     <div class="image-wrapper">
-                        <img src="style/images/service/mango float.jpg" alt="Mango Graham Float">
+                        <img src="style/images/service/rent pic.jpg" alt="Mango Graham Float">
                     </div>
-                    <p>Enjoy the tropical bliss of our Mango Graham Float—layers of sweet mangoes, creamy whipped goodness, and crunchy grahams in every chilled bite!</p>
+                    <p>Transform our cozy cafe into the perfect venue for your private events, celebrations, or corporate gatherings. Our space offers a warm ambiance ideal for creating memorable experiences.</p>
                 </div>
 
                 <div class="service-card">
-                    <h2>Exclusive Events</h2>
+                    <h2>Raffles</h2>
                     <div class="image-wrapper">
-                        <img src="style/images/service/rent pic.jpg" alt="Exclusive Events">
+                        <img src="style/images/blog/raffle.png" alt="Exclusive Events">
                     </div>
-                    <p>Host your special moments at Heybrew Hideout! Enjoy a cozy space, exclusive menu options, and a warm ambiance for unforgettable gatherings</p>
+                    <p>Join our exciting monthly raffles for a chance to win exclusive discounts, free drinks, and other special prizes. Every visit increases your chance to win!</p>
                 </div>
 
                 <div class="service-card">
-                    <h2>Mango Smoothie</h2>
+                    <h2>Tournaments</h2>
                     <div class="image-wrapper">
-                        <img src="style/images/service/mango smoothie.jpg" alt="Mango Smoothie">
+                        <img src="style/images/blog/tourna.png" alt="Tournament">
                     </div>
-                    <p>Sip the sunshine with our Mango Smoothie in a pouch—refreshingly sweet, creamy, and ready to go wherever you do!</p>
+                    <p>Participate in our friendly tournaments, from mobile legends tournaments to board games, where fun, competition, and rewards come together.</p>
                 </div>
             </div>
         </div>
