@@ -22,8 +22,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['downloadSalesData']))
         header('Content-Type: text/csv; charset=utf-8');
         header('Content-Disposition: attachment; filename="sales_data_detailed.csv"');
 
+        // Additional headers for better compatibility
+        header('Pragma: public');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Cache-Control: private', false);
+
         // Open output stream
         $output = fopen('php://output', 'w');
+
+        // Add UTF-8 BOM for proper encoding (important for Excel and UTF-8 compatibility)
+        fprintf($output, "\xEF\xBB\xBF");
 
         // Add column headers to the CSV
         fputcsv($output, ['Sale ID', 'Date', 'Total Sales', 'Product Name', 'Quantity', 'Sales Amount']);
@@ -66,4 +75,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['downloadSalesData']))
 } else {
     echo "Invalid request.";
 }
+
 ?>
