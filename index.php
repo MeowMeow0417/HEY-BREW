@@ -260,7 +260,7 @@
         <div class="marquee-row" id="marquee-bottom"></div>
     </div>
     </section>
-    <script src="script/client/reviewsection.js"></script>
+    <script src="reviewsection.js"></script>
 
 <!--About Section-->
 
