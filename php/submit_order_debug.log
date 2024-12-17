@@ -21,3 +21,138 @@ Decoded Input: Array
 )
 
 Order placed successfully. Total price: 1444
+--- Incoming Payload ---
+Raw POST data: 
+Decoded Input: 
+Error: Invalid request data.
+--- Incoming Payload ---
+Raw POST data: {"client_id":"5","order_items":[{"product_id":"14_small","name":"Java Chip","size":"Small","type":"N/a","add_ons":"None","quantity":1,"total_price":135}]}
+Decoded Input: Array
+(
+    [client_id] => 5
+    [order_items] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 14_small
+                    [name] => Java Chip
+                    [size] => Small
+                    [type] => N/a
+                    [add_ons] => None
+                    [quantity] => 1
+                    [total_price] => 135
+                )
+
+        )
+
+)
+
+Error: Cannot add or update a child row: a foreign key constraint fails (`heybrew`.`orders`, CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`client_id`))
+--- Incoming Payload ---
+Raw POST data: 
+Decoded Input: 
+Error: Invalid request data.
+--- Incoming Payload ---
+Raw POST data: {"client_id":"5","order_items":[{"product_id":"3_small","name":"Siomai","size":"Small","type":"N/a","add_ons":"None","quantity":1,"total_price":69}]}
+Decoded Input: Array
+(
+    [client_id] => 5
+    [order_items] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 3_small
+                    [name] => Siomai
+                    [size] => Small
+                    [type] => N/a
+                    [add_ons] => None
+                    [quantity] => 1
+                    [total_price] => 69
+                )
+
+        )
+
+)
+
+Error: Cannot add or update a child row: a foreign key constraint fails (`heybrew`.`orders`, CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`client_id`))
+--- Incoming Payload ---
+Raw POST data: 
+Decoded Input: 
+Error: Invalid request data.
+--- Incoming Payload ---
+Raw POST data: {"client_id":"18","order_items":[{"product_id":"3_small","name":"Siomai","size":"Small","type":"N/a","add_ons":"None","quantity":1,"total_price":69}]}
+Decoded Input: Array
+(
+    [client_id] => 18
+    [order_items] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 3_small
+                    [name] => Siomai
+                    [size] => Small
+                    [type] => N/a
+                    [add_ons] => None
+                    [quantity] => 1
+                    [total_price] => 69
+                )
+
+        )
+
+)
+
+Error: Cannot add or update a child row: a foreign key constraint fails (`heybrew`.`orders`, CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`client_id`))
+--- Incoming Payload ---
+Raw POST data: 
+Decoded Input: 
+Error: Invalid request data.
+--- Incoming Payload ---
+Raw POST data: {"client_id":"18","order_items":[{"product_id":"1_small","name":"Mango Smoothie","size":"Small","type":"N/a","add_ons":"None","quantity":1,"total_price":100}]}
+Decoded Input: Array
+(
+    [client_id] => 18
+    [order_items] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 1_small
+                    [name] => Mango Smoothie
+                    [size] => Small
+                    [type] => N/a
+                    [add_ons] => None
+                    [quantity] => 1
+                    [total_price] => 100
+                )
+
+        )
+
+)
+
+Error: Cannot add or update a child row: a foreign key constraint fails (`heybrew`.`orders`, CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`client_id`))
+--- Incoming Payload ---
+Raw POST data: 
+Decoded Input: 
+Error: Invalid request data.
+--- Incoming Payload ---
+Raw POST data: {"client_id":"18","order_items":[{"product_id":"3_small","name":"Siomai","size":"Small","type":"N/a","add_ons":"None","quantity":1,"total_price":69}]}
+Decoded Input: Array
+(
+    [client_id] => 18
+    [order_items] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 3_small
+                    [name] => Siomai
+                    [size] => Small
+                    [type] => N/a
+                    [add_ons] => None
+                    [quantity] => 1
+                    [total_price] => 69
+                )
+
+        )
+
+)
+
+Error: Cannot add or update a child row: a foreign key constraint fails (`heybrew`.`orders`, CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`client_id`))
