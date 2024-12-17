@@ -23,8 +23,6 @@ const salesChart = new Chart(ctxSales, {
 });
 
 
-// Global variable to store detailed sales data
-let detailedSalesData = [];
 
 // Fetch and Update Sales Data
 // Fetch and Update Sales Data
@@ -70,64 +68,9 @@ async function fetchSalesData(filter = 'month') {
 }
 
 
-
-// Function to trigger CSV download
-function downloadSalesData() {
-    // Check if the sales data is available
-    if (!Array.isArray(detailedSalesData) || detailedSalesData.length === 0) {
-        alert("No detailed sales data available to download.");
-        return;
-    }
-
-    // Headers for detailed CSV file
-    const headers = ["Date", "Product Name", "Category", "Quantity Sold", "Sales Amount"];
-
-    // Map the detailed data into CSV rows
-    const csvData = detailedSalesData.map(item => [
-        formatDatetime(item.datetime, 'month'), // Format date
-        item.product_name || "N/A",             // Default to "N/A" if undefined
-        item.category || "N/A",
-        item.quantity || 0,
-        item.sales || 0
-    ]);
-
-    // Convert the rows into CSV format
-    const csv = convertToCSV(csvData, headers);
-
-    // Create and download the CSV file
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "detailed_sales_data.csv";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-}
-
-// Utility function to convert data to CSV format
-function convertToCSV(data, headers) {
-    const csvRows = [];
-
-    // Add headers to the CSV file
-    csvRows.push(headers.join(","));
-
-    // Add data rows
-    for (const row of data) {
-        csvRows.push(row.join(","));
-    }
-
-    return csvRows.join("\n");
-}
-
-
-// Add event listener for downloading
-document.getElementById("downloadSalesData").addEventListener("click", downloadSalesData);
-
 // Initialize fetch
 fetchSalesData('day');
+
 
 
 // Initialize Filter Buttons
@@ -165,6 +108,20 @@ function formatDatetime(datetime, filter) {
             return datetime; // Fallback: full datetime
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -245,6 +202,16 @@ function fetchProductIds() {
             console.error("Error fetching product IDs:", error);
         });
 }
+// Update the hidden input's value whenever a product is selected
+function updateHiddenInput() {
+    const selectedProductId = document.getElementById('productSelect').value;
+    document.getElementById('hiddenProductId').value = selectedProductId;
+}
+
+// Ensure hidden input is updated on initial load (optional)
+document.addEventListener("DOMContentLoaded", () => {
+    updateHiddenInput();
+});
 
 // Function to convert data to CSV format
 function convertToCSV(data, headers) {
@@ -354,40 +321,3 @@ document.getElementById('productSelect').addEventListener('change', function () 
 
 // Load product IDs on page load
 fetchProductIds();
-
-
-// Function to trigger CSV download for ratings data
-function downloadRatingsData() {
-    const ratingsData = ratingChart.data.datasets[0].data;
-
-    if (ratingsData.every(rating => rating === 0)) {
-        alert("No ratings data available to download.");
-        return;
-    }
-
-    const data = [
-        ["Rating", "Number of Reviews"],
-        ["1 Star", ratingsData[0]],
-        ["2 Stars", ratingsData[1]],
-        ["3 Stars", ratingsData[2]],
-        ["4 Stars", ratingsData[3]],
-        ["5 Stars", ratingsData[4]],
-    ];
-
-    const headers = ["Rating", "Number of Reviews"];
-
-    const csv = convertToCSV(data, headers);
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "ratings_data.csv";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-}
-
-// Attach event listener to the download button
-document.getElementById("downloadRatingsData").addEventListener("click", downloadRatingsData);

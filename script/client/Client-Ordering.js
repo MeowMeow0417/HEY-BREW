@@ -202,7 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-
 // GET PRODUCT NAME
 // ADD TO CART
 document.addEventListener("DOMContentLoaded", () => {
@@ -407,8 +406,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 });
-
-
 
 
 //Pushing to the database

@@ -3,6 +3,10 @@
     include("php/connection.php");
     include("php/athenticate_admin.php");
 
+    if(isset($_POST['all-reviews'])){
+        header ('Location: Manage-reviews.php');
+        exit();
+    }
 
 
 ?>
@@ -73,14 +77,12 @@
                     </div>
                     <div class="metric-card">
                         <h4>Download the sales data</h4>
-                        <button id="downloadSalesData">Download</button>
+                        <form action="php/download-sales-data.php" method="POST">
+                            <button type="submit" name="downloadSalesData" class="btn">Download</button>
+                        </form>
                     </div>
 
-
-
                 </div>
-
-
             </div>
             <!-- Detailed Analytics Section -->
                 <div class="container-2">
@@ -91,9 +93,19 @@
                         <div class="metric-column">
                             <div class="select-card">
                                 <label for="productSelect">Select a Product:</label>
-                                <select id="productSelect">
+                                <select id="productSelect" onchange="updateHiddenInput()">
                                     <!-- Products will be populated dynamically here -->
                                 </select>
+
+                                <form action="Manage-reviews.php" method="GET">
+                                    <div class="metric-card">
+                                        <h4>See product reviews</h4>
+                                        <button type="submit" name="all-reviews" class="all-reviews" id="all-reviews">view</button>
+                                    </div>
+
+                                    <!-- Hidden input to pass the selected product_id -->
+                                    <input type="hidden" id="hiddenProductId" name="product_id" value="" />
+                                </form>
                             </div>
                         </div>
                         <div class="metric-row">
@@ -110,22 +122,15 @@
                                 <h4>Most Reviewed Product</h4>
                                 <p class="metric">N/A</p>
                             </div>
-                            <div class="metric-card ">
-                                <h4>Most Reviewed Product</h4>
-                                <p class="metric">N/A</p>
-                            </div>
                             <div class="metric-card">
-                                <h4>Download product reviews</h4>
-                                <button id="downloadRatingsData">Download</button>
+                                <h4>Download Table Reviews</h4>
+                                <form action="php/download-all-reviews.php" method="POST">
+                                    <button type="submit" name="downloadAll" id="downloadRatingsData" class="btn-dl">Download</button>
+                                </form>
                             </div>
+
                         </div>
                     </div>
-                <!-- <div class="container-3">
-                    <div class="chart-container chart-3">
-                        <h3>Sentiment Analysis</h3>
-                        <canvas id="sentimentChart"></canvas>
-                    </div>
-                </div> -->
         </div>
     </div>
 
