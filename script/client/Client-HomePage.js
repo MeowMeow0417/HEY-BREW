@@ -95,12 +95,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrollToSection = (selector) => {
         const section = document.querySelector(selector);
         if (section) {
-            section.scrollIntoView({ behavior: 'smooth' });
+            const navHeight = document.querySelector('nav').offsetHeight;
+            const sectionPosition = section.offsetTop - navHeight;
+            
+            window.scrollTo({
+                top: sectionPosition,
+                behavior: 'smooth'
+            });
         }
     };
 
     // Event listeners for navigation buttons
-    ['home', 'blog', 'service', 'about'].forEach(section => {
+    ['home', 'blog', 'service', 'about', 'reviews'].forEach(section => {
         const btn = document.querySelector(`.${section}-btn`);
         if (btn) {
             btn.addEventListener('click', (event) => {

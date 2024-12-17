@@ -1,0 +1,23 @@
+--- Incoming Payload ---
+Raw POST data: {"client_id":"4","order_items":[{"product_id":"7_small","name":"adawffa","size":"Small","type":"N/a","add_ons":"None","quantity":1,"total_price":1444}]}
+Decoded Input: Array
+(
+    [client_id] => 4
+    [order_items] => Array
+        (
+            [0] => Array
+                (
+                    [product_id] => 7_small
+                    [name] => adawffa
+                    [size] => Small
+                    [type] => N/a
+                    [add_ons] => None
+                    [quantity] => 1
+                    [total_price] => 1444
+                )
+
+        )
+
+)
+
+Order placed successfully. Total price: 1444

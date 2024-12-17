@@ -653,30 +653,6 @@ nav {
     gap: 1rem;
 }
 
-/* Reviews */
-
-.Reviews{
-    height: 100vh;
-    background-color: #773E29;
-
-    .container-reviews{
-
-    }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* About Page Styling */
 :root {

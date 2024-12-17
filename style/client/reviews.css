@@ -1,0 +1,158 @@
+/* Styles for review section */
+.reviews {
+    position: relative;
+    font-family: 'Poppins', sans-serif;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    overflow: hidden;
+}
+
+.reviews::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url(../../style/images/blog/blogbg.jpg);
+    background-size: 150% 150%;
+    background-position: center;
+    filter: blur(2px);
+    z-index: 1;
+}
+
+.reviews::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(129, 64, 25, 0.5);
+    z-index: 2;
+}
+
+.reviews > * {
+    position: relative;
+    z-index: 3;
+}
+
+h1 {
+    text-align: center;
+    color: #fff9f9;
+    margin-bottom: 2rem;
+}
+
+.marquee-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    overflow: hidden;
+    width: 120%;
+}
+
+.marquee-row {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+}
+
+.marquee-content {
+    display: flex;
+    gap: var(--gap, 1.5rem);
+    padding: 0.5rem 0;
+    min-width: max-content; /* Changed to max-content */
+}
+
+.marquee-row:first-child .marquee-content {
+    animation: scrollLeft var(--duration, 40s) linear infinite;
+}
+
+.marquee-row:last-child .marquee-content {
+    animation: scrollRight var(--duration, 40s) linear infinite;
+}
+
+.marquee-row:hover .marquee-content {
+    animation-play-state: paused;
+}
+
+
+@keyframes scrollLeft {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-50% - var(--gap)));
+    }
+}
+
+@keyframes scrollRight {
+    0% {
+        transform: translateX(calc(-50% - var(--gap)));
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.review-card {
+    background-color: #8B4513;
+    border-radius: 15px;
+    padding: 20px;
+    width: 300px;
+    min-width: 300px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+    margin-right: var(--gap, 1.5rem); /* Added margin-right */
+}
+
+/* Remove margin-right from the last card in each set */
+.review-card:last-child {
+    margin-right: 0;
+}
+
+/* Ensure proper spacing between duplicated sets */
+.marquee-content > .review-card:last-of-type {
+    margin-right: var(--gap, 1.5rem);
+}
+
+
+.review-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #fff;
+    margin-right: 15px;
+}
+
+.customer-info {
+    color: #fff;
+}
+
+.customer-name {
+    font-weight: bold;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.customer-stars {
+    margin: 5px 0 0;
+    font-size: 1rem;
+}
+
+.review-text {
+    color: #fff;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+

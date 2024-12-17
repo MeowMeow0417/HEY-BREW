@@ -93,6 +93,7 @@
     <title>Hey Brew Hide Out</title>
     <link href="https://fonts.googleapis.com/css2?family=Oleo+Script:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style/client/Client-HomePage.css">
+    <link rel="stylesheet" href="style/client/reviews.css">
     <link rel="stylesheet" href="style/client/Client-modal/C-H-PromptModal.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
@@ -106,7 +107,7 @@
                 <a href="#home" class="home-btn">Home</a>
                 <a href="#blog" class="blog-btn">Blog</a>
                 <a href="#services" class="service-btn">Services</a>
-                <a href="#reviews">Reviews</a>
+                <a href="#reviews" class="reviews-btn">Reviews</a>
                 <a href="#about" class="about-btn">About</a>
 
                 <div class="auth-buttons">
@@ -252,13 +253,14 @@
     </section>
 
 <!-- Reviews -->
- <section class="Reviews" id="reviews">
-    <div class="container-reviews">
-
+<section class="reviews" id="reviews">
+    <h1>Product Reviews</h1>
+    <div class="marquee-container" id="marquee">
+        <div class="marquee-row" id="marquee-top"></div>
+        <div class="marquee-row" id="marquee-bottom"></div>
     </div>
- </section>
-
-
+    </section>
+    <script src="reviewsection.js"></script>
 
 <!--About Section-->
 
