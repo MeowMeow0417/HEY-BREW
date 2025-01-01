@@ -212,7 +212,7 @@ $conn->close();
 
                 <div class="right-button">
                     <button type="submit" class="cancel" name="cancel" onclick="confirmCancel()" >Cancel</button>
-                    <button type="submit" class="addP" name="addProd" onclick="AddConfirm()">Update Product</button>
+                    <button type="submit" class="addP" name="addProd" onclick="AddConfirm()"><Address></Address> Product</button>
                 </div>
 
 

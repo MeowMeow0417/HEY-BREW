@@ -183,7 +183,7 @@
                         <img src="style/images/icons/manage.png" alt="Package Icon" width="24" height="24">
                         Manage
                     </button>
-                    <button class="nav-button active" name="analytics" type="submit">
+                    <button class="nav-button" name="analytics" type="submit">
                         <img src="style/images/icons/analytics.png" alt="Analytics Icon" width="24" height="24"> Analytics
                     </button>
                     <button class="logOut" name="logOut" type="submit">Log Out</button>

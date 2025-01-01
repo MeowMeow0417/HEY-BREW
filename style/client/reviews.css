@@ -71,12 +71,12 @@ h1 {
 
 /* Base animations for each row */
 .marquee-row:first-child .marquee-content {
-    animation: scrollLeft 40s linear infinite;
+    animation: scrollLeft 20s linear infinite;
     animation-play-state: running;
 }
 
 .marquee-row:last-child .marquee-content {
-    animation: scrollRight 40s linear infinite;
+    animation: scrollRight 20s linear infinite;
     animation-play-state: running;
 }
 
@@ -141,4 +141,3 @@ h1 {
     from { transform: translateX(-50%); }
     to { transform: translateX(0); }
 }
-
